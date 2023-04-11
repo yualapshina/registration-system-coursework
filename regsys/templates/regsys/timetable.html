@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>reg-sys-cw: расписание</title>
+  </head>
+  <body>
+  <form action="{% url 'completed' %}" method="post">
+	{% csrf_token %}
+	<h2>Расписание мероприятий:</h2>
+	{% if timetable %}
+		{% for name, section in timetable.items %}
+			<fieldset>
+			<legend>{{ name }}</legend>
+			{% for key, value in section.items %}
+				<input type="radio" id="{{ name }}_{{ key }}" name="{{ name }}" value="{{ key }}" required>
+				<label for="{{ name }}_{{ key }}">{{ value }}</label><br>
+			{% endfor %}
+			</fieldset>
+		{% endfor %}
+		<input type="submit" value="Завершить регистрацию">
+	{% else %}
+		<p>:(</p>
+	{% endif %}
+  </form>
+  </body>
+</html>

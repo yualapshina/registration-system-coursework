@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>reg-sys-cw: регистрация</title>
+  </head>
+  <body>
+  <form action="{% url 'timetable' %}" method="post">
+	{% csrf_token %}
+	<h2>Личная информация:</h2>
+	<label for="name">ФИО</label><br>
+	<input type="text" id="name" name="name" required><br>
+	<label for="school">Место обучения</label><br>
+	<input type="text" id="school" name="school" required><br>
+	<label for="number">Номер телефона</label><br>
+	<input type="text" id="number" name="number" required><br>
+	<label for="email">Адрес электронной почты</label><br>
+	<input type="text" id="email" name="email" required><br>
+	<h2>Доступные события:</h2>
+	{% if events %}
+		{% for key, value in events.items %}
+			<label for="event_{{ key }}">{{ value }}</label>
+			<button id="event_{{ key }}" name="event_key" type="submit" value="{{ key }}">Зарегистрироваться</button><br>
+		{% endfor %}
+	{% else %}
+		<p>:(</p>
+	{% endif %}
+  </form>
+  </body>
+</html>
