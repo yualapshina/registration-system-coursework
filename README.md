@@ -10,7 +10,7 @@
 - [html хинты](https://www.w3schools.com/html/default.asp)
 - [маркдаун](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) лол
 - [инструкция от фигмы по работе с прототипами со ссылочками на более конкретные инструкции](https://help.figma.com/hc/en-us/articles/360040314193-Guide-to-prototyping-in-Figma)
-- [стили вышкинские отсюда таскаются](https://www.hse.ru/info/brandbook)
+- [стили вышкинские](https://www.hse.ru/info/brandbook)
 ### как работать с шайтан-машиной
 (пока, это я ещё не знаю, что будет, когда добавится бд)
 
