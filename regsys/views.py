@@ -1,22 +1,41 @@
 from django.shortcuts import render
+from .models import Event, Timetable, Guest, Registration
 
 def register(request):
-    events = {1 : "Зимняя школа", 2 : "День открытых дверей"}
+    events = Event.objects.all()
     context = {
         'events': events,
     }
     return render(request, 'regsys/register.html', context)
 
 def timetable(request):
-    morning = {1: "Суперважная общая лекция"}
-    afternoon = {1 : "Взламываем Пентагон на PHP", 2 : "Приходите в Сбер", 3 : "Чему я научился за три года на ПИ?"}
-    evening = {1 : "Квест по нахождению выхода из вуза", 2 : "Пижамная вечеринка"}
-    timetable = {"Утро" : morning, "День" : afternoon, "Вечер" : evening}
+    guest = Guest(
+        name=request.POST["name"],
+        school=request.POST["school"],
+        phone=request.POST["phone"],
+        email=request.POST["email"],
+    )
+    guest.save()
+    timetable = Timetable.objects.filter(event=request.POST["event_key"])
     context = {
         'timetable' : timetable,
+        'guest_id' : guest.id,
     }
     return render(request, 'regsys/timetable.html', context)
     
 def completed(request):
-    context = {}
+    guest_id = request.POST["guest_id"]
+    for key, value in request.POST.dict().items():
+        if "entry_" in key:
+            reg = Registration(
+                timetable=Timetable.objects.get(id=value),
+                guest=Guest.objects.get(id=guest_id),
+            )
+            reg.save()
+    reglist = Timetable.objects.filter(registration__guest=guest_id)
+    quest = Guest.objects.get(id=guest_id)
+    context = {
+        'reglist' : reglist,
+        'guest' : Guest.objects.get(id=guest_id),
+    }
     return render(request, 'regsys/completed.html', context)

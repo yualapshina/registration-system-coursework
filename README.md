@@ -1,7 +1,8 @@
 # registration-system-coursework
 "we have Allendar at home"
 ### сторонние сурсы проекта
-- [фигма](https://www.figma.com/file/Kt2FDXipEGxZJmpCemKc7s/Registration-system?t=3hfefkVQvIIGJvIm-6)
+- [фигма дизайна интерфейса](https://www.figma.com/file/Kt2FDXipEGxZJmpCemKc7s/Registration-system?t=3hfefkVQvIIGJvIm-6)
+- [фигджем базы данных](https://www.figma.com/file/cpJIurC4qGIu2jrA6UtA9I/Registration-System%3A-ER-Diagram?t=dPPlxvHcQsi7tSL4-6)
 ### основные справочники, которые пока пригождались
 - [вся джанго документация](https://docs.djangoproject.com/en/4.1/),
 - особенно [туториал](https://docs.djangoproject.com/en/4.1/intro/) (1 - сетап, 2 - дб, 3 и 4 - веб)
@@ -9,9 +10,7 @@
 - [html хинты](https://www.w3schools.com/html/default.asp)
 - [маркдаун](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) лол
 ### как работать с шайтан-машиной
-(пока, это я ещё не знаю, что будет, когда добавится бд)
-
-(но полагаю, что копировать рабочее окружение целиком всё же эффективнее, чем пытаться что-то мутить с контейнерами)
+(для версии рабочего коммита от 11 апреля, потому что я пока не понимаю, насколько бд портативна, и стоит ли возня с ней того)
 - [установка джанго](https://docs.djangoproject.com/en/4.1/intro/install/)
 - в командной строке из директории проекта (там, где `manage.py`) `python manage.py runserver` (по идее, должно сработать, но я никогда не запускала чисто скачанные проекты, только создавала новые)
 - открыть в браузере ссылку, которую выдаст сервер (http://127.0.0.1:8000/register/), и можно играть

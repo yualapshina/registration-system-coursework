@@ -5,6 +5,17 @@
     <title>reg-sys-cw: завершение</title>
   </head>
   <body>
-	<h2>маладца.</h2>
+	<h2>Регистрация завершена успешно</h2>
+	<p>{{ guest.name }}, вы зарегистрировались на:</p>
+	{% if reglist %}
+		{% for entry in reglist %}
+			<p>{{ entry.name }}</p>
+		{% endfor %}
+	{% else %}
+		<p>:(</p>
+	{% endif %}
+	<form action="{% url 'register' %}" method="get">
+	<input type="submit" value="Круто, верните меня к началу">
+	</form>
   </body>
 </html>

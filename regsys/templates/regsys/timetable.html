@@ -7,17 +7,15 @@
   <body>
   <form action="{% url 'completed' %}" method="post">
 	{% csrf_token %}
+	<input type="text" id="guest_id" name="guest_id" value="{{ guest_id }}" hidden>
 	<h2>Расписание мероприятий:</h2>
 	{% if timetable %}
-		{% for name, section in timetable.items %}
-			<fieldset>
-			<legend>{{ name }}</legend>
-			{% for key, value in section.items %}
-				<input type="radio" id="{{ name }}_{{ key }}" name="{{ name }}" value="{{ key }}" required>
-				<label for="{{ name }}_{{ key }}">{{ value }}</label><br>
+		
+			{% for entry in timetable %}
+				<input type="checkbox" id="entry_{{ entry.id }}" name="entry_{{ entry.id }}" value="{{ entry.id }}">
+				<label for="entry_{{ entry.id }}">{{ entry.name }}</label><br>
 			{% endfor %}
-			</fieldset>
-		{% endfor %}
+			
 		<input type="submit" value="Завершить регистрацию">
 	{% else %}
 		<p>:(</p>
