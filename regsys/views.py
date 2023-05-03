@@ -16,7 +16,11 @@ def timetable(request):
         email=request.POST["email"],
     )
     guest.save()
-    timetable = Timetable.objects.filter(event=request.POST["event_key"])
+    categories = Timetable.objects.order_by("category").values_list("category", flat=True).distinct()
+    timetable = {}
+    all_tts = Timetable.objects.filter(event=request.POST["event_key"])
+    for cat in categories:
+        timetable.update({cat: all_tts.filter(category=cat)})
     context = {
         'timetable' : timetable,
         'guest_id' : guest.id,
@@ -25,17 +29,19 @@ def timetable(request):
     
 def completed(request):
     guest_id = request.POST["guest_id"]
+    guest = Guest.objects.get(id=guest_id)
     for key, value in request.POST.dict().items():
-        if "entry_" in key:
-            reg = Registration(
-                timetable=Timetable.objects.get(id=value),
-                guest=Guest.objects.get(id=guest_id),
-            )
+        if "category_" in key:
+            t = Timetable.objects.get(id=value)
+            reg = Registration(timetable=t, guest=guest)
             reg.save()
+            if t.seats > 0:
+                t.seats -= 1
+                t.save()
     reglist = Timetable.objects.filter(registration__guest=guest_id)
-    quest = Guest.objects.get(id=guest_id)
+    
     context = {
         'reglist' : reglist,
-        'guest' : Guest.objects.get(id=guest_id),
+        'guest' : guest,
     }
     return render(request, 'regsys/completed.html', context)

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
     <meta charset="utf-8" />
     <title>reg-sys-cw: расписание</title>
   </head>
@@ -10,12 +12,32 @@
 	<input type="text" id="guest_id" name="guest_id" value="{{ guest_id }}" hidden>
 	<h2>Расписание мероприятий:</h2>
 	{% if timetable %}
-		
-			{% for entry in timetable %}
-				<input type="checkbox" id="entry_{{ entry.id }}" name="entry_{{ entry.id }}" value="{{ entry.id }}">
-				<label for="entry_{{ entry.id }}">{{ entry.name }}</label><br>
+		{% for key, value in timetable.items %}
+			<fieldset>
+			<legend>{{ key }}</legend>
+			{% for entry in value %}
+				{% if entry.seats == 0 %}
+					<input type="radio" id="entry_{{ entry.id }}" name="category_{{ key }}" value="{{ entry.id }}" disabled>
+				{% else %}
+					<input type="radio" id="entry_{{ entry.id }}" name="category_{{ key }}" value="{{ entry.id }}" required>
+				{% endif %}
+				<div class="tooltip">
+				{{ entry.name }}
+				<span class="tooltiptext">{{ entry.annotation }}<span>
+				</div><br>
+				<span>Место: {{ entry.place }}&emsp;Ведущий: {{ entry.host }}&emsp; Свободных мест: </span>
+				{% if entry.seats < 0 %}
+					<span>не ограничено</span>
+				{% else %}
+					<span>{{ entry.seats }}</span>
+				{% endif %}
+				{% if entry.repeating %}
+					<span>&emsp;(Мероприятие также проводится в другое время)</span>
+				{% endif %}
+				<br>
 			{% endfor %}
-			
+			</fieldset>
+		{% endfor %}	
 		<input type="submit" value="Завершить регистрацию">
 	{% else %}
 		<p>:(</p>

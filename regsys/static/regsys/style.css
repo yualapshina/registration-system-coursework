@@ -1,0 +1,18 @@
+.tooltip {
+	display: inline-block;
+	font-size: 20px;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+  padding: 5px;
+  background-color: gray;
+  color: #fff;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  font-size: 16px;
+}
