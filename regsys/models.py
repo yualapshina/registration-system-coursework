@@ -3,7 +3,8 @@ from django.db import models
 class Event(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="Номер")
     name = models.CharField(max_length=200, verbose_name="Название")
-    date = models.CharField(max_length=100, verbose_name="Даты")
+    start_date = models.DateField(verbose_name="Первый день")
+    end_date = models.DateField(verbose_name="Последний день")
     place = models.CharField(max_length=100, verbose_name="Место")
     annotation = models.CharField(max_length=1000, verbose_name="Аннотация")
     

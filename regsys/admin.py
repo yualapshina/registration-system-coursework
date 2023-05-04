@@ -6,7 +6,7 @@ from .models import Event, Timetable, Guest, Registration
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("name", "date", "place", "timetables_link")
+    list_display = ("name", "start_date", "end_date", "place", "timetables_link")
     
     def timetables_link(self, obj):
         count = obj.timetable_set.count()

@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
     <meta charset="utf-8" />
     <title>reg-sys-cw: завершение</title>
   </head>
   <body>
 	<h2>Регистрация завершена успешно</h2>
 	<p>{{ guest.name }}, вы зарегистрировались на:</p>
-	{% if reglist %}
-		{% for entry in reglist %}
-			<p>{{ entry.name }}</p>
+	{% if regs %}
+		{% for date, entries in regs.items %}
+			<table>
+			<caption>{{ event.name }}: {{ date }}</caption>
+			{% for entry in entries %}
+				<tr>
+				<td>{{ entry.category }}</td>
+				<td>{{ entry.name }}</td>
+				<td>{{ event.place }}, {{ entry.place }}</td>
+				<td>{{ entry.host }}</td>
+				</tr>
+			{% endfor %}	
+			</table>
 		{% endfor %}
 	{% else %}
 		<p>:(</p>

@@ -10,34 +10,40 @@
   <form action="{% url 'completed' %}" method="post">
 	{% csrf_token %}
 	<input type="text" id="guest_id" name="guest_id" value="{{ guest_id }}" hidden>
+	<input type="text" id="event_id" name="event_id" value="{{ event_id }}" hidden>
 	<h2>Расписание мероприятий:</h2>
 	{% if timetable %}
-		{% for key, value in timetable.items %}
+		{% for date, cats in timetable.items %}
 			<fieldset>
-			<legend>{{ key }}</legend>
-			{% for entry in value %}
-				{% if entry.seats == 0 %}
-					<input type="radio" id="entry_{{ entry.id }}" name="category_{{ key }}" value="{{ entry.id }}" disabled>
-				{% else %}
-					<input type="radio" id="entry_{{ entry.id }}" name="category_{{ key }}" value="{{ entry.id }}" required>
-				{% endif %}
-				<div class="tooltip">
-				{{ entry.name }}
-				<span class="tooltiptext">{{ entry.annotation }}<span>
-				</div><br>
-				<span>Место: {{ entry.place }}&emsp;Ведущий: {{ entry.host }}&emsp; Свободных мест: </span>
-				{% if entry.seats < 0 %}
-					<span>не ограничено</span>
-				{% else %}
-					<span>{{ entry.seats }}</span>
-				{% endif %}
-				{% if entry.repeating %}
-					<span>&emsp;(Мероприятие также проводится в другое время)</span>
-				{% endif %}
-				<br>
+			<legend>{{ date }}</legend>
+			{% for cat, entries in cats.items %}
+				<div>
+				<h4>{{ cat }}</h4>
+				{% for entry in entries %}
+					{% if entry.seats == 0 %}
+						<input type="radio" id="entry_{{ entry.id }}" name="category_{{ cat }}" value="{{ entry.id }}" disabled>
+					{% else %}
+						<input type="radio" id="entry_{{ entry.id }}" name="category_{{ cat }}" value="{{ entry.id }}" required>
+					{% endif %}
+					<div class="tooltip">
+					{{ entry.name }}
+					<span class="tooltiptext">{{ entry.annotation }}<span>
+					</div><br>
+					<span>Место: {{ entry.place }}&emsp;Ведущий: {{ entry.host }}&emsp; Свободных мест: </span>
+					{% if entry.seats < 0 %}
+						<span>не ограничено</span>
+					{% else %}
+						<span>{{ entry.seats }}</span>
+					{% endif %}
+					{% if entry.repeating %}
+						<span>&emsp;(Мероприятие также проводится в другое время)</span>
+					{% endif %}
+					<br>
+				{% endfor %}
+				</div>
 			{% endfor %}
 			</fieldset>
-		{% endfor %}	
+		{% endfor %}
 		<input type="submit" value="Завершить регистрацию">
 	{% else %}
 		<p>:(</p>
