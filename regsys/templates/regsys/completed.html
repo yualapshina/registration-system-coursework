@@ -8,6 +8,11 @@
   </head>
   <body>
 	<h2>Регистрация завершена успешно</h2>
+	<form action="{% url 'download' %}" method="get">
+	<input type="text" id="guest_id" name="guest_id" value="{{ guest.id }}" hidden>
+	<input type="text" id="event_id" name="event_id" value="{{ event.id }}" hidden>
+	<input type="submit" value="Скачать расписание в формате .csv">
+	</form>
 	<p>{{ guest.name }}, вы зарегистрировались на:</p>
 	{% if regs %}
 		{% for date, entries in regs.items %}

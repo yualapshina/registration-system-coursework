@@ -1,4 +1,6 @@
 import datetime
+import csv
+from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Event, Timetable, Guest, Registration
 
@@ -35,7 +37,7 @@ def timetable(request):
         if "date_" + str(event_id) in key:
             dates.append(Event.objects.get(id=event_id).start_date + datetime.timedelta(days=int(value)))
     timetable = {}
-    all_tts = Timetable.objects.order_by("date", "category").filter(event=event_id)
+    all_tts = Timetable.objects.filter(event=event_id).order_by("date", "category")
     for date in dates:
         d = {}
         dated_tts = all_tts.filter(date=date)
@@ -51,6 +53,7 @@ def timetable(request):
     return render(request, 'regsys/timetable.html', context)
     
 def completed(request):
+    event_id = request.POST["event_id"]
     guest_id = request.POST["guest_id"]
     guest = Guest.objects.get(id=guest_id)
     for key, value in request.POST.dict().items():
@@ -62,13 +65,30 @@ def completed(request):
                 t.seats -= 1
                 t.save()
     regs = {}
-    all_regs = Timetable.objects.order_by("date", "category").filter(registration__guest=guest_id)
+    all_regs = Timetable.objects.filter(registration__guest=guest_id).order_by("date", "category")
     dates = all_regs.order_by("date").values_list("date", flat=True).distinct()
     for date in dates:
         regs.update({date: all_regs.order_by("category").filter(date=date)})
     context = {
         'regs' : regs,
         'guest' : guest,
-        'event' : Event.objects.get(id=request.POST["event_id"])
+        'event' : Event.objects.get(id=event_id)
     }
     return render(request, 'regsys/completed.html', context)
+    
+def download(request):
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={"Content-Disposition": 'attachment; filename="registration-list.csv"'},
+    )
+    response.write(u'\ufeff'.encode('utf8'))
+    writer = csv.writer(response, delimiter =';')
+    
+    guest_id = request.GET["guest_id"]
+    event_id = request.GET["event_id"]
+    event = Event.objects.get(id=event_id)
+    regs = Timetable.objects.filter(registration__guest=guest_id).order_by("date", "category")
+    for reg in regs:
+        writer.writerow([event.name + ": " + str(reg.date), reg.category, reg.name, event.place + " - " + reg.place, reg.host])
+
+    return response
