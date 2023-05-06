@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import F, Q
 
 class Event(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="Номер")
@@ -14,6 +15,12 @@ class Event(models.Model):
     class Meta:
         verbose_name = "Событие"
         verbose_name_plural = "События"
+        constraints = [
+            models.CheckConstraint(
+            check=Q(end_date__gte=F('start_date')), 
+            name='early_end_date_check',
+            violation_error_message='Последний день мероприятия не может идти раньше первого')
+        ]
 
 
 class Timetable(models.Model):
