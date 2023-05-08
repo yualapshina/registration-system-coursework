@@ -59,11 +59,11 @@ def completed(request):
     for key, value in request.POST.dict().items():
         if "category_" in key:
             t = Timetable.objects.get(id=value)
-            reg = Registration(timetable=t, guest=guest)
-            reg.save()
-            if t.seats > 0:
-                t.seats -= 1
-                t.save()
+            
+            unique_check = Registration.objects.filter(timetable=value).filter(guest=guest_id)
+            if not unique_check:
+                reg = Registration(timetable=t, guest=guest)
+                reg.save()
     regs = {}
     all_regs = Timetable.objects.filter(registration__guest=guest_id).order_by("date", "category")
     dates = all_regs.order_by("date").values_list("date", flat=True).distinct()

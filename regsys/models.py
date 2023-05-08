@@ -1,5 +1,8 @@
 from django.db import models
 from django.db.models import F, Q
+from django.core.exceptions import ValidationError
+from django.db.models.signals import post_save, pre_delete
+from django.dispatch import receiver
 
 class Event(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="Номер")
@@ -11,16 +14,14 @@ class Event(models.Model):
     
     def __str__(self):
         return self.name
+        
+    def clean(self):
+        if self.end_date < self.start_date:
+            raise ValidationError("Последний день мероприятия не может идти раньше первого")
     
     class Meta:
         verbose_name = "Событие"
         verbose_name_plural = "События"
-        constraints = [
-            models.CheckConstraint(
-            check=Q(end_date__gte=F('start_date')), 
-            name='early_end_date_check',
-            violation_error_message='Последний день мероприятия не может идти раньше первого')
-        ]
 
 
 class Timetable(models.Model):
@@ -37,6 +38,10 @@ class Timetable(models.Model):
     
     def __str__(self):
         return self.name
+        
+    def clean(self):
+        if self.date < self.event.start_date or self.date > self.event.end_date:
+            raise ValidationError("Дата не должна выходить за рамки события")
     
     class Meta:
         verbose_name = "Расписание"
@@ -45,14 +50,14 @@ class Timetable(models.Model):
         
 class Guest(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="Номер")
-    name = models.CharField(max_length=200, verbose_name="Название")
+    name = models.CharField(max_length=200, verbose_name="Имя")
     school = models.CharField(max_length=100, verbose_name="Место обучения")
     email = models.EmailField(max_length=100, verbose_name="Почта")
     phone = models.CharField(max_length=100, verbose_name="Телефон")
     
     def __str__(self):
         return self.name
-    
+            
     class Meta:
         verbose_name = "Участник"
         verbose_name_plural = "Участники"
@@ -68,3 +73,20 @@ class Registration(models.Model):
     class Meta:
         verbose_name = "Запись"
         verbose_name_plural = "Записи"
+        
+
+@receiver(post_save, sender=Registration)
+def minus_seat(sender, instance, created, **kwargs):
+    if created:
+        t = instance.timetable
+        if t.seats > 0:
+            t.seats -= 1
+            t.save()
+  
+@receiver(pre_delete, sender=Registration)
+def plus_seat(sender, instance, **kwargs):
+    t = instance.timetable
+    if t.seats > -1:
+        t.seats += 1
+        t.save()
+        
