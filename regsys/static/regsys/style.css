@@ -1,6 +1,361 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.parent {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  overflow: auto;   
+}
+
+.block {
+  margin: auto;
+  display: block;
+  border: none;
+}
+
+/* Regular */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-Regular.woff2') format('woff2'),
+    url('./fonts/HSESans-Regular.woff') format('woff'),
+    url('./fonts/HSESans-Regular.otf') format('otf'),
+    url('./fonts/HSESans-Regular.eot') format('eot');
+}
+
+/* Bold */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-Bold.woff2') format('woff2'),
+    url('./fonts/HSESans-Bold.woff') format('woff'),
+    url('./fonts/HSESans-Bold.otf') format('otf'),
+    url('./fonts/HSESans-Bold.eot') format('eot');
+}
+
+/* Italic */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-Italic.woff2') format('woff2'),
+    url('./fonts/HSESans-Italic.woff') format('woff'),
+    url('./fonts/HSESans-Italic.otf') format('otf'),
+    url('./fonts/HSESans-Italic.eot') format('eot');
+}
+
+/* Italic */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-Italic.woff2') format('woff2'),
+    url('./fonts/HSESans-Italic.woff') format('woff'),
+    url('./fonts/HSESans-Italic.otf') format('otf'),
+    url('./fonts/HSESans-Italic.eot') format('eot');
+}
+
+/* SemiBold */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-SemiBold.woff2') format('woff2'),
+    url('./fonts/HSESans-SemiBold.woff') format('woff'),
+    url('./fonts/HSESans-SemiBold.otf') format('otf'),
+    url('./fonts/HSESans-SemiBold.eot') format('eot');
+}
+
+/* Thin */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 100;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-Thin.woff2') format('woff2'),
+    url('./fonts/HSESans-Thin.woff') format('woff'),
+    url('./fonts/HSESans-Thin.otf') format('otf'),
+    url('./fonts/HSESans-Thin.eot') format('eot');
+}
+
+/* Black */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 900;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-Black.woff2') format('woff2'),
+    url('./fonts/HSESans-Black.woff') format('woff'),
+    url('./fonts/HSESans-Black.otf') format('otf'),
+    url('./fonts/HSESans-Black.eot') format('eot');
+}
+
+.text-body-regular {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.text-body-semibold {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.text-body-italic {
+  font-family: 'HSE Sans';
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.text-button {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+
+  text-transform: uppercase;
+}
+
+.text-caption {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+}
+
+.text-h1 {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 43px;
+}
+
+.text-h2 {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.primary-button {
+  min-width: 100px;
+  cursor: pointer;
+  appearance: none;
+  border: 0;
+  border-radius: 4px;
+  background: #0F2D69;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  text-transform: uppercase;
+}
+
+.primary-button:hover {
+  background: #374B9B;
+}
+
+.primary-button:disabled {
+  background: #808080;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  min-width: 100px;
+  cursor: pointer;
+  appearance: none;
+  border: 1px solid #0F2D69;
+  border-radius: 4px;
+  color: #0F2D69;
+  background: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  text-transform: uppercase;
+}
+
+.secondary-button:hover {
+  border: 1px solid #374B9B;
+  color: #374B9B;
+}
+
+.secondary-button:disabled {
+  border: 1px solid #808080;
+  color: #808080;
+  cursor: not-allowed;
+}
+
+input[type="text"] {
+  margin: 0;
+}
+
+/* стили для label */
+.text-field__label {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+/* стили для input */
+.text-field__input {
+  min-width: 400px;
+  display: block;
+  height: calc(2.25rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  color: #000;
+  background-color: #E6E6E6;
+  background-clip: padding-box;
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
+}
+
+.text-field__input::placeholder {
+  color: #808080;
+  font-family: 'HSE Sans';
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.text-field__input:disabled {
+  background: #BFBFBF;
+  border: 1px solid #808080;
+}
+
+.text-field__input:focus {
+  border: 1px solid #374B9B;
+  outline: 0;
+  caret-color: #374B9B;
+}
+
+.text-field__input:invalid:focus {
+  border: 1px solid #E61E3C;
+}
+
+
+input[type="checkbox"]:checked,
+input[type="checkbox"]:not(:checked) {
+  position: absolute;
+  left: -9999px;
+}
+
+input[type="checkbox"]:checked+label,
+input[type="checkbox"]:not(:checked)+label {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  display: inline-block;
+  position: relative;
+  padding-left: 28px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked+label:before,
+input[type="checkbox"]:not(:checked)+label:before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #dddddd;
+  background-color: #ffffff;
+}
+
+input[type="checkbox"]:checked+label:before,
+input[type="checkbox"]:not(:checked)+label:before {
+  border-radius: 2px;
+}
+
+input[type="checkbox"]:checked+label:after,
+input[type="checkbox"]:not(:checked)+label:after {
+  content: "";
+  position: absolute;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:checked+label:after,
+input[type="checkbox"]:not(:checked)+label:after {
+  left: 3px;
+  top: 5px;
+  width: 12px;
+  height: 6px;
+  border-radius: 1px;
+  border-left: 3px solid #0F2D69;
+  border-bottom: 3px solid #0F2D69;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+input[type="checkbox"]:not(:checked)+label:after {
+  opacity: 0;
+}
+
+input[type="checkbox"]:checked+label:after {
+  opacity: 1;
+}
+
 .tooltip {
-	display: inline-block;
-	font-size: 20px;
+  display: inline-block;
+  font-size: 20px;
 }
 
 .tooltip .tooltiptext {

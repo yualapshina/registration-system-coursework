@@ -1,45 +1,70 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <head>
+
+<head>
 	{% load index %}
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
-    <meta charset="utf-8" />
-    <title>reg-sys-cw: регистрация</title>
-  </head>
-  <body>
-  <form action="{% url 'timetable' %}" method="post">
-	{% csrf_token %}
-	<h2>Личная информация:</h2>
-	<label for="name">ФИО</label><br>
-	<input type="text" id="name" name="name" required><br>
-	<label for="school">Место обучения</label><br>
-	<input type="text" id="school" name="school" required><br>
-	<label for="phone">Номер телефона</label><br>
-	<input type="text" id="phone" name="phone" required><br>
-	<label for="email">Адрес электронной почты</label><br>
-	<input type="text" id="email" name="email" required><br>
-	<h2>Доступные события:</h2>
-	{% if events %}
+	<meta charset="utf-8" />
+	<title>reg-sys-cw: Регистрация</title>
+</head>
+
+<body>
+	<form action="{% url 'timetable' %}" method="post">
+		{% csrf_token %}
+		<div class="parent">
+			<div class="block">
+		<p class="text-h1" style="color:#0F2D69">Регистрация на мероприятия ИМИКН</p>
+		<p class="text-h2" style="color: #374B9B">Данные участника:</p>
+		<p class="text-caption" style="color:#808080">Пожалуйста, введите необходимую информацию о себе</p>
+		<div class="text-field">
+			<label class="text-field__label" for="name">ФИО</label>
+			<input class="text-field__input" type="text" id="name" name="name" required
+				placeholder="Введите ваши фамилию, имя и отчество">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="school">Место обучения</label>
+			<input class="text-field__input" type="text" id="school" name="school" required
+				placeholder="Введите школу и класс, где вы учитесь">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="phone">Номер телефона</label>
+			<input class="text-field__input" type="text" id="phone" name="phone" required
+				placeholder="Введите номер телефона для связи с вами">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="email">Электронная почта</label>
+			<input class="text-field__input" type="text" id="email" name="email" required
+				placeholder="Введите ваш адрес электронной почты">
+		</div>
+		<p class="text-h2" style="color: #374B9B">Выбор мероприятия для регистрации</p>
+		<p class="text-caption" style="color:#808080">Пожалуйста, выберите мероприятие, на которое вы хотели бы
+			зарегистрироваться.</p>
+		<p class="text-caption" style="color:#808080">Некоторые мероприятия длятся несколько дней - уточните, в какие
+			дни вы будете присутстовать!</p>
+		{% if events %}
 		{% for event in events %}
-			{% with counter=0 %}
-			<div class="tooltip">
-			{{ event.name }}
+		{% with counter=0 %}
+		<div class="tooltip">
+			<p class="text-body-semibold"> {{ event.name }}</p>
 			<span class="tooltiptext">{{ event.annotation }}</span>
-			</div><br>
-			<span>Место проведения: {{ event.place }}</span>
-			{% for date in dates|index:forloop.counter0 %}
-				<br><input type="checkbox" id="date_{{ event.id }}_{{ forloop.counter0 }}" name="date_{{ event.id }}_{{ forloop.counter0 }}" value="{{ forloop.counter0 }}">
-				<label for="date_{{ event.id }}_{{ forloop.counter0 }}">{{ date }}</label>
-			{% endfor %}
-			<button id="event_{{ event.id }}" name="event_key" type="submit" value="{{ event.id }}">Зарегистрироваться</button><br>
-			{% endwith %}
+		</div><br>
+		<span class="text-body-regular">Место проведения: {{ event.place }}</span><br><br>
+		{% for date in dates|index:forloop.counter0 %}
+		<input type="checkbox" id="date_{{ event.id }}_{{ forloop.counter0 }}"
+			name="date_{{ event.id }}_{{ forloop.counter0 }}" value="{{ forloop.counter0 }}">
+		<label for="date_{{ event.id }}_{{ forloop.counter0 }}">{{ date }}</label><br><br>
 		{% endfor %}
-	{% else %}
-		<p>:(</p>
-	{% endif %}
-  </form>
-  </body>
+		<button id="event_{{ event.id }}" name="event_key" type="submit" value="{{ event.id }}"
+			class="primary-button">Зарегистрироваться</button><br>
+		{% endwith %}
+		{% endfor %}
+		{% else %}
+		<p class="text-body-regular" style="color: #E61E3C;">К сожалению, сейчас нет доступных для регистрации	мероприятий</p>
+		{% endif %}
+	</div>
+</div>
+	</form>
+</body>
+
 </html>
-
-
