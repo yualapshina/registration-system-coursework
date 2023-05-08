@@ -1,38 +1,43 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <head>
+
+<head>
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
-    <meta charset="utf-8" />
-    <title>reg-sys-cw: завершение</title>
-  </head>
-  <body>
-	<h2>Регистрация завершена успешно</h2>
-	<form action="{% url 'download' %}" method="get">
-	<input type="text" id="guest_id" name="guest_id" value="{{ guest.id }}" hidden>
-	<input type="text" id="event_id" name="event_id" value="{{ event.id }}" hidden>
-	<input type="submit" value="Скачать расписание в формате .csv">
-	</form>
-	<p>{{ guest.name }}, вы зарегистрировались на:</p>
+	<meta charset="utf-8" />
+	<title>reg-sys-cw: завершение</title>
+</head>
+
+<body>
+	<p class="text-h1" style="color:#0F2D69">Регистрация завершена успешно</p>
+	<p class="text-h2" style="color: #374B9B">{{ guest.name }}, мы зарегистрировали вас! Вот ваше расписание:</p>
 	{% if regs %}
-		{% for date, entries in regs.items %}
-			<table>
-			<caption>{{ event.name }}: {{ date }}</caption>
-			{% for entry in entries %}
-				<tr>
-				<td>{{ entry.category }}</td>
-				<td>{{ entry.name }}</td>
-				<td>{{ event.place }}, {{ entry.place }}</td>
-				<td>{{ entry.host }}</td>
-				</tr>
-			{% endfor %}	
-			</table>
+	{% for date, entries in regs.items %}
+	<table>
+		<span class="text-body-semibold">{{ event.name }}: </span><span class="text-body-regular">{{ date }}</span>
+		{% for entry in entries %}
+		<tr>
+			<td class="text-body-regular">{{ entry.category }} - </td>
+			<td class="text-body-semibold">{{ entry.name }}</td>
+			<td class="text-body-italic" , style="color: #808080;">{{ event.place }}, {{ entry.place }}</td>
+			<td class="text-body-italic" , style="color: #808080;">{{ entry.host }}</td>
+		</tr>
 		{% endfor %}
+	</table>
+	{% endfor %}
 	{% else %}
-		<p>:(</p>
+	<p class="text-body-regular" style="color: #E61E3C;">Кажется, ваша регистрация не прошла. Попробуйте снова!</p>
 	{% endif %}
-	<form action="{% url 'register' %}" method="get">
-	<input type="submit" value="Круто, верните меня к началу">
+	<br>
+	<form action="{% url 'download' %}" method="get">
+		<input type="text" id="guest_id" name="guest_id" value="{{ guest.id }}" hidden>
+		<input type="text" id="event_id" name="event_id" value="{{ event.id }}" hidden>
+		<input type="submit" class="secondary-button" value="Скачать расписание в формате .csv">
 	</form>
-  </body>
+	<br>
+	<form action="{% url 'register' %}" method="get">
+		<input type="submit" class="primary-button" value="Вернуться к началу">
+	</form>
+</body>
+
 </html>
