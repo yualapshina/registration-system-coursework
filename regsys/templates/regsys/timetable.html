@@ -13,6 +13,8 @@
 		{% csrf_token %}
 		<input type="text" id="guest_id" name="guest_id" value="{{ guest_id }}" hidden>
 		<input type="text" id="event_id" name="event_id" value="{{ event_id }}" hidden>
+		<div class="parent">
+			<div class="block">
 		<p class="text-h1" style="color:#0F2D69">Настройка расписания</p>
 		<p class="text-h2" style="color: #374B9B">Выберите, какие из следующих мероприятий вы хотели бы посетить.</p>
 		<p class="text-caption" style="color:#808080">Будьте внимательны! Некоторые мероприятия идут одновременно - выбрать можно только одно. А еще, некоторые из них повтряются в разное время.</p>
@@ -52,6 +54,7 @@
 		{% else %}
 		<p class="text-body-regular" style="color: #E61E3C;">Кажется, вы не выбрали ни одного дня для регистрации.</p>
 		{% endif %}
+			</div>
 	</form>
 </body>
 

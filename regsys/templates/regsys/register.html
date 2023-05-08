@@ -12,6 +12,8 @@
 <body>
 	<form action="{% url 'timetable' %}" method="post">
 		{% csrf_token %}
+		<div class="parent">
+			<div class="block">
 		<p class="text-h1" style="color:#0F2D69">Регистрация на мероприятия ИМИКН</p>
 		<p class="text-h2" style="color: #374B9B">Данные участника:</p>
 		<p class="text-caption" style="color:#808080">Пожалуйста, введите необходимую информацию о себе</p>
@@ -60,6 +62,8 @@
 		{% else %}
 		<p class="text-body-regular" style="color: #E61E3C;">К сожалению, сейчас нет доступных для регистрации	мероприятий</p>
 		{% endif %}
+	</div>
+</div>
 	</form>
 </body>
 
