@@ -33,17 +33,14 @@
 					<p class="text-body-regular">{{ entry.name }}</p>
 					<span class="tooltiptext">{{ entry.annotation }}<span>
 				</div><br>
-				<span><span class="text-body-semibold">Место: </span><span class="text-body-regular">{{ entry.place
-						}}</span>&emsp;<span class="text-body-semibold">Ведущий: </span><span
-						class="text-body-regular">{{ entry.host }}</span>&emsp; <span
-						class="text-body-semibold">Свободных мест: </span>
+				<span><span class="text-body-semibold">Место: </span><span class="text-body-regular">{{ entry.place}}</span>&emsp;<span class="text-body-semibold">Ведущий: </span><span
+						class="text-body-regular">{{ entry.host }}</span>&emsp; <span class="text-body-semibold">Свободных мест: </span>
 					{% if entry.seats < 0 %} <span class="text-body-regular">не ограничено</span>
 				{% else %}
 				<span class="text-body-regular">{{ entry.seats }}</span>
 				{% endif %}
 				{% if entry.repeating %}
-				<span class="text-caption" style="color:#808080">&emsp;(Мероприятие также проводится в другое
-					время)</span>
+				<span class="text-caption" style="color:#808080">&emsp;(Мероприятие также проводится в другое время)</span>
 				{% endif %}
 				<br><br>
 				{% endfor %}
