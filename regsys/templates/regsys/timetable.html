@@ -29,10 +29,10 @@
 				{% if entry.seats == 0 %}
 				<input type="radio" id="entry_{{ entry.id }}" name="category_{{ cat }}" value="{{ entry.id }}" disabled>
 				{% else %}
-				<input type="radio" id="entry_{{ entry.id }}" name="category_{{ cat }}" value="{{ entry.id }}" required>
+				<input type="radio" id="entry_{{ entry.id }}" name="category_{{ cat }}" value="{{ entry.id }}">
 				{% endif %}
 				<div class="tooltip">
-					<p class="text-body-regular">{{ entry.name }}</p>
+					<p class="text-body-regular">{{ entry.timetable_name }}</p>
 					<span class="tooltiptext">{{ entry.annotation }}<span>
 				</div><br>
 				<span><span class="text-body-semibold">Место: </span><span class="text-body-regular">{{ entry.place}}</span>&emsp;<span class="text-body-semibold">Ведущий: </span><span
@@ -52,7 +52,7 @@
 		{% endfor %} <br>
 		<input type="submit" class="primary-button" value="Завершить регистрацию">
 		{% else %}
-		<p class="text-body-regular" style="color: #E61E3C;">Кажется, вы не выбрали ни одного дня для регистрации.</p>
+		<p class="text-body-regular" style="color: #E61E3C;">Кажется, вы не выбрали ни одного дня для регистрации. Попробуйте снова!</p>
 		{% endif %}
 			</div>
 	</form>

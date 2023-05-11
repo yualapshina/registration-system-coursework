@@ -25,7 +25,7 @@ def register(request):
 
 def timetable(request):
     guest = Guest(
-        name=request.POST["name"],
+        guest_name=request.POST["guest_name"],
         school=request.POST["school"],
         phone=request.POST["phone"],
         email=request.POST["email"],
@@ -89,6 +89,6 @@ def download(request):
     event = Event.objects.get(id=event_id)
     regs = Timetable.objects.filter(registration__guest=guest_id).order_by("date", "category")
     for reg in regs:
-        writer.writerow([event.name + ": " + str(reg.date), reg.category, reg.name, event.place + " - " + reg.place, reg.host])
+        writer.writerow([event.event_name + ": " + str(reg.date), reg.category, reg.timetable_name, event.place + " - " + reg.place, reg.host])
 
     return response

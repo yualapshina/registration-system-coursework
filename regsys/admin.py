@@ -6,7 +6,7 @@ from .models import Event, Timetable, Guest, Registration
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("name", "start_date", "end_date", "place", "timetables_link")
+    list_display = ("event_name", "start_date", "end_date", "place", "timetables_link")
     
     def timetables_link(self, obj):
         count = obj.timetable_set.count()
@@ -21,7 +21,7 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(Timetable)
 class TimetableAdmin(admin.ModelAdmin):
-    list_display = ("name", "event", "category", "date", "place", "host", "repeating", "seats", "registrations_link")
+    list_display = ("timetable_name", "event", "category", "date", "place", "host", "repeating", "seats", "registrations_link")
     
     def registrations_link(self, obj):
         count = obj.registration_set.count()
@@ -36,7 +36,7 @@ class TimetableAdmin(admin.ModelAdmin):
 
 @admin.register(Guest)
 class GuestAdmin(admin.ModelAdmin):
-    list_display = ("name", "school", "registrations_link")
+    list_display = ("guest_name", "school", "registrations_link")
     
     def registrations_link(self, obj):
         count = obj.registration_set.count()

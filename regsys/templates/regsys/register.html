@@ -18,8 +18,8 @@
 		<p class="text-h2" style="color: #374B9B">Данные участника:</p>
 		<p class="text-caption" style="color:#808080">Пожалуйста, введите необходимую информацию о себе</p>
 		<div class="text-field">
-			<label class="text-field__label" for="name">ФИО</label>
-			<input class="text-field__input" type="text" id="name" name="name" required
+			<label class="text-field__label" for="guest_name">ФИО</label>
+			<input class="text-field__input" type="text" id="guest_name" name="guest_name" required
 				placeholder="Введите ваши фамилию, имя и отчество">
 		</div>
 		<div class="text-field">
@@ -46,7 +46,7 @@
 		{% for event in events %}
 		{% with counter=0 %}
 		<div class="tooltip">
-			<p class="text-body-semibold"> {{ event.name }}</p>
+			<p class="text-body-semibold"> {{ event.event_name }}</p>
 			<span class="tooltiptext">{{ event.annotation }}</span>
 		</div><br>
 		<span class="text-body-regular">Место проведения: {{ event.place }}</span><br><br>

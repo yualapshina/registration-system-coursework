@@ -6,14 +6,14 @@ from django.dispatch import receiver
 
 class Event(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="Номер")
-    name = models.CharField(max_length=200, verbose_name="Название")
+    event_name = models.CharField(max_length=200, verbose_name="Название")
     start_date = models.DateField(verbose_name="Первый день")
     end_date = models.DateField(verbose_name="Последний день")
     place = models.CharField(max_length=100, verbose_name="Место")
     annotation = models.CharField(max_length=1000, verbose_name="Аннотация")
     
     def __str__(self):
-        return self.name
+        return self.event_name
         
     def clean(self):
         if self.end_date < self.start_date:
@@ -26,7 +26,7 @@ class Event(models.Model):
 
 class Timetable(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="Номер")
-    name = models.CharField(max_length=200, verbose_name="Название")
+    timetable_name = models.CharField(max_length=200, verbose_name="Название")
     category = models.CharField(max_length=100, verbose_name="Категория")
     date = models.DateField(verbose_name="Дата")
     place = models.CharField(max_length=100, verbose_name="Место")
@@ -37,7 +37,7 @@ class Timetable(models.Model):
     seats = models.IntegerField(default=-1, verbose_name="Свободных мест")
     
     def __str__(self):
-        return self.name
+        return self.timetable_name
         
     def clean(self):
         if self.date < self.event.start_date or self.date > self.event.end_date:
@@ -50,13 +50,13 @@ class Timetable(models.Model):
         
 class Guest(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="Номер")
-    name = models.CharField(max_length=200, verbose_name="Имя")
+    guest_name = models.CharField(max_length=200, verbose_name="Имя")
     school = models.CharField(max_length=100, verbose_name="Место обучения")
     email = models.EmailField(max_length=100, verbose_name="Почта")
     phone = models.CharField(max_length=100, verbose_name="Телефон")
     
     def __str__(self):
-        return self.name
+        return self.guest_name
             
     class Meta:
         verbose_name = "Участник"
