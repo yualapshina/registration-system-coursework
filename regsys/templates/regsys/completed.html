@@ -20,7 +20,7 @@
 		{% for entry in entries %}
 		<tr>
 			<td class="text-body-regular">{{ entry.category }} - </td>
-			<td class="text-body-semibold">{{ entry.timetable_name }}</td>
+			<td class="text-body-regular">{{ entry.timetable_name }}</td>
 			<td class="text-body-italic" , style="color: #808080;">{{ event.place }}, {{ entry.place }}</td>
 			<td class="text-body-italic" , style="color: #808080;">{{ entry.host }}</td>
 		</tr>
@@ -28,7 +28,7 @@
 	</table>
 	{% endfor %}
 	{% else %}
-	<p class="text-body-regular" style="color: #E61E3C;">Кажется, вы не выбрали ни одного мероприятия. Попробуйте снова!</p>
+	<p class="text-body-regular" style="color: #E61E3C;">Кажется, ваше расписание совсем пустое. Попробуйте снова!</p>
 	{% endif %}
 	<br>
 	<form action="{% url 'download' %}" method="get">

@@ -21,10 +21,10 @@
 		{% if timetable %}
 		{% for date, cats in timetable.items %}
 		<fieldset>
-			<legend class="text-body-semibold">{{ date }}</legend>
+			<legend class="text-body-semibold" style="color: #374B9B">{{ date }}</legend>
 			{% for cat, entries in cats.items %}
 			<div>
-				<p class="text-body-semibold">{{ cat }}</p>
+				<p class="text-body-semibold" style="color: #0F2D69">{{ cat }}</p>
 				{% for entry in entries %}
 				{% if entry.seats == 0 %}
 				<input type="radio" id="entry_{{ entry.id }}" name="category_{{ cat }}" value="{{ entry.id }}" disabled>
@@ -32,10 +32,10 @@
 				<input type="radio" id="entry_{{ entry.id }}" name="category_{{ cat }}" value="{{ entry.id }}">
 				{% endif %}
 				<div class="tooltip">
-					<p class="text-body-regular">{{ entry.timetable_name }}</p>
+					<p class="text-body-semibold" style="color: #0F2D69">{{ entry.timetable_name }}</p>
 					<span class="tooltiptext">{{ entry.annotation }}<span>
 				</div><br>
-				<span><span class="text-body-semibold">Место: </span><span class="text-body-regular">{{ entry.place}}</span>&emsp;<span class="text-body-semibold">Ведущий: </span><span
+				<span style="color:#808080"><span class="text-body-semibold">Место: </span><span class="text-body-regular">{{ entry.place}}</span>&emsp;<span class="text-body-semibold">Ведущий: </span><span
 						class="text-body-regular">{{ entry.host }}</span>&emsp; <span class="text-body-semibold">Свободных мест: </span>
 					{% if entry.seats < 0 %} <span class="text-body-regular">не ограничено</span>
 				{% else %}
