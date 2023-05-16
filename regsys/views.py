@@ -1,8 +1,19 @@
 import datetime
 import csv
+from functools import cmp_to_key
 from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Event, Timetable, Guest, Registration
+
+@cmp_to_key
+def letter_first_cmp(a, b):
+    print("comparing " + a + " and " + b)
+    if a[0].isdigit() and not b[0].isdigit():
+        return 1
+    elif not a[0].isdigit() and b[0].isdigit():
+        return -1
+    else:
+        return (a > b) - (a < b)
 
 def register(request):
     events = Event.objects.order_by("start_date")
@@ -37,11 +48,12 @@ def timetable(request):
         if "date_" + str(event_id) in key:
             dates.append(Event.objects.get(id=event_id).start_date + datetime.timedelta(days=int(value)))
     timetable = {}
-    all_tts = Timetable.objects.filter(event=event_id).order_by("date", "category")
+    all_tts = Timetable.objects.filter(event=event_id).order_by("date", "category", "timetable_name")
     for date in dates:
         d = {}
         dated_tts = all_tts.filter(date=date)
-        cats = dated_tts.order_by("category").values_list("category", flat=True).distinct()
+        cats = list(dated_tts.order_by("category").values_list("category", flat=True).distinct())
+        cats.sort(key=letter_first_cmp)
         for cat in cats:
             d.update({cat: dated_tts.filter(category=cat)})
         timetable.update({date: d})
