@@ -281,7 +281,7 @@ input[type="text"] {
   border: 1px solid #374B9B;
 }
 
-
+/* стили для checkbox */
 input[type="checkbox"]:checked,
 input[type="checkbox"]:not(:checked) {
   position: absolute;
@@ -353,6 +353,7 @@ input[type="checkbox"]:checked+label:after {
   opacity: 1;
 }
 
+/* стили для fieldset */
 fieldset
 {
   border-color: #374B9B;
@@ -364,6 +365,7 @@ fieldset
   margin-left:16px;
 }
 
+/* стили для tooltip*/
 .tooltip {
   display: inline-block;
 }
