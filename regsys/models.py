@@ -50,13 +50,17 @@ class Timetable(models.Model):
         
 class Guest(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="Номер")
-    guest_name = models.CharField(max_length=200, verbose_name="Имя")
+    email = models.EmailField(max_length=100, verbose_name="Электронная почта")
+    password = models.CharField(max_length=50, verbose_name="Пароль")
+    surname = models.CharField(max_length=100, verbose_name="Фамилия")
+    firstname = models.CharField(max_length=100, verbose_name="Имя")
+    patronymic = models.CharField(max_length=100, verbose_name="Отчество")
+    birthday = models.DateField(verbose_name="Дата рождения")
     school = models.CharField(max_length=100, verbose_name="Место обучения")
-    email = models.EmailField(max_length=100, verbose_name="Почта")
-    phone = models.CharField(max_length=100, verbose_name="Телефон")
+    phone = models.CharField(max_length=100, verbose_name="Номер телефона")
     
     def __str__(self):
-        return self.guest_name
+        return self.surname + self.firstname
             
     class Meta:
         verbose_name = "Участник"

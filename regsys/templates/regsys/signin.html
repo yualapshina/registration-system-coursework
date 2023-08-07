@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
+	<meta charset="utf-8" />
+	<title>reg-sys-cw: Вход в профиль</title>
+</head>
+
+<body>
+	{% if messages %}
+		<ul class="messages">
+		{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+	
+	<form action="{% url 'mylist' %}" method="post">
+		{% csrf_token %}
+		<div class="parent">
+		
+		<div class="navbar">
+		{% for name, link in navbar.items %}
+			{% if name == "Вход в профиль" %}
+				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
+			{% else %}
+				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
+			{% endif %}
+		{% endfor %}
+		</div>
+		
+			<div class="block">
+		<div class="text-field">
+			<label class="text-field__label" for="email">Электронная почта</label>
+			<input class="text-field__input" type="text" id="email" name="email" required
+				placeholder="Введите ваш адрес электронной почты">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="password">Пароль</label>
+			<input class="text-field__input" type="password" id="password" name="password" required
+				placeholder="Введите ваш пароль">
+		</div>
+		<br><button id="submit" name="submit" type="submit" value="signin"
+			class="primary-button">Войти в профиль</button>
+	</div>
+</div>
+	</form>
+</body>
+
+</html>

@@ -2,8 +2,20 @@ import datetime
 import csv
 from functools import cmp_to_key
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import Event, Timetable, Guest, Registration
+
+navbar_sign = {
+    "Вход в профиль": "signin",
+    "Создание профиля": "signup",
+}
+navbar_profile = {
+    "Личные данные": "profile",
+    "Моё расписание": "mylist",
+    "Зарегистрироваться": "register",
+    "Настройки": "settings",
+}
 
 @cmp_to_key
 def letter_first_cmp(a, b):
@@ -14,6 +26,67 @@ def letter_first_cmp(a, b):
         return -1
     else:
         return (a > b) - (a < b)
+
+def signup(request):
+    context = {
+        'navbar': navbar_sign,
+    }
+    return render(request, 'regsys/signup.html', context)
+    
+def personal(request):
+    email = request.POST["email"]
+    password = request.POST["password"]
+    if Guest.objects.filter(email=email):
+        messages.error(request, "Профиль с такой почтой уже существует")
+        return redirect(signup)
+    if request.POST["repeat"] != password:
+        messages.error(request, "Пароль не совпадает")
+        return redirect(signup)
+    context = {
+        'navbar': navbar_sign,
+        'email': email,
+        'password': password,
+    }
+    return render(request, 'regsys/personal.html', context)
+
+def signin(request):
+    context = {
+        'navbar': navbar_sign,
+    }
+    return render(request, 'regsys/signin.html', context)
+
+def mylist(request):
+    context = {
+        'navbar': navbar_profile,
+    }
+    sender = request.POST["submit"]
+    
+    if sender == "personal":
+        guest = Guest(
+            email=request.POST["email"],
+            password=request.POST["password"],
+            phone=request.POST["phone"],
+            surname=request.POST["surname"],
+            firstname=request.POST["firstname"],
+            patronymic=request.POST["patronymic"],
+            birthday=request.POST["birthday"],
+            school=request.POST["school"],                
+        )
+        guest.save() 
+        context.update({'guest': guest})
+    
+    if sender == "signin":
+        guests = Guest.objects.filter(email=request.POST["email"])
+        if not guests:
+            messages.error(request, "Профиля с такой почтой не существует")
+            return redirect(signin)
+        guest = guests[0]
+        if guest.password != request.POST["password"]:
+            messages.error(request, "Неверный пароль")
+            return redirect(signin)
+        context.update({'guest': guest})
+        
+    return render(request, 'regsys/mylist.html', context)
 
 def register(request):
     events = Event.objects.order_by("start_date")
@@ -36,7 +109,7 @@ def register(request):
 
 def timetable(request):
     guest = Guest(
-        guest_name=request.POST["guest_name"],
+        surname=request.POST["guest_name"],
         school=request.POST["school"],
         phone=request.POST["phone"],
         email=request.POST["email"],

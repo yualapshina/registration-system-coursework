@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
+	<meta charset="utf-8" />
+	<title>reg-sys-cw: Личная информация</title>
+</head>
+
+<body>	
+	<form action="{% url 'mylist' %}" method="post">
+		{% csrf_token %}
+		<input class="hidden" type="text" id="email" name="email" value="{{ email }}" hidden>
+		<input class="hidden" type="text" id="password" name="password" value="{{ password }}" hidden>
+		<div class="parent">
+		
+		<div class="navbar">
+		{% for name, link in navbar.items %}
+			{% if name == "Создание профиля" %}
+				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
+			{% else %}
+				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
+			{% endif %}
+		{% endfor %}
+		</div>
+		
+			<div class="block">
+		<p class="text-h2" style="color:#374B9B">Личная информация:</p>
+		<div class="text-field">
+			<label class="text-field__label" for="surname">Фамилия</label>
+			<input class="text-field__input" type="text" id="surname" name="surname" required
+				placeholder="Введите вашу фамилию">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="firstname">Имя</label>
+			<input class="text-field__input" type="text" id="firstname" name="firstname" required
+				placeholder="Введите ваше имя">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="patronymic">Отчество</label>
+			<input class="text-field__input" type="text" id="patronymic" name="patronymic"
+				placeholder="Введите ваше отчество (при наличии)">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="birthday">Дата рождения</label>
+			<input class="text-field__input" type="date" id="birthday" name="birthday" required
+				placeholder="Введите дату вашего рождения, если плейсхолдер вообще видно">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="phone">Телефон</label>
+			<input class="text-field__input" type="text" id="phone" name="phone"
+				placeholder="Введите номер телефона для связи с вами">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="school">Место обучения</label>
+			<input class="text-field__input" type="text" id="school" name="school"
+				placeholder="Введите школу или вуз, где вы обучаетесь">
+		</div>
+		<br><button id="submit" name="submit" type="submit" value="personal"
+			class="primary-button">Создать профиль</button>
+	</div>
+</div>
+	</form>
+
+</body>
+
+</html>

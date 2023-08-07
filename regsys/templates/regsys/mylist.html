@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
+	<meta charset="utf-8" />
+	<title>reg-sys-cw: Моё расписание</title>
+</head>
+
+<body>
+	<div>
+	</div>
+	<p>grabbed user data:<p>
+		<p>{{ guest.id }}: {{ guest.surname }}<p><br>
+	<form action="{% url 'signin' %}" method="get">
+	<button id="logout" name="logout" type="submit" value="logout"
+			class="primary-button">Выйти из профиля</button>
+	</form>
+</body>
+
+</html>
