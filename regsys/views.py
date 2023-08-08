@@ -59,7 +59,7 @@ def mylist(request):
     context = {
         'navbar': navbar_profile,
     }
-    sender = request.POST["submit"]
+    sender = request.POST.get("submit", "")
     
     if sender == "personal":
         guest = Guest(
@@ -88,6 +88,18 @@ def mylist(request):
         
     return render(request, 'regsys/mylist.html', context)
 
+def profile(request):
+    context = {
+        'navbar': navbar_profile,
+    }
+    return render(request, 'regsys/mylist.html', context)
+    
+def settings(request):
+    context = {
+        'navbar': navbar_profile,
+    }
+    return render(request, 'regsys/mylist.html', context)
+
 def register(request):
     events = Event.objects.order_by("start_date")
     dates = []
@@ -102,6 +114,7 @@ def register(request):
                 break
         dates.append(d)
     context = {
+        'navbar': navbar_profile,
         'events': events,
         'dates': dates,
     }
