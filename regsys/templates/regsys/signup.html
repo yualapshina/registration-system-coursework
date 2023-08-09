@@ -10,11 +10,11 @@
 
 <body>
 	{% if messages %}
-		<ul class="messages">
+		<div class="messages">
 		{% for message in messages %}
-			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			<p{% if message.tags %} class="message_{{ message.tags }}"{% endif %}>{{ message }}</p>
 		{% endfor %}
-		</ul>
+		</div>
 	{% endif %}
 	
 	<form action="{% url 'personal' %}" method="post">
@@ -48,7 +48,7 @@
 			<input class="text-field__input" type="password" id="repeat" name="repeat" required
 				placeholder="Введите пароль, который будете использовать">
 		</div>
-		<br><button id="submit" name="submit" type="submit" value="signup"
+		<br><button id="submit" name="submit" type="submit" value="to_personal"
 			class="primary-button">Продолжить</button>
 	</div>
 </div>

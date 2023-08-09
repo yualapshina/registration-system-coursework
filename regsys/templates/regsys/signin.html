@@ -10,14 +10,14 @@
 
 <body>
 	{% if messages %}
-		<ul class="messages">
+		<div class="messages">
 		{% for message in messages %}
-			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			<p{% if message.tags %} class="message_{{ message.tags }}"{% endif %}>{{ message }}</p>
 		{% endfor %}
-		</ul>
+		</div>
 	{% endif %}
 	
-	<form action="{% url 'mylist' %}" method="post">
+	<form action="{% url 'dispatcher' %}" method="post">
 		{% csrf_token %}
 		<div class="parent">
 		

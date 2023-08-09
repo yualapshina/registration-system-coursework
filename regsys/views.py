@@ -3,7 +3,11 @@ import csv
 from functools import cmp_to_key
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.db.utils import IntegrityError
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from .models import Event, Timetable, Guest, Registration
 
 navbar_sign = {
@@ -17,8 +21,6 @@ navbar_profile = {
     "Настройки": "settings",
 }
 
-guest_id = -1
-
 @cmp_to_key
 def letter_first_cmp(a, b):
     print("comparing " + a + " and " + b)
@@ -29,23 +31,66 @@ def letter_first_cmp(a, b):
     else:
         return (a > b) - (a < b)
 
+def dispatcher(request):
+    sender = request.POST.get("submit", "")
+    if not sender:
+        sender = request.GET.get("submit", "")
+    
+    if sender == "signout":
+        logout(request)
+    
+    if sender == "signup":
+        guest = request.user.guest
+        guest.surname = request.POST.get("surname", "")
+        guest.firstname = request.POST.get("firstname", "")
+        guest.patronymic = request.POST.get("patronymic", "")
+        guest.school = request.POST.get("school", "")
+        guest.phone = request.POST.get("phone", "")
+        if request.POST.get("birthday", None):
+            guest.birthday = request.POST.get("birthday", None)
+        guest.save()
+        messages.success(request, "Профиль успешно создан")
+    
+    if sender == "signin":
+        user = authenticate(request, username=request.POST["email"], password=request.POST["password"])
+        if user is not None:
+            login(request, user)
+        else:
+            messages.error(request, "Неверная почта или пароль")
+            return redirect(signin)
+            
+    return redirect(mylist)
+            
+def signin(request):
+    if request.user.is_authenticated:
+        return redirect(mylist)
+    context = {
+        'navbar': navbar_sign,
+    }
+    return render(request, 'regsys/signin.html', context)
+
 def signup(request):
+    if request.user.is_authenticated:
+        return redirect(mylist)
     context = {
         'navbar': navbar_sign,
     }
     return render(request, 'regsys/signup.html', context)
     
 def personal(request):
+    if request.POST.get("submit", "") != "to_personal":
+        return redirect(mylist)
+
     email = request.POST["email"]
     password = request.POST["password"]
-    if Guest.objects.filter(email=email):
-        messages.error(request, "Профиль с такой почтой уже существует")
-        return redirect(signup)
     if request.POST["repeat"] != password:
         messages.error(request, "Пароль не совпадает")
         return redirect(signup)
-        
-    user = User.objects.create_user(username=email, password=password)
+    try:
+        user = User.objects.create_user(username=email, password=password)
+    except IntegrityError:
+        messages.error(request, "Профиль с такой почтой уже существует")
+        return redirect(signup)
     guest = Guest(user=user)
     guest.save()
     user = authenticate(request, username=email, password=password)
@@ -59,36 +104,9 @@ def personal(request):
     }
     return render(request, 'regsys/personal.html', context)
 
-def signin(request):
-    context = {
-        'navbar': navbar_sign,
-    }
-    return render(request, 'regsys/signin.html', context)
-
+@login_required
 def mylist(request):
-    sender = request.POST.get("submit", "")
-    
-    if sender == "personal":
-        guest = request.user.guest
-        guest.surname = request.POST.get("surname", "")
-        guest.firstname = request.POST.get("firstname", "")
-        guest.patronymic = request.POST.get("patronymic", "")
-        guest.birthday = request.POST.get("birthday", NULL)
-        guest.school = request.POST.get("school", "")
-        guest.phone = request.POST.get("phone", "")
-        guest.save()
-    
-    if sender == "signin":
-        user = authenticate(request, username=request.POST["email"], password=request.POST["password"])
-        if user is not None:
-            login(request, user)
-        else:
-            messages.error(request, "Ошибка при входе")
-            return redirect(signin)
-            
-    if not request.user.is_authenticated:
-        return redirect(signin)
-    guest = request.user.guest
+    guest = Guest.objects.get(user=request.user)
         
     regs = {}
     all_regs = Timetable.objects.filter(registration__guest=guest.id).order_by("event__start_date", "date", "category")
@@ -106,21 +124,23 @@ def mylist(request):
         'guest' : guest,
         'navbar': navbar_profile,
     }
-    
     return render(request, 'regsys/mylist.html', context)
 
+@login_required
 def profile(request):
     context = {
         'navbar': navbar_profile,
     }
     return render(request, 'regsys/mylist.html', context)
-    
+ 
+@login_required 
 def settings(request):
     context = {
         'navbar': navbar_profile,
     }
-    return render(request, 'regsys/mylist.html', context)
+    return render(request, 'regsys/settings.html', context)
 
+@login_required
 def register(request):
     events = Event.objects.order_by("start_date")
     dates = []
@@ -141,6 +161,7 @@ def register(request):
     }
     return render(request, 'regsys/register.html', context)
 
+@login_required
 def timetable(request):
     guest = Guest(
         surname=request.POST["guest_name"],
@@ -170,7 +191,8 @@ def timetable(request):
         'event_id' : event_id,
     }
     return render(request, 'regsys/timetable.html', context)
-    
+
+@login_required    
 def completed(request):
     event_id = request.POST["event_id"]
     guest_id = request.POST["guest_id"]
@@ -194,7 +216,8 @@ def completed(request):
         'event' : Event.objects.get(id=event_id)
     }
     return render(request, 'regsys/completed.html', context)
-    
+
+@login_required    
 def download(request):
     response = HttpResponse(
         content_type="text/csv",

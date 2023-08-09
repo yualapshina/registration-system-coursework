@@ -9,6 +9,14 @@
 </head>
 
 <body>
+	{% if messages %}
+		<div class="messages">
+		{% for message in messages %}
+			<p{% if message.tags %} class="message_{{ message.tags }}"{% endif %}>{{ message }}</p>
+		{% endfor %}
+		</div>
+	{% endif %}
+
 	<div class="parent">
 	
 	<div class="navbar">

@@ -9,7 +9,7 @@
 </head>
 
 <body>	
-	<form action="{% url 'mylist' %}" method="post">
+	<form action="{% url 'dispatcher' %}" method="post">
 		{% csrf_token %}
 		<div class="parent">
 		
@@ -27,12 +27,12 @@
 		<p class="text-h2" style="color:#374B9B">Личная информация:</p>
 		<div class="text-field">
 			<label class="text-field__label" for="surname">Фамилия</label>
-			<input class="text-field__input" type="text" id="surname" name="surname" required
+			<input class="text-field__input" type="text" id="surname" name="surname"
 				placeholder="Введите вашу фамилию">
 		</div>
 		<div class="text-field">
 			<label class="text-field__label" for="firstname">Имя</label>
-			<input class="text-field__input" type="text" id="firstname" name="firstname" required
+			<input class="text-field__input" type="text" id="firstname" name="firstname"
 				placeholder="Введите ваше имя">
 		</div>
 		<div class="text-field">
@@ -42,7 +42,7 @@
 		</div>
 		<div class="text-field">
 			<label class="text-field__label" for="birthday">Дата рождения</label>
-			<input class="text-field__input" type="date" id="birthday" name="birthday" required
+			<input class="text-field__input" type="date" id="birthday" name="birthday"
 				placeholder="Введите дату вашего рождения, если плейсхолдер вообще видно">
 		</div>
 		<div class="text-field">
@@ -55,7 +55,7 @@
 			<input class="text-field__input" type="text" id="school" name="school"
 				placeholder="Введите школу или вуз, где вы обучаетесь">
 		</div>
-		<br><button id="submit" name="submit" type="submit" value="personal"
+		<br><button id="submit" name="submit" type="submit" value="signup"
 			class="primary-button">Создать профиль</button>
 	</div>
 </div>

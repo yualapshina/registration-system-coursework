@@ -50,7 +50,7 @@ class Timetable(models.Model):
         
         
 class Guest(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     id = models.AutoField(primary_key=True, verbose_name="Номер")
     surname = models.CharField(max_length=100, verbose_name="Фамилия")
     firstname = models.CharField(max_length=100, verbose_name="Имя")

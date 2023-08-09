@@ -30,6 +30,24 @@
   background-color: white;
 }
 
+.messages {
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+}
+
+.message_error {
+	color: red;
+}
+
+.message_warning {
+	color: yellow;
+}
+
+.message_success {
+	color: green;
+}
+
 /* Regular */
 @font-face {
   font-family: 'HSE Sans';
