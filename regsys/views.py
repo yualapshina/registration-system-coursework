@@ -17,6 +17,8 @@ navbar_profile = {
     "Настройки": "settings",
 }
 
+guest_id = -1
+
 @cmp_to_key
 def letter_first_cmp(a, b):
     print("comparing " + a + " and " + b)
@@ -42,10 +44,18 @@ def personal(request):
     if request.POST["repeat"] != password:
         messages.error(request, "Пароль не совпадает")
         return redirect(signup)
+        
+    user = User.objects.create_user(username=email, password=password)
+    guest = Guest(user=user)
+    guest.save()
+    user = authenticate(request, username=email, password=password)
+    if user is not None:
+        login(request, user)
+    else:
+        messages.error(request, "Ошибка при создании")
+        return redirect(signup)
     context = {
         'navbar': navbar_sign,
-        'email': email,
-        'password': password,
     }
     return render(request, 'regsys/personal.html', context)
 
@@ -56,36 +66,47 @@ def signin(request):
     return render(request, 'regsys/signin.html', context)
 
 def mylist(request):
-    context = {
-        'navbar': navbar_profile,
-    }
     sender = request.POST.get("submit", "")
     
     if sender == "personal":
-        guest = Guest(
-            email=request.POST["email"],
-            password=request.POST["password"],
-            phone=request.POST["phone"],
-            surname=request.POST["surname"],
-            firstname=request.POST["firstname"],
-            patronymic=request.POST["patronymic"],
-            birthday=request.POST["birthday"],
-            school=request.POST["school"],                
-        )
-        guest.save() 
-        context.update({'guest': guest})
+        guest = request.user.guest
+        guest.surname = request.POST.get("surname", "")
+        guest.firstname = request.POST.get("firstname", "")
+        guest.patronymic = request.POST.get("patronymic", "")
+        guest.birthday = request.POST.get("birthday", NULL)
+        guest.school = request.POST.get("school", "")
+        guest.phone = request.POST.get("phone", "")
+        guest.save()
     
     if sender == "signin":
-        guests = Guest.objects.filter(email=request.POST["email"])
-        if not guests:
-            messages.error(request, "Профиля с такой почтой не существует")
+        user = authenticate(request, username=request.POST["email"], password=request.POST["password"])
+        if user is not None:
+            login(request, user)
+        else:
+            messages.error(request, "Ошибка при входе")
             return redirect(signin)
-        guest = guests[0]
-        if guest.password != request.POST["password"]:
-            messages.error(request, "Неверный пароль")
-            return redirect(signin)
-        context.update({'guest': guest})
+            
+    if not request.user.is_authenticated:
+        return redirect(signin)
+    guest = request.user.guest
         
+    regs = {}
+    all_regs = Timetable.objects.filter(registration__guest=guest.id).order_by("event__start_date", "date", "category")
+    
+    events = all_regs.order_by("event__event_name").values_list("event__event_name", flat=True).distinct()
+    for event in events:
+        e = {}
+        dates = all_regs.filter(event__event_name=event).order_by("date").values_list("date", flat=True).distinct()
+        for date in dates:
+            e.update({date: all_regs.order_by("category").filter(event__event_name=event, date=date)})
+        regs.update({event: e})
+        
+    context = {
+        'regs' : regs,
+        'guest' : guest,
+        'navbar': navbar_profile,
+    }
+    
     return render(request, 'regsys/mylist.html', context)
 
 def profile(request):
@@ -183,10 +204,8 @@ def download(request):
     writer = csv.writer(response, delimiter =';')
     
     guest_id = request.GET["guest_id"]
-    event_id = request.GET["event_id"]
-    event = Event.objects.get(id=event_id)
     regs = Timetable.objects.filter(registration__guest=guest_id).order_by("date", "category")
     for reg in regs:
-        writer.writerow([event.event_name + ": " + str(reg.date), reg.category, reg.timetable_name, event.place + " - " + reg.place, reg.host])
+        writer.writerow([reg.event.event_name + ": " + str(reg.date), reg.category, reg.timetable_name, reg.event.place + " - " + reg.place, reg.host])
 
     return response

@@ -11,8 +11,6 @@
 <body>	
 	<form action="{% url 'mylist' %}" method="post">
 		{% csrf_token %}
-		<input class="hidden" type="text" id="email" name="email" value="{{ email }}" hidden>
-		<input class="hidden" type="text" id="password" name="password" value="{{ password }}" hidden>
 		<div class="parent">
 		
 		<div class="navbar">
