@@ -36,7 +36,7 @@ class TimetableAdmin(admin.ModelAdmin):
 
 @admin.register(Guest)
 class GuestAdmin(admin.ModelAdmin):
-    list_display = ("user", "phone", "surname", "firstname", "patronymic", "birthday", "school", "registrations_link")
+    list_display = ("user", "phone", "surname", "firstname", "patronymic", "school", "registrations_link")
     
     def registrations_link(self, obj):
         count = obj.registration_set.count()

@@ -5,17 +5,27 @@
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
 	<meta charset="utf-8" />
-	<title>reg-sys-cw: Настройка расписания</title>
+	<title>reg-sys-cw: Уточнение расписания</title>
 </head>
 
 <body>
 	<form action="{% url 'completed' %}" method="post">
 		{% csrf_token %}
-		<input type="text" id="guest_id" name="guest_id" value="{{ guest_id }}" hidden>
 		<input type="text" id="event_id" name="event_id" value="{{ event_id }}" hidden>
 		<div class="parent">
+		
+		<div class="navbar">
+		{% for name, link in navbar.items %}
+			{% if name == "Зарегистрироваться" %}
+				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
+			{% else %}
+				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
+			{% endif %}
+		{% endfor %}
+		</div>
+		
 			<div class="block">
-		<p class="text-h1" style="color:#0F2D69">Настройка расписания</p>
+		<p class="text-h1" style="color:#0F2D69">Уточнение расписания</p>
 		<p class="text-h2" style="color: #374B9B">Выберите, какие из следующих мероприятий вы хотели бы посетить.</p>
 		<p class="text-caption" style="color:#808080">Будьте внимательны! Некоторые мероприятия идут одновременно - выбрать можно только одно. А еще, некоторые из них повторяются в разное время.</p>
 		{% if timetable %}
@@ -50,11 +60,12 @@
 			{% endfor %}
 		</fieldset>
 		{% endfor %} <br>
-		<input type="submit" class="primary-button" value="Завершить регистрацию">
+		<button type="submit" id="submit" name="submit" class="primary-button" value="to_completed">Завершить регистрацию</button>
 		{% else %}
 		<p class="text-body-regular" style="color: #E61E3C;">Кажется, вы не выбрали ни одного дня для регистрации. Попробуйте снова!</p>
 		{% endif %}
 			</div>
+		</div>
 	</form>
 </body>
 

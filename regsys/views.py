@@ -15,15 +15,13 @@ navbar_sign = {
     "Создание профиля": "signup",
 }
 navbar_profile = {
-    "Личные данные": "profile",
+    "Профиль": "profile",
     "Моё расписание": "mylist",
     "Зарегистрироваться": "register",
-    "Настройки": "settings",
 }
 
 @cmp_to_key
 def letter_first_cmp(a, b):
-    print("comparing " + a + " and " + b)
     if a[0].isdigit() and not b[0].isdigit():
         return 1
     elif not a[0].isdigit() and b[0].isdigit():
@@ -36,6 +34,33 @@ def dispatcher(request):
     if not sender:
         sender = request.GET.get("submit", "")
     
+    if sender == "edit_info":
+        guest = request.user.guest
+        if request.POST.get("surname", ""):
+            guest.surname = request.POST.get("surname", "")
+        if request.POST.get("firstname", ""):
+            guest.firstname = request.POST.get("firstname", "")
+        if request.POST.get("patronymic", ""):
+            guest.patronymic = request.POST.get("patronymic", "")
+        if request.POST.get("phone", ""):
+            guest.phone = request.POST.get("phone", "")
+        if request.POST.get("school", ""):
+            guest.school = request.POST.get("school", "")
+        guest.save()
+        messages.success(request, "Изменения успешно сохранены")
+        return redirect(profile)
+    
+    if sender == "edit_creds":
+        user = authenticate(request, username=request.user.username, password=request.POST["old"])
+        if user is not None:
+            user.set_password(request.POST["new"])
+            user.save()
+            messages.success(request, "Пароль успешно изменён")
+            return redirect(profile)
+        else:
+            messages.error(request, "Неверный старый пароль")
+            return redirect(profile)
+    
     if sender == "signout":
         logout(request)
     
@@ -46,12 +71,11 @@ def dispatcher(request):
         guest.patronymic = request.POST.get("patronymic", "")
         guest.school = request.POST.get("school", "")
         guest.phone = request.POST.get("phone", "")
-        if request.POST.get("birthday", None):
-            guest.birthday = request.POST.get("birthday", None)
         guest.save()
         messages.success(request, "Профиль успешно создан")
     
     if sender == "signin":
+        
         user = authenticate(request, username=request.POST["email"], password=request.POST["password"])
         if user is not None:
             login(request, user)
@@ -106,7 +130,7 @@ def personal(request):
 
 @login_required
 def mylist(request):
-    guest = Guest.objects.get(user=request.user)
+    guest = request.user.guest
         
     regs = {}
     all_regs = Timetable.objects.filter(registration__guest=guest.id).order_by("event__start_date", "date", "category")
@@ -129,16 +153,10 @@ def mylist(request):
 @login_required
 def profile(request):
     context = {
+        'guest': request.user.guest,
         'navbar': navbar_profile,
     }
-    return render(request, 'regsys/mylist.html', context)
- 
-@login_required 
-def settings(request):
-    context = {
-        'navbar': navbar_profile,
-    }
-    return render(request, 'regsys/settings.html', context)
+    return render(request, 'regsys/profile.html', context)
 
 @login_required
 def register(request):
@@ -163,14 +181,10 @@ def register(request):
 
 @login_required
 def timetable(request):
-    guest = Guest(
-        surname=request.POST["guest_name"],
-        school=request.POST["school"],
-        phone=request.POST["phone"],
-        email=request.POST["email"],
-    )
-    guest.save()
-    event_id = request.POST["event_key"]
+    event_id = request.POST.get("event_key", None)
+    if not event_id:
+        return redirect(register)
+        
     dates = []
     for key, value in request.POST.dict().items():
         if "date_" + str(event_id) in key:
@@ -187,35 +201,29 @@ def timetable(request):
         timetable.update({date: d})
     context = {
         'timetable' : timetable,
-        'guest_id' : guest.id,
         'event_id' : event_id,
+        'navbar': navbar_profile,
     }
     return render(request, 'regsys/timetable.html', context)
 
 @login_required    
 def completed(request):
+    if request.POST.get("submit", "") != "to_completed":
+        return redirect(register)
+        
     event_id = request.POST["event_id"]
-    guest_id = request.POST["guest_id"]
-    guest = Guest.objects.get(id=guest_id)
+    guest = request.user.guest
     for key, value in request.POST.dict().items():
         if "category_" in key:
             t = Timetable.objects.get(id=value)
             
-            unique_check = Registration.objects.filter(timetable=value).filter(guest=guest_id)
+            unique_check = Registration.objects.filter(timetable=value).filter(guest=guest.id)
             if not unique_check:
                 reg = Registration(timetable=t, guest=guest)
                 reg.save()
-    regs = {}
-    all_regs = Timetable.objects.filter(registration__guest=guest_id).order_by("date", "category")
-    dates = all_regs.order_by("date").values_list("date", flat=True).distinct()
-    for date in dates:
-        regs.update({date: all_regs.order_by("category").filter(date=date)})
-    context = {
-        'regs' : regs,
-        'guest' : guest,
-        'event' : Event.objects.get(id=event_id)
-    }
-    return render(request, 'regsys/completed.html', context)
+    
+    messages.success(request, "Регистрация успешно завершена")
+    return redirect(mylist)
 
 @login_required    
 def download(request):

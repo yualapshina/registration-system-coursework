@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
+	<meta charset="utf-8" />
+	<title>reg-sys-cw: Личные данные</title>
+</head>
+
+<body>
+	{% if messages %}
+		<div class="messages">
+		{% for message in messages %}
+			<p{% if message.tags %} class="message_{{ message.tags }}"{% endif %}>{{ message }}</p>
+		{% endfor %}
+		</div>
+	{% endif %}
+
+	<div class="parent">
+	
+	<div class="navbar">
+		{% for name, link in navbar.items %}
+			{% if name == "Профиль" %}
+				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
+			{% else %}
+				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
+			{% endif %}
+		{% endfor %}
+		</div>
+	
+	<div class="block">
+	<form action="{% url 'dispatcher' %}" method="post">
+	{% csrf_token %}
+	<p class="text-h2" style="color: #374B9B">Данные для входа:</p>
+		<div class="text-field">
+			<label class="text-field__label" for="email">Электронная почта</label>
+			<input class="text-field__input" type="text" id="email" name="email" disabled
+				placeholder="{{ guest.user.username }}">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="old">Старый пароль</label>
+			<input class="text-field__input" type="password" id="old" name="old"
+				placeholder="Введите старый пароль">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="new">Новый пароль</label>
+			<input class="text-field__input" type="password" id="new" name="new"
+				placeholder="Введите новый пароль">
+		</div>
+		<p class="text-caption" style="color:#808080">После изменения пароля потребуется заново зайти в профиль</p>
+		<button type="submit" id="submit" name="submit" class="primary-button" value="edit_creds">Изменить пароль</button><br>
+		<button type="submit" id="submit" name="submit" value="signout" class="secondary-button">Выйти из профиля</button>
+	</form>
+	</div>
+	
+		<div class="block">
+	<form action="{% url 'dispatcher' %}" method="post">
+	{% csrf_token %}
+	<p class="text-h2" style="color: #374B9B">Личная информация:</p>
+		<div class="text-field">
+			<label class="text-field__label" for="surname">Фамилия</label>
+			<input class="text-field__input" type="text" id="surname" name="surname"
+				placeholder="{{ guest.surname }}">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="firstname">Имя</label>
+			<input class="text-field__input" type="text" id="firstname" name="firstname"
+				placeholder="{{ guest.firstname }}">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="patronymic">Отчество</label>
+			<input class="text-field__input" type="text" id="patronymic" name="patronymic"
+				placeholder="{{ guest.patronymic }}">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="phone">Телефон</label>
+			<input class="text-field__input" type="text" id="phone" name="phone"
+				placeholder="{{ guest.phone }}">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="school">Место обучения</label>
+			<input class="text-field__input" type="text" id="school" name="school"
+				placeholder="{{ guest.school }}">
+		</div><br>
+		<button type="submit" id="submit" name="submit" class="primary-button" value="edit_info">Сохранить изменения</button>
+	</form>
+		</div>
+</div>
+</body>
+
+</html>

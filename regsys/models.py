@@ -55,7 +55,6 @@ class Guest(models.Model):
     surname = models.CharField(max_length=100, verbose_name="Фамилия")
     firstname = models.CharField(max_length=100, verbose_name="Имя")
     patronymic = models.CharField(max_length=100, verbose_name="Отчество")
-    birthday = models.DateField(null=True, blank=True, verbose_name="Дата рождения")
     school = models.CharField(max_length=100, verbose_name="Место обучения")
     phone = models.CharField(max_length=100, verbose_name="Номер телефона")
     
