@@ -161,21 +161,9 @@ def profile(request):
 @login_required
 def register(request):
     events = Event.objects.order_by("start_date")
-    dates = []
-    for event in events:
-        d = []
-        i = 0
-        while True:
-            cur_date = event.start_date + datetime.timedelta(days=i)
-            d.append(cur_date)
-            i += 1
-            if cur_date == event.end_date:
-                break
-        dates.append(d)
     context = {
         'navbar': navbar_profile,
         'events': events,
-        'dates': dates,
     }
     return render(request, 'regsys/register.html', context)
 
@@ -184,11 +172,17 @@ def timetable(request):
     event_id = request.POST.get("event_key", None)
     if not event_id:
         return redirect(register)
-        
+    event = Event.objects.get(id=event_id)
+    
     dates = []
-    for key, value in request.POST.dict().items():
-        if "date_" + str(event_id) in key:
-            dates.append(Event.objects.get(id=event_id).start_date + datetime.timedelta(days=int(value)))
+    i = 0
+    while True:
+        cur_date = event.start_date + datetime.timedelta(days=i)
+        dates.append(cur_date)
+        i += 1
+        if cur_date == event.end_date:
+            break
+    
     timetable = {}
     all_tts = Timetable.objects.filter(event=event_id).order_by("date", "category", "timetable_name")
     for date in dates:
@@ -201,7 +195,7 @@ def timetable(request):
         timetable.update({date: d})
     context = {
         'timetable' : timetable,
-        'event_id' : event_id,
+        'event' : event,
         'navbar': navbar_profile,
     }
     return render(request, 'regsys/timetable.html', context)

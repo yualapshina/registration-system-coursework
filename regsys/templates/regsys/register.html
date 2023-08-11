@@ -2,7 +2,6 @@
 <html lang="en-US">
 
 <head>
-	{% load index %}
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
 	<meta charset="utf-8" />
@@ -28,24 +27,20 @@
 		<p class="text-h2" style="color: #374B9B">Выбор мероприятия для регистрации</p>
 		<p class="text-caption" style="color:#808080">Пожалуйста, выберите мероприятие, на которое вы хотели бы
 			зарегистрироваться.</p>
-		<p class="text-caption" style="color:#808080">Некоторые мероприятия длятся несколько дней - уточните, в какие
-			дни вы будете присутстовать!</p>
 		{% if events %}
 		{% for event in events %}
-		{% with counter=0 %}
 		<div class="tooltip">
 			<p class="text-body-semibold"> {{ event.event_name }}</p>
 			<span class="tooltiptext">{{ event.annotation }}</span>
 		</div><br>
-		<span class="text-body-regular">Место проведения: {{ event.place }}</span><br><br>
-		{% for date in dates|index:forloop.counter0 %}
-		<input type="checkbox" id="date_{{ event.id }}_{{ forloop.counter0 }}"
-			name="date_{{ event.id }}_{{ forloop.counter0 }}" value="{{ forloop.counter0 }}">
-		<label for="date_{{ event.id }}_{{ forloop.counter0 }}">{{ date }}</label><br><br>
-		{% endfor %}
-		<button id="event_{{ event.id }}" name="event_key" type="submit" value="{{ event.id }}"
+		<span class="text-body-regular">{{ event.place }}&emsp;</span>
+		{% if event.start_date != event.end_date %}
+			<span class="text-body-regular">{{ event.start_date }} - {{ event.end_date }}</span>
+			{% else %}
+			<span class="text-body-regular">{{ event.start_date }}</span>
+		{% endif %}
+		<br><br><button id="event_{{ event.id }}" name="event_key" type="submit" value="{{ event.id }}"
 			class="primary-button">Зарегистрироваться</button><br>
-		{% endwith %}
 		{% endfor %}
 		{% else %}
 		<p class="text-body-regular" style="color: #E61E3C;">К сожалению, сейчас нет доступных для регистрации	мероприятий</p>

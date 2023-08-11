@@ -30,6 +30,18 @@
   background-color: white;
 }
 
+a:link, a:visited {
+  padding: 15px;
+  text-align: center;
+  text-decoration: none;
+  color: #374B9B;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  color: #0F2D69;
+}
+
 .messages {
   position: fixed;
   bottom: 10px;
@@ -46,6 +58,30 @@
 
 .message_success {
 	color: green;
+}
+
+#toggle + #content {
+    display: none;
+}
+
+#toggle:checked + #content {
+    display: block;
+}
+
+legend {
+	padding: 5px;
+    cursor: pointer;
+}
+
+legend label {
+    width: 100%;
+    display: inline-block;
+    cursor: inherit;
+}
+
+legend label::after {
+    content: "▼";
+    float: right;
 }
 
 /* Regular */

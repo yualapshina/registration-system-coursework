@@ -25,13 +25,14 @@
 		</div>
 		
 			<div class="block">
-		<p class="text-h1" style="color:#0F2D69">Уточнение расписания</p>
-		<p class="text-h2" style="color: #374B9B">Выберите, какие из следующих мероприятий вы хотели бы посетить.</p>
+		<p class="text-h2" style="color: #374B9B">{{ event.event_name }}: Уточнение расписания</p>
 		<p class="text-caption" style="color:#808080">Будьте внимательны! Некоторые мероприятия идут одновременно - выбрать можно только одно. А еще, некоторые из них повторяются в разное время.</p>
 		{% if timetable %}
 		{% for date, cats in timetable.items %}
 		<fieldset>
-			<legend class="text-body-semibold" style="color: #374B9B">{{ date }}</legend>
+			<legend class="text-body-semibold" style="color: #374B9B"><label for="toggle">{{ date }}</label></legend>
+			<input type="checkbox" id="toggle" checked>
+			<div id="content">
 			{% for cat, entries in cats.items %}
 			<div>
 				<p class="text-body-semibold" style="color: #0F2D69">{{ cat }}</p>
@@ -58,6 +59,7 @@
 				{% endfor %}
 			</div>
 			{% endfor %}
+			</div>
 		</fieldset>
 		{% endfor %} <br>
 		<button type="submit" id="submit" name="submit" class="primary-button" value="to_completed">Завершить регистрацию</button>
