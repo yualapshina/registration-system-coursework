@@ -49,4 +49,15 @@ class GuestAdmin(admin.ModelAdmin):
 
     registrations_link.short_description = "Записи"
 
-admin.site.register(Registration)
+@admin.register(Registration)
+class RegistrationAdmin(admin.ModelAdmin):
+    list_display = ("key", "status_label")
+    
+    def key(self, obj):
+        return str(obj)
+    
+    def status_label(self, obj):
+        return Registration.Status[obj.status].label
+    
+    key.short_description = "Ключ"
+    status_label.short_description = "Статус"

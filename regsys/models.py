@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import F, Q
 from django.core.exceptions import ValidationError
-from django.db.models.signals import post_save, pre_delete
+from django.db.models.signals import pre_save, pre_delete
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 
@@ -19,10 +19,14 @@ class Event(models.Model):
     def clean(self):
         if self.end_date < self.start_date:
             raise ValidationError("Последний день мероприятия не может идти раньше первого")
+        
     
     class Meta:
         verbose_name = "Событие"
         verbose_name_plural = "События"
+        constraints = [
+            models.UniqueConstraint(fields=['event_name'], name='unique name')
+    ]
 
 
 class Timetable(models.Model):
@@ -67,29 +71,56 @@ class Guest(models.Model):
         
         
 class Registration(models.Model):
+    class Status(models.TextChoices):
+        AFF = "AFF", "Подтверждено"
+        INT = "INT", "Пересекается"
+        WAI = "WAI", "Очередь"
+        VIS = "VIS", "Посещено"
+        MIS = "MIS", "Пропущено"
+        
     timetable = models.ForeignKey(Timetable, on_delete=models.CASCADE, verbose_name="Событие")
     guest = models.ForeignKey(Guest, on_delete=models.CASCADE, verbose_name="Участник")
+    status = models.CharField(choices=Status.choices, default=Status.AFF, verbose_name="Статус")
     
     def __str__(self):
         return str(self.timetable) + " / " + str(self.guest)
+    
+    def is_past(self):
+        return self.status in {self.Status.VIS, self.Status.MIS}
+        
+    def is_seated(self):
+        return self.status in {self.Status.AFF, self.Status.VIS, self.Status.MIS}
     
     class Meta:
         verbose_name = "Запись"
         verbose_name_plural = "Записи"
         
 
-@receiver(post_save, sender=Registration)
-def minus_seat(sender, instance, created, **kwargs):
-    if created:
+@receiver(pre_save, sender=Registration)
+def minus_seat(sender, instance, **kwargs):
+    if instance.id is None:
+        if instance.is_seated:
+            t = instance.timetable
+            if t.seats > 0:
+                t.seats -= 1
+                t.save()
+    else:
+        previous = Registration.objects.get(id=instance.id)
         t = instance.timetable
-        if t.seats > 0:
-            t.seats -= 1
-            t.save()
-  
+        if not previous.is_seated and instance.is_seated:
+            if t.seats > 0:
+                t.seats -= 1
+                t.save()
+        if previous.is_seated and not instance.is_seated:
+            if t.seats > -1:
+                t.seats += 1
+                t.save()
+                
 @receiver(pre_delete, sender=Registration)
 def plus_seat(sender, instance, **kwargs):
-    t = instance.timetable
-    if t.seats > -1:
-        t.seats += 1
-        t.save()
+    if instance.is_seated:
+        t = instance.timetable
+        if t.seats > -1:
+            t.seats += 1
+            t.save()
         

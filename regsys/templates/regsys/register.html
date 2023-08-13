@@ -24,11 +24,9 @@
 		</div>
 		
 			<div class="block">
-		<p class="text-h2" style="color: #374B9B">Выбор мероприятия для регистрации</p>
-		<p class="text-caption" style="color:#808080">Пожалуйста, выберите мероприятие, на которое вы хотели бы
-			зарегистрироваться.</p>
-		{% if events %}
-		{% for event in events %}
+		<p class="text-h2" style="color: #374B9B">Текущие мероприятия</p>
+		{% if events_future %}
+		{% for event in events_future %}
 		<div class="tooltip">
 			<p class="text-body-semibold"> {{ event.event_name }}</p>
 			<span class="tooltiptext">{{ event.annotation }}</span>
@@ -44,6 +42,24 @@
 		{% endfor %}
 		{% else %}
 		<p class="text-body-regular" style="color: #E61E3C;">К сожалению, сейчас нет доступных для регистрации	мероприятий</p>
+		{% endif %}
+		
+		<p class="text-h2" style="color: #374B9B">Завершённые мероприятия</p>
+		{% if events_past %}
+		{% for event in events_past %}
+		<div class="tooltip">
+			<p class="text-body-semibold"> {{ event.event_name }}</p>
+			<span class="tooltiptext">{{ event.annotation }}</span>
+		</div><br>
+		<span class="text-body-regular">{{ event.place }}&emsp;</span>
+		{% if event.start_date != event.end_date %}
+			<span class="text-body-regular">{{ event.start_date }} - {{ event.end_date }}</span>
+			{% else %}
+			<span class="text-body-regular">{{ event.start_date }}</span>
+		{% endif %}
+		{% endfor %}
+		{% else %}
+		<p class="text-body-regular" style="color: #E61E3C;">Кажется, здесь пока пусто</p>
 		{% endif %}
 	</div>
 </div>

@@ -34,6 +34,12 @@ def dispatcher(request):
     if not sender:
         sender = request.GET.get("submit", "")
     
+    if sender == "delete":
+        reg = Registration.objects.get(timetable=request.GET["entry_id"], guest=request.user.guest)
+        messages.warning(request, "Регистрация \"" + reg.timetable.timetable_name + "\" удалена")
+        reg.delete()
+        return redirect(mylist)
+    
     if sender == "edit_info":
         guest = request.user.guest
         if request.POST.get("surname", ""):
@@ -131,20 +137,44 @@ def personal(request):
 @login_required
 def mylist(request):
     guest = request.user.guest
-        
-    regs = {}
+            
+    regs_past = {}
+    regs_future = {}
     all_regs = Timetable.objects.filter(registration__guest=guest.id).order_by("event__start_date", "date", "category")
     
-    events = all_regs.order_by("event__event_name").values_list("event__event_name", flat=True).distinct()
+    events_list = all_regs.order_by("event__event_name").values_list("event__event_name", flat=True).distinct()
+    events = []
+    for name in events_list:
+        events.append(Event.objects.filter(event_name=name)[0])
     for event in events:
-        e = {}
-        dates = all_regs.filter(event__event_name=event).order_by("date").values_list("date", flat=True).distinct()
+        e_past = {}
+        e_future = {}
+        dates = all_regs.filter(event=event).order_by("date").values_list("date", flat=True).distinct()
         for date in dates:
-            e.update({date: all_regs.order_by("category").filter(event__event_name=event, date=date)})
-        regs.update({event: e})
+            d = {}
+            entries = all_regs.order_by("category").filter(event=event, date=date)
+            for entry in entries:
+                reg = Registration.objects.get(timetable=entry, guest=guest)
+                if reg.status == Registration.Status.INT and not Registration.objects.filter(guest=guest, status=Registration.Status.AFF, timetable__category=entry.category):
+                    reg.status = Registration.Status.AFF
+                    reg.save() 
+                    messages.success(request, "Пересечения в категории \"" + entry.category + "\" исправлены")
+                if date < datetime.date.today() and not reg.is_past():
+                    reg.status = Registration.Status.MIS
+                    reg.save()
+                d.update({entry: Registration.Status[reg.status].label})
+            if date >= datetime.date.today():
+                e_future.update({date: d})
+            else:
+                e_past.update({date: d})
+        if e_past:
+            regs_past.update({event: e_past})
+        if e_future:
+            regs_future.update({event: e_future})
         
     context = {
-        'regs' : regs,
+        'regs_past' : regs_past,
+        'regs_future' : regs_future,
         'guest' : guest,
         'navbar': navbar_profile,
     }
@@ -160,10 +190,12 @@ def profile(request):
 
 @login_required
 def register(request):
-    events = Event.objects.order_by("start_date")
+    events_past = Event.objects.filter(end_date__lt=datetime.date.today()).order_by("start_date")
+    events_future = Event.objects.filter(end_date__gte=datetime.date.today()).order_by("start_date")
     context = {
         'navbar': navbar_profile,
-        'events': events,
+        'events_past': events_past,
+        'events_future': events_future,
     }
     return render(request, 'regsys/register.html', context)
 
@@ -211,9 +243,16 @@ def completed(request):
         if "category_" in key:
             t = Timetable.objects.get(id=value)
             
-            unique_check = Registration.objects.filter(timetable=value).filter(guest=guest.id)
-            if not unique_check:
-                reg = Registration(timetable=t, guest=guest)
+            unique_check = Registration.objects.filter(timetable=t, guest=guest)
+            category_check = Registration.objects.filter(timetable__category=t.category, guest=guest, status=Registration.Status.AFF)
+            if unique_check:
+                messages.warning(request, t.timetable_name +" уже в расписании")
+            elif category_check:
+                reg = Registration(timetable=t, guest=guest, status=Registration.Status.INT)
+                reg.save()
+                messages.warning(request, "В категории \"" + t.category + "\" есть пересечения. Чтобы подтвердить новую запись, удалите старую")
+            else: 
+                reg = Registration(timetable=t, guest=guest, status=Registration.Status.AFF)
                 reg.save()
     
     messages.success(request, "Регистрация успешно завершена")
@@ -228,9 +267,9 @@ def download(request):
     response.write(u'\ufeff'.encode('utf8'))
     writer = csv.writer(response, delimiter =';')
     
-    guest_id = request.GET["guest_id"]
-    regs = Timetable.objects.filter(registration__guest=guest_id).order_by("date", "category")
+    guest = request.user.guest
+    regs = Timetable.objects.filter(registration__guest=guest.id).order_by("date", "category")
     for reg in regs:
-        writer.writerow([reg.event.event_name + ": " + str(reg.date), reg.category, reg.timetable_name, reg.event.place + " - " + reg.place, reg.host])
+        writer.writerow([reg.event.event_name + ": " + str(reg.date), reg.category, reg.timetable_name, reg.event.place + " - " + reg.place, reg.host, Registration.objects.get(timetable=reg, guest=guest).status])
 
     return response

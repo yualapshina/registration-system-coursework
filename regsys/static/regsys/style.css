@@ -45,7 +45,7 @@ a:hover, a:active {
 .messages {
   position: fixed;
   bottom: 10px;
-  width: 100%;
+  width: 500px;
 }
 
 .message_error {
@@ -58,6 +58,26 @@ a:hover, a:active {
 
 .message_success {
 	color: green;
+}
+
+.Пересекается {
+	color: red;
+}
+
+.Очередь {
+	color: yellow;
+}
+
+.Подтверждено {
+	color: green;
+}
+
+.Посещено {
+	color: blue;
+}
+
+.Пропущено {
+	color: gray;
 }
 
 #toggle + #content {
