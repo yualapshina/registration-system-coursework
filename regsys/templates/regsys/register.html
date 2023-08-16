@@ -9,8 +9,6 @@
 </head>
 
 <body>
-	<form action="{% url 'timetable' %}" method="post">
-		{% csrf_token %}
 		<div class="parent">
 		
 		<div class="navbar">
@@ -23,15 +21,41 @@
 		{% endfor %}
 		</div>
 		
-			<div class="block">
+			<div class="filterbar">
+		{% if filterbar %}
+		<form action="{% url 'register' %}" method="get">
+		<br><button id="submit" name="submit" type="submit" value="filter" 
+			class="secondary-button">Фильтровать</button>
+		{% for type, labels in filterbar.items %}
+			<br><p class="{{ type.0 }}"> {{ type.1 }}</p>
+			{% for label, checked in labels.items %}
+				{% if checked %}
+				<input type="checkbox" id="label_{{ label.id }}" name="label_{{ label.id }}" checked>
+				<label class="text-field__label" for="label_{{ label.id }}">{{ label.label_name }}</label><br>
+				{% else %}
+				<input type="checkbox" id="label_{{ label.id }}" name="label_{{ label.id }}">
+				<label class="text-field__label" for="label_{{ label.id }}">{{ label.label_name }}</label><br>
+				{% endif %}
+			{% endfor %}
+		{% endfor %}	
+		</form>
+		{% endif %}
+		</div>
+		
+		<div class="block">
+	<form action="{% url 'timetable' %}" method="post">
+		{% csrf_token %}		
 		<p class="text-h2" style="color: #374B9B">Текущие мероприятия</p>
 		{% if events_future %}
-		{% for event in events_future %}
+		{% for event, labels in events_future.items %}
 		<div class="tooltip">
 			<p class="text-body-semibold"> {{ event.event_name }}</p>
 			<span class="tooltiptext">{{ event.annotation }}</span>
 		</div><br>
-		<span class="text-body-regular">{{ event.place }}&emsp;</span>
+			{% for label in labels %}
+			<span class="{{ label.type }}">{{ label.label_name }}&emsp;</span>
+			{% endfor %}
+		<br><span class="text-body-regular">{{ event.place }}&emsp;</span>
 		{% if event.start_date != event.end_date %}
 			<span class="text-body-regular">{{ event.start_date }} - {{ event.end_date }}</span>
 			{% else %}
@@ -41,17 +65,24 @@
 			class="primary-button">Зарегистрироваться</button><br>
 		{% endfor %}
 		{% else %}
-		<p class="text-body-regular" style="color: #E61E3C;">К сожалению, сейчас нет доступных для регистрации	мероприятий</p>
+		<p class="text-body-regular" style="color: #E61E3C;">
+			К сожалению, сейчас нет доступных для регистрации мероприятий.</p>
+		<p class="text-body-regular" style="color: #E61E3C;">
+			Попробуйте изменить фильтры, если вы их выбирали</p>
 		{% endif %}
+	</form>
 		
 		<p class="text-h2" style="color: #374B9B">Завершённые мероприятия</p>
 		{% if events_past %}
-		{% for event in events_past %}
+		{% for event, labels in events_past.items %}
 		<div class="tooltip">
 			<p class="text-body-semibold"> {{ event.event_name }}</p>
 			<span class="tooltiptext">{{ event.annotation }}</span>
 		</div><br>
-		<span class="text-body-regular">{{ event.place }}&emsp;</span>
+			{% for label in labels %}
+			<span class="{{ label.type }}">{{ label.label_name }}&emsp;</span>
+			{% endfor %}
+		<br><span class="text-body-regular">{{ event.place }}&emsp;</span>
 		{% if event.start_date != event.end_date %}
 			<span class="text-body-regular">{{ event.start_date }} - {{ event.end_date }}</span>
 			{% else %}
@@ -59,11 +90,10 @@
 		{% endif %}
 		{% endfor %}
 		{% else %}
-		<p class="text-body-regular" style="color: #E61E3C;">Кажется, здесь пока пусто</p>
+		<p class="text-body-regular" style="color: #808080;">Кажется, здесь пока пусто</p>
 		{% endif %}
 	</div>
 </div>
-	</form>
 </body>
 
 </html>

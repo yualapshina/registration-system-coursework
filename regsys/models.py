@@ -94,7 +94,35 @@ class Registration(models.Model):
     class Meta:
         verbose_name = "Запись"
         verbose_name_plural = "Записи"
+   
+     
+class Label(models.Model):
+    class Type(models.TextChoices):
+        TAR = "TAR", "Аудитория"
+        FIE = "FIE", "Направление"
+        CON = "CON", "Подтверждение"
         
+    id = models.AutoField(primary_key=True, verbose_name="Номер")
+    label_name = models.CharField(max_length=50, verbose_name="Название")
+    type = models.CharField(choices=Type.choices, verbose_name="Тип")
+    
+    def __str__(self):
+        return self.label_name
+    
+    class Meta:
+        verbose_name = "Лейбл"
+        verbose_name_plural = "Лейблы"
+
+class Labelmap(models.Model):  
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name="Событие")
+    label = models.ForeignKey(Label, on_delete=models.CASCADE, verbose_name="Лейбл")
+    
+    def __str__(self):
+        return str(self.event) + " / " + str(self.label)
+    
+    class Meta:
+        verbose_name = "Лейблмап"
+        verbose_name_plural = "Лейблмап"
 
 @receiver(pre_save, sender=Registration)
 def minus_seat(sender, instance, **kwargs):

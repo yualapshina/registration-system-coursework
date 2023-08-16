@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Event, Timetable, Guest, Registration
+from .models import Event, Timetable, Guest, Registration, Label, Labelmap
 
 navbar_sign = {
     "Вход в профиль": "signin",
@@ -162,7 +162,7 @@ def mylist(request):
                 if date < datetime.date.today() and not reg.is_past():
                     reg.status = Registration.Status.MIS
                     reg.save()
-                d.update({entry: Registration.Status[reg.status].label})
+                d.update({entry: Registration.Status[reg.status]})
             if date >= datetime.date.today():
                 e_future.update({date: d})
             else:
@@ -190,10 +190,31 @@ def profile(request):
 
 @login_required
 def register(request):
-    events_past = Event.objects.filter(end_date__lt=datetime.date.today()).order_by("start_date")
-    events_future = Event.objects.filter(end_date__gte=datetime.date.today()).order_by("start_date")
+    all_events = Event.objects.filter().order_by("start_date")
+    
+    filterbar = {}
+    for type in Label.Type.choices:
+        t = {}
+        for label in Label.objects.filter(type=type[0]):
+            is_checked = "label_" + str(label.id) in request.GET.dict().keys()
+            t.update({label: is_checked})
+            if is_checked:
+                all_events = all_events.filter(labelmap__label=label)
+        filterbar.update({type: t})
+    
+    events_past = {}
+    all_past = all_events.filter(end_date__lt=datetime.date.today())
+    for event in all_past:
+        labels = Label.objects.filter(labelmap__event=event)
+        events_past.update({event: labels}) 
+    events_future = {}
+    all_future = all_events.filter(end_date__gte=datetime.date.today())
+    for event in all_future:
+        labels = Label.objects.filter(labelmap__event=event)
+        events_future.update({event: labels})
     context = {
         'navbar': navbar_profile,
+        'filterbar': filterbar,
         'events_past': events_past,
         'events_future': events_future,
     }

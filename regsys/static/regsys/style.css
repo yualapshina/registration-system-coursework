@@ -30,6 +30,15 @@
   background-color: white;
 }
 
+.filterbar {
+  position: fixed;
+  top: 50px;
+  height: 100%;
+  width: 250px;
+  padding: 15px;
+  background-color: white;
+}
+
 a:link, a:visited {
   padding: 15px;
   text-align: center;
@@ -60,24 +69,36 @@ a:hover, a:active {
 	color: green;
 }
 
-.Пересекается {
+.INT {
 	color: red;
 }
 
-.Очередь {
+.WAI {
 	color: yellow;
 }
 
-.Подтверждено {
+.AFF {
 	color: green;
 }
 
-.Посещено {
+.VIS {
 	color: blue;
 }
 
-.Пропущено {
+.MIS {
 	color: gray;
+}
+
+.TAR {
+	color: #EDAE49;
+}
+
+.FIE {
+	color: #B4C5E4;
+}
+
+.CON {
+	color: #99D17B;
 }
 
 #toggle + #content {

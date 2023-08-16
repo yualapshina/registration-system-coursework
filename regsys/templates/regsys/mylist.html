@@ -43,7 +43,7 @@
 				<td class="text-body-regular">{{ entry.timetable_name }}</td>
 				<td class="text-body-italic" , style="color: #808080;">&emsp;{{ event.place }}, {{ entry.place }}</td>
 				<td class="text-body-italic" , style="color: #808080;">&emsp;{{ entry.host }}</td>
-				<td class="{{ status }}">&emsp;{{ status }}&emsp;</td>
+				<td class="{{ status }}">&emsp;{{ status.label }}&emsp;</td>
 				<td><button type="submit" class="secondary-button" id="submit" name="submit" value="delete">Удалить</td>
 				</tr>
 				<input type="text" id="entry_id" name="entry_id" value="{{ entry.id }}" hidden>
@@ -73,7 +73,7 @@
 				<td class="text-body-regular">{{ entry.timetable_name }}</td>
 				<td class="text-body-italic" , style="color: #808080;">&emsp;{{ event.place }}, {{ entry.place }}</td>
 				<td class="text-body-italic" , style="color: #808080;">&emsp;{{ entry.host }}</td>
-				<td class="{{ status }}">&emsp;{{ status }}</td>
+				<td class="{{ status }}">&emsp;{{ status.label }}</td>
 				</tr>
 			{% endfor %}
 			</table>
