@@ -84,9 +84,9 @@
 			{% endfor %}
 		<br><span class="text-body-regular">{{ event.place }}&emsp;</span>
 		{% if event.start_date != event.end_date %}
-			<span class="text-body-regular">{{ event.start_date }} - {{ event.end_date }}</span>
+			<span class="text-body-regular">{{ event.start_date }} - {{ event.end_date }}</span><br>
 			{% else %}
-			<span class="text-body-regular">{{ event.start_date }}</span>
+			<span class="text-body-regular">{{ event.start_date }}</span><br>
 		{% endif %}
 		{% endfor %}
 		{% else %}
