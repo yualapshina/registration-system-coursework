@@ -45,11 +45,11 @@
 		<div class="block">
 	<form action="{% url 'timetable' %}" method="post">
 		{% csrf_token %}		
-		<p class="text-h2" style="color: #374B9B">Текущие мероприятия</p>
+		<p class="text-h1" style="color: #0F2D69">Текущие мероприятия</p>
 		{% if events_future %}
 		{% for event, labels in events_future.items %}
 		<div class="tooltip">
-			<p class="text-body-semibold"> {{ event.event_name }}</p>
+			<p class="text-h2" style="color: #374B9B"> {{ event.event_name }}</p>
 			<span class="tooltiptext">{{ event.annotation }}</span>
 		</div><br>
 			{% for label in labels %}
@@ -72,11 +72,11 @@
 		{% endif %}
 	</form>
 		
-		<p class="text-h2" style="color: #374B9B">Завершённые мероприятия</p>
+		<p class="text-h1" style="color: #0F2D69">Завершённые мероприятия</p>
 		{% if events_past %}
 		{% for event, labels in events_past.items %}
 		<div class="tooltip">
-			<p class="text-body-semibold"> {{ event.event_name }}</p>
+			<p class="text-h2" style="color: #374B9B"> {{ event.event_name }}</p>
 			<span class="tooltiptext">{{ event.annotation }}</span>
 		</div><br>
 			{% for label in labels %}
@@ -88,9 +88,9 @@
 			{% else %}
 			<span class="text-body-regular">{{ event.start_date }}</span><br>
 		{% endif %}
-		{% endfor %}
+		{% endfor %}<br>
 		{% else %}
-		<p class="text-body-regular" style="color: #808080;">Кажется, здесь пока пусто</p>
+		<p class="text-body-regular" style="color: #808080;">Кажется, здесь пока пусто</p><br>
 		{% endif %}
 	</div>
 </div>

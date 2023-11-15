@@ -35,9 +35,9 @@ def dispatcher(request):
         sender = request.GET.get("submit", "")
     
     if sender == "delete":
-        reg = Registration.objects.get(timetable=request.GET["entry_id"], guest=request.user.guest)
-        messages.warning(request, "Регистрация \"" + reg.timetable.timetable_name + "\" удалена")
-        reg.delete()
+        event = Event.objects.get(id=request.POST.get("event_key", None))
+        Registration.objects.filter(timetable__event=event, guest=request.user.guest).delete()
+        messages.warning(request, "Регистрации на событие \"" + event.event_name + "\" удалены")
         return redirect(mylist)
     
     if sender == "edit_info":
@@ -48,10 +48,14 @@ def dispatcher(request):
             guest.firstname = request.POST.get("firstname", "")
         if request.POST.get("patronymic", ""):
             guest.patronymic = request.POST.get("patronymic", "")
-        if request.POST.get("phone", ""):
-            guest.phone = request.POST.get("phone", "")
         if request.POST.get("school", ""):
             guest.school = request.POST.get("school", "")
+        if request.POST.get("phone", ""):
+            guest.phone = request.POST.get("phone", "")
+        if request.POST.get("telegram", ""):
+            guest.telegram = request.POST.get("telegram", "")
+        if request.POST.get("photo", None):
+            guest.photo = request.POST.get("photo", None)
         guest.save()
         messages.success(request, "Изменения успешно сохранены")
         return redirect(profile)
@@ -77,6 +81,8 @@ def dispatcher(request):
         guest.patronymic = request.POST.get("patronymic", "")
         guest.school = request.POST.get("school", "")
         guest.phone = request.POST.get("phone", "")
+        guest.telegram = request.POST.get("telegram", "")
+        guest.photo = request.POST.get("photo", None)
         guest.save()
         messages.success(request, "Профиль успешно создан")
     
@@ -244,7 +250,10 @@ def timetable(request):
         cats = list(dated_tts.order_by("category").values_list("category", flat=True).distinct())
         cats.sort(key=letter_first_cmp)
         for cat in cats:
-            d.update({cat: dated_tts.filter(category=cat)})
+            c = {}
+            for tt in dated_tts.filter(category=cat):
+                c.update({tt: True if Registration.objects.filter(timetable=tt, guest=request.user.guest) else False})
+            d.update({cat: c})
         timetable.update({date: d})
     context = {
         'timetable' : timetable,
@@ -267,30 +276,29 @@ def completed(request):
             unique_check = Registration.objects.filter(timetable=t, guest=guest)
             category_check = Registration.objects.filter(timetable__category=t.category, guest=guest, status=Registration.Status.AFF)
             if unique_check:
-                messages.warning(request, t.timetable_name +" уже в расписании")
+                continue
             elif category_check:
-                reg = Registration(timetable=t, guest=guest, status=Registration.Status.INT)
-                reg.save()
-                messages.warning(request, "В категории \"" + t.category + "\" есть пересечения. Чтобы подтвердить новую запись, удалите старую")
-            else: 
-                reg = Registration(timetable=t, guest=guest, status=Registration.Status.AFF)
-                reg.save()
+                category_check[0].delete()
+            reg = Registration(timetable=t, guest=guest, status=Registration.Status.AFF)
+            reg.save()
     
-    messages.success(request, "Регистрация успешно завершена")
+    messages.success(request, "Регистрация успешно обновлена")
     return redirect(mylist)
 
 @login_required    
 def download(request):
     response = HttpResponse(
         content_type="text/csv",
-        headers={"Content-Disposition": 'attachment; filename="registration-list.csv"'},
+        headers={"Content-Disposition": 'attachment; filename="reg-list.csv"'},
     )
     response.write(u'\ufeff'.encode('utf8'))
     writer = csv.writer(response, delimiter =';')
     
+    event = Event.objects.get(id=request.GET["event_key"])
     guest = request.user.guest
-    regs = Timetable.objects.filter(registration__guest=guest.id).order_by("date", "category")
-    for reg in regs:
-        writer.writerow([reg.event.event_name + ": " + str(reg.date), reg.category, reg.timetable_name, reg.event.place + " - " + reg.place, reg.host, Registration.objects.get(timetable=reg, guest=guest).status])
+    tts = Timetable.objects.filter(event=event, registration__guest=guest.id, date__gte=datetime.date.today()).order_by("date", "category")
+    for tt in tts:
+        reg = Registration.objects.get(timetable=tt, guest=guest)
+        writer.writerow([tt.event.event_name + ": " + str(tt.date), tt.category, tt.timetable_name, tt.event.place + " - " + tt.place, tt.host, Registration.Status[reg.status].label])
 
     return response

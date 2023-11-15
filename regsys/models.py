@@ -61,6 +61,8 @@ class Guest(models.Model):
     patronymic = models.CharField(max_length=100, verbose_name="Отчество")
     school = models.CharField(max_length=100, verbose_name="Место обучения")
     phone = models.CharField(max_length=100, verbose_name="Номер телефона")
+    telegram = models.CharField(max_length=100, verbose_name="Телеграм")
+    photo = models.ImageField(max_length=100, null=True, blank=True, verbose_name="Фото")
     
     def __str__(self):
         return self.surname + " " + self.firstname
@@ -83,7 +85,7 @@ class Registration(models.Model):
     status = models.CharField(choices=Status.choices, default=Status.AFF, verbose_name="Статус")
     
     def __str__(self):
-        return str(self.timetable) + " / " + str(self.guest)
+        return str(self.timetable) + " (" + self.timetable.event.event_name + ") / " + str(self.guest)
     
     def is_past(self):
         return self.status in {self.Status.VIS, self.Status.MIS}
@@ -112,6 +114,7 @@ class Label(models.Model):
     class Meta:
         verbose_name = "Лейбл"
         verbose_name_plural = "Лейблы"
+
 
 class Labelmap(models.Model):  
     event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name="Событие")

@@ -30,22 +30,25 @@
 		{% if timetable %}
 		{% for date, cats in timetable.items %}
 		<fieldset>
-			<legend class="text-body-semibold" style="color: #374B9B"><label for="toggle">{{ date }}</label></legend>
-			<input type="checkbox" id="toggle" checked>
-			<div id="content">
+			<legend class="text-body-semibold" style="color: #374B9B">{{ date }}</legend>
+			<div id="content_{{ forloop0.counter }}">
 			{% for cat, entries in cats.items %}
 			<div>
-				<p class="text-body-semibold" style="color: #0F2D69">{{ cat }}</p>
-				{% for entry in entries %}
-				{% if entry.seats == 0 %}
-				<input type="radio" id="entry_{{ entry.id }}" name="category_{{ cat }}" value="{{ entry.id }}" disabled>
+				<p class="text-body-italic" style="color: #0F2D69">{{ cat }}</p>
+				{% for entry, chosen in entries.items %}
+				{% if not chosen %}
+					{% if entry.seats == 0 %}
+						<input type="radio" id="entry_{{ entry.id }}" name="category_{{ date }}_{{ cat }}" value="{{ entry.id }}" disabled>
+					{% else %}
+						<input type="radio" id="entry_{{ entry.id }}" name="category_{{ date }}_{{ cat }}" value="{{ entry.id }}" required>
+					{% endif %}
 				{% else %}
-				<input type="radio" id="entry_{{ entry.id }}" name="category_{{ cat }}" value="{{ entry.id }}">
+				<input type="radio" id="entry_{{ entry.id }}" name="category_{{ date }}_{{ cat }}" value="{{ entry.id }}" checked required>
 				{% endif %}
 				<div class="tooltip">
-					<p class="text-body-semibold" style="color: #0F2D69">{{ entry.timetable_name }}</p>
+					<p class="text-body-semibold" style="color: #0F2D69">{{ entry.timetable_name }}&emsp;&emsp;</p>
 					<span class="tooltiptext">{{ entry.annotation }}<span>
-				</div><br>
+				</div>
 				<span style="color:#808080"><span class="text-body-semibold">Место: </span><span class="text-body-regular">{{ entry.place}}</span>&emsp;<span class="text-body-semibold">Ведущий: </span><span
 						class="text-body-regular">{{ entry.host }}</span>&emsp; <span class="text-body-semibold">Свободных мест: </span>
 					{% if entry.seats < 0 %} <span class="text-body-regular">не ограничено</span>
@@ -55,14 +58,14 @@
 				{% if entry.repeating %}
 				<span class="text-caption" style="color:#808080">&emsp;(Мероприятие также проводится в другое время)</span>
 				{% endif %}
-				<br><br>
+				<br>
 				{% endfor %}
 			</div>
 			{% endfor %}
 			</div>
 		</fieldset>
 		{% endfor %} <br>
-		<button type="submit" id="submit" name="submit" class="primary-button" value="to_completed">Завершить регистрацию</button>
+		<button type="submit" id="submit" name="submit" class="primary-button" value="to_completed">Завершить регистрацию</button><br>
 		{% else %}
 		<p class="text-body-regular" style="color: #E61E3C;">Кажется, вы не выбрали ни одного дня для регистрации. Попробуйте снова!</p>
 		{% endif %}

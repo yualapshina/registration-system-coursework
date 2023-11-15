@@ -123,28 +123,13 @@ a:hover, a:active {
 	color: #99D17B;
 }
 
-#toggle + #content {
-    display: none;
-}
-
-#toggle:checked + #content {
-    display: block;
-}
-
 legend {
-	padding: 5px;
-    cursor: pointer;
+	padding: 10px;
 }
 
 legend label {
     width: 100%;
     display: inline-block;
-    cursor: inherit;
-}
-
-legend label::after {
-    content: "▼";
-    float: right;
 }
 
 /* Regular */
@@ -275,7 +260,8 @@ legend label::after {
   font-style: normal;
   font-weight: 600;
   font-size: 32px;
-  line-height: 43px;
+  line-height: 32px;
+  text-align: center;
 }
 
 .text-h2 {
@@ -283,7 +269,7 @@ legend label::after {
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
-  line-height: 32px;
+  line-height: 24px;
 }
 
 .primary-button {
@@ -512,4 +498,14 @@ fieldset
   font-weight: 400;
   font-size: 14px;
   line-height: 19px;
+}
+
+/* стили для table*/
+td {
+	padding-right: 20px;
+}
+
+.date-header {
+	text-align: center;
+	padding-top: 20px;
 }

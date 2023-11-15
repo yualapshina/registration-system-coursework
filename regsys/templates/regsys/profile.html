@@ -74,14 +74,24 @@
 				placeholder="{{ guest.patronymic }}">
 		</div>
 		<div class="text-field">
+			<label class="text-field__label" for="school">Место обучения</label>
+			<input class="text-field__input" type="text" id="school" name="school"
+				placeholder="{{ guest.school }}">
+		</div>
+		<div class="text-field">
 			<label class="text-field__label" for="phone">Телефон</label>
 			<input class="text-field__input" type="text" id="phone" name="phone"
 				placeholder="{{ guest.phone }}">
 		</div>
 		<div class="text-field">
-			<label class="text-field__label" for="school">Место обучения</label>
-			<input class="text-field__input" type="text" id="school" name="school"
-				placeholder="{{ guest.school }}">
+			<label class="text-field__label" for="telegram">Телеграм</label>
+			<input class="text-field__input" type="text" id="telegram" name="telegram"
+				placeholder="{{ guest.telegram }}">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="photo">Фото</label><br>
+			<input type="file" id="photo" name="photo" accept="image/*" 
+				placeholder="{{ guest.photo }}">
 		</div><br>
 		<button type="submit" id="submit" name="submit" class="primary-button" value="edit_info">Сохранить изменения</button>
 	</form>
