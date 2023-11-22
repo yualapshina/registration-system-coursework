@@ -1,12 +1,17 @@
 import datetime
 import csv
 from functools import cmp_to_key
+from django.core.exceptions import ValidationError
+from django.core.mail import EmailMessage, send_mail
+from django.conf import settings
+from django.utils.crypto import get_random_string
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.db.utils import IntegrityError
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.decorators import login_required
 from .models import Event, Timetable, Guest, Registration, Label, Labelmap
 
@@ -18,6 +23,7 @@ navbar_profile = {
     "Профиль": "profile",
     "Моё расписание": "mylist",
     "Зарегистрироваться": "register",
+    "Обратная связь": "feedback",
 }
 
 @cmp_to_key
@@ -38,7 +44,6 @@ def dispatcher(request):
         event = Event.objects.get(id=request.POST.get("event_key", None))
         Registration.objects.filter(timetable__event=event, guest=request.user.guest).delete()
         messages.warning(request, "Регистрации на событие \"" + event.event_name + "\" удалены")
-        return redirect(mylist)
     
     if sender == "edit_info":
         guest = request.user.guest
@@ -54,8 +59,6 @@ def dispatcher(request):
             guest.phone = request.POST.get("phone", "")
         if request.POST.get("telegram", ""):
             guest.telegram = request.POST.get("telegram", "")
-        if request.POST.get("photo", None):
-            guest.photo = request.POST.get("photo", None)
         guest.save()
         messages.success(request, "Изменения успешно сохранены")
         return redirect(profile)
@@ -63,6 +66,11 @@ def dispatcher(request):
     if sender == "edit_creds":
         user = authenticate(request, username=request.user.username, password=request.POST["old"])
         if user is not None:
+            try:
+                validate_password(request.POST["new"])
+            except ValidationError:
+                messages.error(request, "Пароль слишком слабый. Обратите внимание на условия")
+                return redirect(profile)
             user.set_password(request.POST["new"])
             user.save()
             messages.success(request, "Пароль успешно изменён")
@@ -82,19 +90,55 @@ def dispatcher(request):
         guest.school = request.POST.get("school", "")
         guest.phone = request.POST.get("phone", "")
         guest.telegram = request.POST.get("telegram", "")
-        guest.photo = request.POST.get("photo", None)
+        messages.success(request, "Данные успешно сохранены")
         guest.save()
-        messages.success(request, "Профиль успешно создан")
     
     if sender == "signin":
-        
         user = authenticate(request, username=request.POST["email"], password=request.POST["password"])
         if user is not None:
             login(request, user)
         else:
             messages.error(request, "Неверная почта или пароль")
             return redirect(signin)
+          
+    if sender == "forgot":
+        filter = User.objects.filter(username=request.POST["email"])
+        if filter:
+            user = filter[0]
+            password = get_random_string(10)
+            user.set_password(password)
+            user.save()
+            try:
+                send_mail(
+                    subject="Восстановление пароля",
+                    message="Вам сгенерирован новый пароль для доступа в систему регистрации на мероприятия НИУ ВШЭ. Его можно сменить после входа в профиль или оставить.\nНовый пароль:\n" + password,
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[user.username])
+            except:
+                messages.error(request, "При отправке письма произошла ошибка, попробуйте снова")
+                return redirect(signin)
+            messages.success(request, "Инструкции по восстановлению отправлены на почту")
+            return redirect(signin)
+        else:
+            messages.error(request, "Профиль с такой почтой не найден")
+            return redirect(signup)
             
+    if sender == "feedback":
+        author = "Автор письма: " + Guest.objects.get(id=request.POST["guest_id"]).user.username
+        reply_to = "Ответить на почту: " + request.POST["email"]
+        message_body = "Текст письма:\n" + request.POST["message"]
+        try:
+            send_mail(
+                subject=request.POST["subject"],
+                message="\n\n".join([author, reply_to, message_body]),
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[settings.EMAIL_RECEIVER])
+        except:
+            messages.error(request, "При отправке сообщения произошла ошибка, попробуйте снова")
+            return redirect(feedback)
+        messages.success(request, "Письмо отправлено, спасибо!")
+        return redirect(feedback)
+          
     return redirect(mylist)
             
 def signin(request):
@@ -123,6 +167,11 @@ def personal(request):
         messages.error(request, "Пароль не совпадает")
         return redirect(signup)
     try:
+        validate_password(password)
+    except ValidationError:
+        messages.error(request, "Пароль слишком слабый. Обратите внимание на условия")
+        return redirect(signup)
+    try:
         user = User.objects.create_user(username=email, password=password)
     except IntegrityError:
         messages.error(request, "Профиль с такой почтой уже существует")
@@ -132,6 +181,15 @@ def personal(request):
     user = authenticate(request, username=email, password=password)
     if user is not None:
         login(request, user)
+        messages.success(request, "Профиль успешно создан")
+        try:
+            send_mail(
+                subject='Профиль в системе регистрации',
+                message='Вы успешно создали профиль в системе регистрации на мероприятия НИУ ВШЭ - Нижний Новгород. Выбирайте интересующие вас события - и увидимся там!',
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[email])
+        except:
+            messages.error(request, "При отправке приветственного письма произошла ошибка")
     else:
         messages.error(request, "Ошибка при создании")
         return redirect(signup)
@@ -292,6 +350,7 @@ def download(request):
         headers={"Content-Disposition": 'attachment; filename="reg-list.csv"'},
     )
     response.write(u'\ufeff'.encode('utf8'))
+    #att = 
     writer = csv.writer(response, delimiter =';')
     
     event = Event.objects.get(id=request.GET["event_key"])
@@ -302,3 +361,12 @@ def download(request):
         writer.writerow([tt.event.event_name + ": " + str(tt.date), tt.category, tt.timetable_name, tt.event.place + " - " + tt.place, tt.host, Registration.Status[reg.status].label])
 
     return response
+    
+@login_required    
+def feedback(request):   
+    guest = request.user.guest
+    context = {
+        'guest' : guest,
+        'navbar': navbar_profile,
+    }
+    return render(request, 'regsys/feedback.html', context)

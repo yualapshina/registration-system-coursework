@@ -5,10 +5,18 @@
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
 	<meta charset="utf-8" />
-	<title>reg-sys-cw: Личная информация</title>
+	<title>RegSys: Личная информация</title>
 </head>
 
 <body>	
+	{% if messages %}
+		<div class="messages">
+		{% for message in messages %}
+			<p{% if message.tags %} class="message_{{ message.tags }}"{% endif %}>{{ message }}</p>
+		{% endfor %}
+		</div>
+	{% endif %}
+	
 	<form action="{% url 'dispatcher' %}" method="post">
 		{% csrf_token %}
 		<div class="parent">
@@ -54,10 +62,6 @@
 			<label class="text-field__label" for="telegram">Телеграм</label>
 			<input class="text-field__input" type="text" id="telegram" name="telegram"
 				placeholder="Введите свой ник в телеграме">
-		</div>
-		<div class="text-field">
-			<label class="text-field__label" for="photo">Фото</label><br>
-			<input type="file" id="photo" name="photo" accept="image/*">
 		</div>
 		<br><button id="submit" name="submit" type="submit" value="signup"
 			class="primary-button">Сохранить</button>

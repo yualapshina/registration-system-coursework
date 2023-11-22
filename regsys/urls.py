@@ -13,4 +13,5 @@ urlpatterns = [
     path('timetable/', views.timetable, name='timetable'),
     path('completed/', views.completed, name='completed'),
     path('download/', views.download, name='download'),
+    path('feedback/', views.feedback, name='feedback'),
 ]

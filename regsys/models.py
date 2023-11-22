@@ -62,7 +62,6 @@ class Guest(models.Model):
     school = models.CharField(max_length=100, verbose_name="Место обучения")
     phone = models.CharField(max_length=100, verbose_name="Номер телефона")
     telegram = models.CharField(max_length=100, verbose_name="Телеграм")
-    photo = models.ImageField(max_length=100, null=True, blank=True, verbose_name="Фото")
     
     def __str__(self):
         return self.surname + " " + self.firstname

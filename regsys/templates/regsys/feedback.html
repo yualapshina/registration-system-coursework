@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
+	<meta charset="utf-8" />
+	<title>RegSys: Обратная связь</title>
+</head>
+
+<body>
+	{% if messages %}
+		<div class="messages">
+		{% for message in messages %}
+			<p{% if message.tags %} class="message_{{ message.tags }}"{% endif %}>{{ message }}</p>
+		{% endfor %}
+		</div>
+	{% endif %}
+	
+	<form action="{% url 'dispatcher' %}" method="post">
+		{% csrf_token %}
+		<input type="text" id="guest_id" name="guest_id" value="{{ guest.id }}" hidden>
+		<div class="parent">
+		
+		<div class="navbar">
+		{% for name, link in navbar.items %}
+			{% if name == "Обратная связь" %}
+				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
+			{% else %}
+				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
+			{% endif %}
+		{% endfor %}
+		</div>
+		
+			<div class="block">
+		<p class="text-h2" style="color: #374B9B">Форма обратной связи</p>
+		<div class="text-field">
+			<label class="text-field__label" for="email">Электронная почта, на которую хотите получить ответ</label>
+			<input class="text-field__input" type="text" id="email" name="email" required
+				value="{{ guest.user.username }}">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="subject">Тема сообщения</label>
+			<input class="text-field__input" type="text" id="subject" name="subject" required
+				placeholder="Опишите ваше сообщение парой слов">
+		</div>
+		<div class="text-field">
+			<label class="text-field__label" for="message">Сообщение</label><br>
+			<textarea type="text" id="message" name="message" required>Любые вопросы и пожелания касательно работы системы</textarea>
+		</div>
+		<br><button id="submit" name="submit" type="submit" value="feedback"
+			class="primary-button">Отправить</button>
+	</div>
+</div>
+	</form>
+</body>
+
+</html>

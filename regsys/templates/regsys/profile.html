@@ -5,7 +5,7 @@
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
 	<meta charset="utf-8" />
-	<title>reg-sys-cw: Личные данные</title>
+	<title>RegSys: Личные данные</title>
 </head>
 
 <body>
@@ -48,6 +48,7 @@
 			<input class="text-field__input" type="password" id="new" name="new"
 				placeholder="Введите новый пароль">
 		</div>
+		<p class="text-caption" style="color:#808080">Пароль должен быть не короче 8 символов</p>
 		<p class="text-caption" style="color:#808080">После изменения пароля потребуется заново зайти в профиль</p>
 		<button type="submit" id="submit" name="submit" class="primary-button" value="edit_creds">Изменить пароль</button><br>
 		<button type="submit" id="submit" name="submit" value="signout" class="secondary-button">Выйти из профиля</button>
@@ -87,11 +88,6 @@
 			<label class="text-field__label" for="telegram">Телеграм</label>
 			<input class="text-field__input" type="text" id="telegram" name="telegram"
 				placeholder="{{ guest.telegram }}">
-		</div>
-		<div class="text-field">
-			<label class="text-field__label" for="photo">Фото</label><br>
-			<input type="file" id="photo" name="photo" accept="image/*" 
-				placeholder="{{ guest.photo }}">
 		</div><br>
 		<button type="submit" id="submit" name="submit" class="primary-button" value="edit_info">Сохранить изменения</button>
 	</form>

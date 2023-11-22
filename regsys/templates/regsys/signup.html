@@ -5,7 +5,7 @@
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
 	<meta charset="utf-8" />
-	<title>reg-sys-cw: Создание профиля</title>
+	<title>RegSys: Создание профиля</title>
 </head>
 
 <body>
@@ -48,7 +48,8 @@
 			<input class="text-field__input" type="password" id="repeat" name="repeat" required
 				placeholder="Введите пароль, который будете использовать">
 		</div>
-		<br><button id="submit" name="submit" type="submit" value="to_personal"
+		<p class="text-caption" style="color:#808080">Пароль должен быть не короче 8 символов</p>
+		<button id="submit" name="submit" type="submit" value="to_personal"
 			class="primary-button">Создать профиль</button>
 	</div>
 </div>
