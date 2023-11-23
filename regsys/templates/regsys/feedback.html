@@ -35,18 +35,20 @@
 			<div class="block">
 		<p class="text-h2" style="color: #374B9B">Форма обратной связи</p>
 		<div class="text-field">
-			<label class="text-field__label" for="email">Электронная почта, на которую хотите получить ответ</label>
+			<label class="text-field__label" for="email">Ваша электронная почта</label>
 			<input class="text-field__input" type="text" id="email" name="email" required
+				placeholder="Мы пришлем ответ на эту почту"
 				value="{{ guest.user.username }}">
 		</div>
 		<div class="text-field">
 			<label class="text-field__label" for="subject">Тема сообщения</label>
 			<input class="text-field__input" type="text" id="subject" name="subject" required
-				placeholder="Опишите ваше сообщение парой слов">
+				placeholder="Про что вы хотите сказать?">
 		</div>
 		<div class="text-field">
 			<label class="text-field__label" for="message">Сообщение</label><br>
-			<textarea type="text" id="message" name="message" required>Любые вопросы и пожелания касательно работы системы</textarea>
+			<textarea type="text" id="message" name="message" required
+				placeholder="Любые вопросы и пожелания касательно работы системы"></textarea>
 		</div>
 		<br><button id="submit" name="submit" type="submit" value="feedback"
 			class="primary-button">Отправить</button>

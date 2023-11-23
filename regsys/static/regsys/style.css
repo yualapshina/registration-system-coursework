@@ -70,8 +70,7 @@ a:hover, a:active {
 
 .messages {
   position: fixed;
-  bottom: 10px;
-  width: 500px;
+  bottom: 1px;
   font-family: 'HSE Sans';
   font-style: normal;
   font-weight: 400;
@@ -80,15 +79,27 @@ a:hover, a:active {
 }
 
 .message_error {
-	color: red;
+	color: #E61E3C;
+  border: 1px solid #E61E3C;
+  border-radius: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .message_warning {
-	color: yellow;
+	color: #FAB900;
+  border: 1px solid #FAB900;
+  border-radius: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .message_success {
-	color: green;
+	color: #009B64;
+  border: 1px solid #009B64;
+  border-radius: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .INT {
@@ -388,6 +399,48 @@ input[type="text"] {
 }
 
 .text-field__input:invalid:focus {
+  border: 1px solid #374B9B;
+}
+
+/* стили для textarea */
+textarea{
+  min-width: 400px;
+  min-height: 150px;
+  display: block;
+  padding: 0.375rem 0.75rem;
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  color: #000;
+  background-color: #E6E6E6;
+  background-clip: padding-box;
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
+}
+
+textarea::placeholder {
+  color: #808080;
+  font-family: 'HSE Sans';
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+textarea:disabled {
+  background: #BFBFBF;
+  border: 1px solid #808080;
+}
+
+textarea:focus {
+  border: 1px solid #374B9B;
+  outline: 0;
+  caret-color: #374B9B;
+}
+
+textarea:invalid:focus {
   border: 1px solid #374B9B;
 }
 
