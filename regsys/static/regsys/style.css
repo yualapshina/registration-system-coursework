@@ -123,15 +123,15 @@ a:hover, a:active {
 }
 
 .TAR {
-	color: #EDAE49;
+	color: #FAB900;
 }
 
 .FIE {
-	color: #B4C5E4;
+	color: #0FA0D7;
 }
 
 .CON {
-	color: #99D17B;
+	color: #009B64;
 }
 
 legend {
@@ -272,7 +272,7 @@ legend label {
   font-weight: 600;
   font-size: 32px;
   line-height: 32px;
-  text-align: center;
+  text-align: left;
 }
 
 .text-h2 {
