@@ -122,7 +122,6 @@
   font-weight: 600;
   font-size: 16px;
   line-height: 22px;
-
   text-transform: uppercase;
 }
 
@@ -315,7 +314,7 @@ legend label {
 .text-field__input {
   min-width: 400px;
   display: block;
-  height: calc(2.25rem + 2px);
+  height: calc(2rem + 2px);
   padding-top: 4px;
   padding-top: 4px;
   padding-left: 8px;
@@ -338,9 +337,12 @@ legend label {
 
 .text-field__input:focus {
   outline: 0;
-  background-color: #CDDCF0;
   caret-color: #374B9B;
   color: #374B9B;
+}
+
+.text-field__input:hover {
+  background-color: #F2F4FF;
 }
 
 .text-field__label {
@@ -350,14 +352,17 @@ legend label {
 /* стили для textarea */
 textarea{
   min-width: 400px;
-  min-height: 150px;
+  min-height: 256px;
   display: block;
-  padding: 0.375rem 0.75rem;
-  color: #000;
+  padding-top: 4px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-left: 8px;
   background-color: #E6E6E6;
-  background-clip: padding-box;
-  border: 1px solid #bdbdbd;
-  border-radius: 4px;
+  border-radius: 8px;
+  border: 0px;
+  margin-top: 4px;
+  color: #0F2D69;
 }
 
 textarea::placeholder {
@@ -366,17 +371,17 @@ textarea::placeholder {
 
 textarea:disabled {
   background: #BFBFBF;
-  border: 1px solid #808080;
+  margin-top: 4px;
 }
 
 textarea:focus {
-  border: 1px solid #374B9B;
   outline: 0;
   caret-color: #374B9B;
+  color: #374B9B;
 }
 
-textarea:invalid:focus {
-  border: 1px solid #374B9B;
+textarea:hover {
+  background-color: #F2F4FF;
 }
 
 /* стили для checkbox */

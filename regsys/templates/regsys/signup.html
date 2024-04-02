@@ -5,12 +5,12 @@
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
 	<meta charset="utf-8" />
-	<title>RegSys: Создание профиля</title>
+	<title>RegSys: Создание аккаунта</title>
 </head>
 
 <body>
 	{% if messages %}
-		<div class="messages">
+		<div class="messages text-caption">
 		{% for message in messages %}
 			<p{% if message.tags %} class="message_{{ message.tags }}"{% endif %}>{{ message }}</p>
 		{% endfor %}
@@ -21,7 +21,7 @@
 		{% csrf_token %}
 		<div class="parent">
 		
-		<div class="navbar">
+		<div class="navbar text-body-regular">
 		{% for name, link in navbar.items %}
 			{% if name == "Создание профиля" %}
 				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
@@ -32,25 +32,25 @@
 		</div>
 		
 			<div class="block">
-		<p class="text-h2" style="color:#374B9B">Данные для входа</p>
+		<p class="text-h2 col-hse-400">Регистрация</p>
 		<div class="text-field">
-			<label class="text-field__label" for="email">Электронная почта</label>
-			<input class="text-field__input" type="text" id="email" name="email" required
+			<label class="text-field__label text-body-regular" for="email">Электронная почта</label>
+			<input class="text-field__input text-caption" type="text" id="email" name="email" required
 				placeholder="Введите ваш адрес электронной почты">
 		</div>
 		<div class="text-field">
-			<label class="text-field__label" for="password">Пароль</label>
-			<input class="text-field__input" type="password" id="password" name="password" required
+			<label class="text-field__label text-body-regular" for="password">Пароль</label>
+			<input class="text-field__input text-caption" type="password" id="password" name="password" required
 				placeholder="Введите пароль, который будете использовать">
 		</div>
 		<div class="text-field">
-			<label class="text-field__label" for="repeat">Повторите пароль</label>
-			<input class="text-field__input" type="password" id="repeat" name="repeat" required
+			<label class="text-field__label text-body-regular" for="repeat">Повторите пароль</label>
+			<input class="text-field__input text-caption" type="password" id="repeat" name="repeat" required
 				placeholder="Введите пароль, который будете использовать">
 		</div>
-		<p class="text-caption" style="color:#808080">Пароль должен быть не короче 8 символов</p>
+		<p class="text-caption col-base-400"">Пароль должен быть не короче 8 символов</p>
 		<button id="submit" name="submit" type="submit" value="to_personal"
-			class="primary-button">Создать профиль</button>
+			class="primary-button text-button">Создать профиль</button>
 	</div>
 </div>
 	</form>

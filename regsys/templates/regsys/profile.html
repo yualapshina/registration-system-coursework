@@ -40,12 +40,12 @@
 		</div>
 		<div class="text-field">
 			<label class="text-field__label text-body-regular" for="old">Старый пароль</label>
-			<input class="text-field__input" type="password" id="old" name="old"
+			<input class="text-field__input text-caption" type="password" id="old" name="old"
 				placeholder="Введите старый пароль">
 		</div>
 		<div class="text-field">
 			<label class="text-field__label text-body-regular" for="new">Новый пароль</label>
-			<input class="text-field__input" type="password" id="new" name="new"
+			<input class="text-field__input text-caption" type="password" id="new" name="new"
 				placeholder="Введите новый пароль">
 		</div>
 		<p class="text-caption col-base-400">Пароль должен быть не короче 8 символов</p>
@@ -61,32 +61,32 @@
 	<p class="text-h2" style="color: #374B9B">Личная информация:</p>
 		<div class="text-field">
 			<label class="text-field__label text-body-regular" for="surname">Фамилия</label>
-			<input class="text-field__input" type="text" id="surname" name="surname"
+			<input class="text-field__input text-caption" type="text" id="surname" name="surname"
 				placeholder="{{ guest.surname }}">
 		</div>
 		<div class="text-field">
 			<label class="text-field__label text-body-regular" for="firstname">Имя</label>
-			<input class="text-field__input" type="text" id="firstname" name="firstname"
+			<input class="text-field__input text-caption" type="text" id="firstname" name="firstname"
 				placeholder="{{ guest.firstname }}">
 		</div>
 		<div class="text-field">
 			<label class="text-field__label text-body-regular" for="patronymic">Отчество</label>
-			<input class="text-field__input" type="text" id="patronymic" name="patronymic"
+			<input class="text-field__input text-caption" type="text" id="patronymic" name="patronymic"
 				placeholder="{{ guest.patronymic }}">
 		</div>
 		<div class="text-field">
 			<label class="text-field__label text-body-regular" for="school">Место обучения</label>
-			<input class="text-field__input" type="text" id="school" name="school"
+			<input class="text-field__input text-caption" type="text" id="school" name="school"
 				placeholder="{{ guest.school }}">
 		</div>
 		<div class="text-field">
 			<label class="text-field__label text-body-regular" for="phone">Телефон</label>
-			<input class="text-field__input" type="text" id="phone" name="phone"
+			<input class="text-field__input text-caption" type="text" id="phone" name="phone"
 				placeholder="{{ guest.phone }}">
 		</div>
 		<div class="text-field">
 			<label class="text-field__label text-body-regular" for="telegram">Телеграм</label>
-			<input class="text-field__input" type="text" id="telegram" name="telegram"
+			<input class="text-field__input text-caption" type="text" id="telegram" name="telegram"
 				placeholder="{{ guest.telegram }}">
 		</div>
 		<button type="submit" id="submit" name="submit" class="primary-button text-button" value="edit_info">Сохранить изменения</button>

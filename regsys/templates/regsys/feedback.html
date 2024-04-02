@@ -5,7 +5,7 @@
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
 	<meta charset="utf-8" />
-	<title>RegSys: Обратная связь</title>
+	<title>Обратная связь</title>
 </head>
 
 <body>
@@ -22,7 +22,7 @@
 		<input type="text" id="guest_id" name="guest_id" value="{{ guest.id }}" hidden>
 		<div class="parent">
 		
-		<div class="navbar">
+		<div class="navbar text-body-regular">
 		{% for name, link in navbar.items %}
 			{% if name == "Обратная связь" %}
 				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
@@ -33,25 +33,26 @@
 		</div>
 		
 			<div class="block">
-		<p class="text-h2" style="color: #374B9B">Форма обратной связи</p>
+		<p class="text-h2 col-hse-400">Форма обратной связи</p>
+		<p class="text-caption col-base-400">Здесь вы можете оставить комментарии о работе системы</p>
 		<div class="text-field">
-			<label class="text-field__label" for="email">Ваша электронная почта</label>
-			<input class="text-field__input" type="text" id="email" name="email" required
+			<label class="text-field__label text-body-regular" for="email">Ваша электронная почта</label>
+			<input class="text-field__input text-caption" type="text" id="email" name="email" required
 				placeholder="Мы пришлем ответ на эту почту"
 				value="{{ guest.user.username }}">
 		</div>
 		<div class="text-field">
-			<label class="text-field__label" for="subject">Тема сообщения</label>
-			<input class="text-field__input" type="text" id="subject" name="subject" required
+			<label class="text-field__label text-body-regular" for="subject">Тема сообщения</label>
+			<input class="text-field__input text-caption" type="text" id="subject" name="subject" required
 				placeholder="Про что вы хотите сказать?">
 		</div>
 		<div class="text-field">
-			<label class="text-field__label" for="message">Сообщение</label><br>
-			<textarea type="text" id="message" name="message" required
+			<label class="text-field__label text-body-regular" for="message">Сообщение</label><br>
+			<textarea class="text-caption" type="text" id="message" name="message" required
 				placeholder="Любые вопросы и пожелания касательно работы системы"></textarea>
 		</div>
 		<br><button id="submit" name="submit" type="submit" value="feedback"
-			class="primary-button">Отправить</button>
+			class="primary-button text-button">Отправить</button>
 	</div>
 </div>
 	</form>
