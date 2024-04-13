@@ -8,7 +8,5 @@
 - [Интерактивный прототип дизайна](https://www.figma.com/proto/Kt2FDXipEGxZJmpCemKc7s/Registration-system?page-id=1%3A2&node-id=6-95&viewport=120%2C127%2C0.14&scaling=scale-down&starting-point-node-id=6%3A95&show-proto-sidebar=1)
 - [Архитектура базы данных](https://www.figma.com/file/cpJIurC4qGIu2jrA6UtA9I/Registration-System%3A-ER-Diagram?type=whiteboard&t=XQAnZ1MlXFPwVaEB-6)
 ### release notes
-запуск:
-- миграции как всегда
-- добавился гитигнор, так что если пропадут мелкие автогенерируемые файлы, то так и надо
-- безопасность паролей обеспечивается тем, что они хранятся в отдельном неотслеживаемом файлике, так что чтобы оно работало, пиши мне и я скину его отдельно
+- возможна доустановка новых библиотек, просто pip install в терминале
+- настройка пдф - *views.py*, самая нижняя функция *certificate*

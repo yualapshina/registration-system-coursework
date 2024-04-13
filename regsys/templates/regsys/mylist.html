@@ -36,9 +36,8 @@
 		<table><tr>
 		<td class="text-h2" style="color: #374B9B">{{ event.event_name }}</td>
 		<form action="{% url 'download' %}" method="get">
-			<input type="text" id="guest_id" name="guest_id" value="{{ guest.id }}" hidden>
 			<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
-			<td><button type="submit" class="primary-button" id="submit" name="submit" value="download">Скачать .csv</button>
+			<td><button type="submit" class="primary-button" id="submit" name="submit" value="download">Скачать расписание (CSV)</button>
 		</td></form>
 		<form action="{% url 'timetable' %}" method="post">
 			{% csrf_token %}
@@ -75,7 +74,10 @@
 	{% for event, dates in regs_past.items %}
 		<table><tr>
 		<td class="text-h2" style="color: #374B9B">{{ event.event_name }}</td>
-		</tr></table>
+		<form action="{% url 'certificate' %}" method="get">
+			<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
+			<td><button type="submit" class="primary-button" id="submit" name="submit" value="certificate">Скачать сертификат (PDF)</button>
+		</td></form></tr></table>
 		<table>
 		{% for date, entries in dates.items %}
 			<tr><td colspan="5" class="date-header text-body-semibold">{{ date }}</td></tr>

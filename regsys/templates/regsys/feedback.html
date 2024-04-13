@@ -17,7 +17,7 @@
 		</div>
 	{% endif %}
 	
-	<form action="{% url 'dispatcher' %}" method="post">
+	<form action="{% url 'dispatcher' %}" enctype="multipart/form-data" method="post">
 		{% csrf_token %}
 		<input type="text" id="guest_id" name="guest_id" value="{{ guest.id }}" hidden>
 		<div class="parent">
@@ -37,19 +37,29 @@
 		<p class="text-caption col-base-400">Здесь вы можете оставить комментарии о работе системы</p>
 		<div class="text-field">
 			<label class="text-field__label text-body-regular" for="email">Ваша электронная почта</label>
-			<input class="text-field__input text-caption" type="text" id="email" name="email" required
+			<input class="text-field__input text-caption" type="text" id="email" name="email" disabled
 				placeholder="Мы пришлем ответ на эту почту"
 				value="{{ guest.user.username }}">
 		</div>
 		<div class="text-field">
 			<label class="text-field__label text-body-regular" for="subject">Тема сообщения</label>
+			{% if subject %}
+			<input class="text-field__input text-caption" type="text" id="subject" name="subject" required
+				value="{{ subject }}">
+			{% else %}
 			<input class="text-field__input text-caption" type="text" id="subject" name="subject" required
 				placeholder="Про что вы хотите сказать?">
+			{% endif %}
 		</div>
 		<div class="text-field">
 			<label class="text-field__label text-body-regular" for="message">Сообщение</label><br>
 			<textarea class="text-caption" type="text" id="message" name="message" required
 				placeholder="Любые вопросы и пожелания касательно работы системы"></textarea>
+		</div>
+		<div class="text-field">
+			<label class="text-field__label text-body-regular" for="attachment">Вложение</label>
+			<p class="text-caption col-base-400">Можете прикрепить изображение или PDF-файл</p>
+			<input type="file" id="attachment" name="attachment" accept="image/*,.pdf" />
 		</div>
 		<br><button id="submit" name="submit" type="submit" value="feedback"
 			class="primary-button text-button">Отправить</button>
