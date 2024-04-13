@@ -5,7 +5,7 @@
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
 	<meta charset="utf-8" />
-	<title>RegSys: Уточнение расписания</title>
+	<title>Настройка расписания</title>
 </head>
 
 <body>
@@ -14,7 +14,7 @@
 		<input type="text" id="event_id" name="event_id" value="{{ event_id }}" hidden>
 		<div class="parent">
 		
-		<div class="navbar">
+		<div class="navbar text-body-regular">
 		{% for name, link in navbar.items %}
 			{% if name == "Зарегистрироваться" %}
 				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
@@ -25,16 +25,16 @@
 		</div>
 		
 			<div class="block">
-		<p class="text-h2" style="color: #374B9B">{{ event.event_name }}: Уточнение расписания</p>
-		<p class="text-caption" style="color:#808080">Будьте внимательны! Некоторые мероприятия идут одновременно - выбрать можно только одно. А еще, некоторые из них повторяются в разное время.</p>
+		<p class="text-h2 col-hse-400">{{ event.event_name }}: Уточнение расписания</p>
+		<p class="text-caption col-base-400">Будьте внимательны! Некоторые мероприятия идут одновременно - выбрать можно только одно.<br>А еще, некоторые из них повторяются в разное время.</p>
 		{% if timetable %}
 		{% for date, cats in timetable.items %}
 		<fieldset>
-			<legend class="text-body-semibold" style="color: #374B9B">{{ date }}</legend>
+			<legend class="text-body-semibold col-hse-400">{{ date }}</legend>
 			<div id="content_{{ forloop0.counter }}">
 			{% for cat, entries in cats.items %}
 			<div>
-				<p class="text-body-italic" style="color: #0F2D69">{{ cat }}</p>
+				<p class="text-body-regular col-hse-400">{{ cat }}</p>
 				{% for entry, chosen in entries.items %}
 				{% if not chosen %}
 					{% if entry.seats == 0 %}
@@ -46,28 +46,28 @@
 				<input type="radio" id="entry_{{ entry.id }}" name="category_{{ date }}_{{ cat }}" value="{{ entry.id }}" checked required>
 				{% endif %}
 				<div class="tooltip">
-					<p class="text-body-semibold" style="color: #0F2D69">{{ entry.timetable_name }}&emsp;&emsp;</p>
+					<p class="text-body-regular col-hse-400">{{ entry.timetable_name }}&emsp;&emsp;</p>
 					<span class="tooltiptext">{{ entry.annotation }}<span>
 				</div>
-				<span style="color:#808080"><span class="text-body-semibold">Место: </span><span class="text-body-regular">{{ entry.place}}</span>&emsp;<span class="text-body-semibold">Ведущий: </span><span
-						class="text-body-regular">{{ entry.host }}</span>&emsp; <span class="text-body-semibold">Свободных мест: </span>
-					{% if entry.seats < 0 %} <span class="text-body-regular">не ограничено</span>
+				<span><br><span class="text-body-regular col-base-400">Место: </span><span class="text-body-regular col-base-400">{{ entry.place}}</span>&emsp;<span class="text-body-regular col-base-400">Ведущий: </span><span
+						class="text-body-regular col-base-400">{{ entry.host }}</span>&emsp; <span class="text-body-regular col-base-400">Свободных мест: </span>
+					{% if entry.seats < 0 %} <span class="text-body-regular col-base-400">не ограничено</span>
 				{% else %}
-				<span class="text-body-regular">{{ entry.seats }}</span>
+				<span class="text-body-regular col-base-400">{{ entry.seats }}</span>
 				{% endif %}
 				{% if entry.repeating %}
-				<span class="text-caption" style="color:#808080">&emsp;(Мероприятие также проводится в другое время)</span>
+				<span class="text-caption col-base-400"><br>*Мероприятие также проводится в другое время</span>
 				{% endif %}
-				<br>
+				<br><br>
 				{% endfor %}
 			</div>
 			{% endfor %}
 			</div>
 		</fieldset>
-		{% endfor %} <br>
-		<button type="submit" id="submit" name="submit" class="primary-button" value="to_completed">Завершить регистрацию</button><br>
+		{% endfor %} <br><br>
+		<button type="submit" id="submit" name="submit" class="primary-button text-button" value="to_completed">Завершить регистрацию</button><br>
 		{% else %}
-		<p class="text-body-regular" style="color: #E61E3C;">Кажется, вы не выбрали ни одного дня для регистрации. Попробуйте снова!</p>
+		<p class="text-body-regular col-base-400">Кажется, вы не выбрали ни одного дня для регистрации. Попробуйте снова!</p>
 		{% endif %}
 			</div>
 		</div>

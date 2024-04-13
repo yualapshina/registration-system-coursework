@@ -1,7 +1,12 @@
 /* 
-Шрифты. 
-В этом разделе подгружаются различные начертания шрифта Hse Sans, если он не доступен, используется Roboto.
+В этом файле хранятся все стили проекта: текстовые, цветовые и т.д., а также стилизации всех необходимых элементов - 
 */
+
+/* 
+Шрифты. 
+В этом разделе подгружаются различные начертания шрифта Hse Sans, если он недоступен, используется Roboto.
+*/
+
 /* Regular */
 @font-face {
   font-family: 'HSE Sans';
@@ -150,22 +155,30 @@
   line-height: 24px;
 }
 
+
+/*
+  Создаем цветовые стили для необходимых в отдельности от элементов цветов.
+*/
 .col-hse-500{
   color: #0F2D69;
 }
 .col-hse-400{
   color: #374B9B;
 }
+.col-base-500{
+  color: #1F1F1F;
+}
 .col-base-400{
   color: #808080;
 }
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+.col-error{
+  color: #E61E3C;
 }
 
+
+/*
+Задаем базовые настройки для различных информационных блоков.
+*/
 .parent {
   width: 100%;
   height: 100%;
@@ -184,19 +197,16 @@
   border: none;
 }
 
+
+/*
+Настраиваем навбар - положение, цвета, состояния.
+*/
 .navbar {
   position: fixed;
-  top: 0;
-  width: 100%;
-  height: 64px;
-}
-
-.filterbar {
-  position: fixed;
-  top: 64px;
-  height: 100%;
-  width: 256px;
-  padding: 16px;
+  top: 0%;
+  left: 2%;
+  width: auto;
+  height: 48px;
 }
 
 a:link, a:visited  {
@@ -210,6 +220,23 @@ a:hover, a:active {
   color: #0F2D69;
 }
 
+
+/*
+Настраиваем фильтрбар - он нужен будет для фильтрации мероприятий при регистрации.
+*/
+.filterbar {
+  position: fixed;
+  top: 64px;
+  left: 2%;
+  height: auto;
+  width: 256px;
+  padding: 16px;
+}
+
+/*
+Здесь про сообщения - всплывающие оповещения при успешном выполнении действий, ошибках и предупреждениях.
+Настраиваем их позицию и цвета.
+*/
 .messages {
   position: fixed;
   bottom: 2px;
@@ -248,22 +275,17 @@ a:hover, a:active {
   padding-right: 8px;
 }
 
-legend {
-	padding: 10px;
-}
 
-legend label {
-    width: 100%;
-    display: inline-block;
-}
-
+/*
+Настраиваем кнопки - главную и второстепенные + различные состояния.
+*/
 .primary-button {
   min-width: 100px;
   cursor: pointer;
   appearance: none;
   border: 0;
   border-radius: 8px;
-  background: #0F2D69;
+  background: #374B9B;
   color: #fff;
   display: flex;
   flex-direction: row;
@@ -273,7 +295,7 @@ legend label {
 }
 
 .primary-button:hover {
-  background: #374B9B;
+  background: #4a5b9e;
 }
 
 .primary-button:disabled {
@@ -287,7 +309,7 @@ legend label {
   appearance: none;
   border: 0px;
   border-radius: 8px;
-  color: #0F2D69;
+  color: #374B9B;
   background-color: #E6E6E6;
   display: flex;
   flex-direction: row;
@@ -306,7 +328,9 @@ legend label {
 }
 
 
-/* стили для input */
+/*
+Здесь стили для инпутов.
+*/
 .text-field {
   margin-bottom: 16px;
 }
@@ -323,7 +347,7 @@ legend label {
   border-radius: 8px;
   border: 0px;
   margin-top: 4px;
-  color: #0F2D69;
+  color: #374B9B;
 }
 
 .text-field__input::placeholder {
@@ -349,7 +373,9 @@ legend label {
   color:#808080;
 }
 
-/* стили для textarea */
+/*
+А здесь - для поля ввода большого.
+*/
 textarea{
   min-width: 400px;
   min-height: 256px;
@@ -362,7 +388,7 @@ textarea{
   border-radius: 8px;
   border: 0px;
   margin-top: 4px;
-  color: #0F2D69;
+  color: #374B9B;
 }
 
 textarea::placeholder {
@@ -384,11 +410,12 @@ textarea:hover {
   background-color: #F2F4FF;
 }
 
-/* стили для checkbox */
+/*
+Здесь настраиваются чекбоксы.
+*/
 input[type="checkbox"]:checked,
 input[type="checkbox"]:not(:checked) {
   position: absolute;
-  left: -9999px;
 }
 
 input[type="checkbox"]:checked+label,
@@ -434,8 +461,8 @@ input[type="checkbox"]:not(:checked)+label:after {
   width: 12px;
   height: 6px;
   border-radius: 1px;
-  border-left: 3px solid #0F2D69;
-  border-bottom: 3px solid #0F2D69;
+  border-left: 3px solid #374B9B;
+  border-bottom: 3px solid #374B9B;
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
@@ -451,19 +478,27 @@ input[type="checkbox"]:checked+label:after {
   opacity: 1;
 }
 
-/* стили для fieldset */
+input[type="checkbox"]:hover{
+  background-color: #F2F4FF;
+}
+
+/* 
+Стили для fieldset - он нам нужен для полей расписания.
+*/
 fieldset
 {
-  border-color: #374B9B;
   border-radius: 4px;
+  border: 0px;
 }
 .legend1
 {
-  margin-bottom:0px;
+  margin-bottom:16px;
   margin-left:16px;
 }
 
-/* стили для tooltip*/
+/* 
+Тут настариваем тултипы.
+*/
 .tooltip {
   display: inline-block;
 }
@@ -477,13 +512,17 @@ fieldset
   border: 1px solid #E6E6E6;
   background-color: #fff;
   color: #808080;
+  width: fit-content;
+  max-width: 50%;
 }
 
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
 
-/* стили для table*/
+/* 
+Стили для table - они нам нужны, чтобы красиво выводить готовое расписание.
+*/
 td {
 	padding-right: 20px;
 }

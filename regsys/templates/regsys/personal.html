@@ -5,12 +5,12 @@
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
 	<meta charset="utf-8" />
-	<title>RegSys: Личная информация</title>
+	<title>Личная информация</title>
 </head>
 
 <body>	
 	{% if messages %}
-		<div class="messages">
+		<div class="messages text-caption">
 		{% for message in messages %}
 			<p{% if message.tags %} class="message_{{ message.tags }}"{% endif %}>{{ message }}</p>
 		{% endfor %}
@@ -21,7 +21,7 @@
 		{% csrf_token %}
 		<div class="parent">
 		
-		<div class="navbar">
+		<div class="navbar text-body-regular">
 		{% for name, link in navbar.items %}
 			{% if name == "Создание профиля" %}
 				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
@@ -32,39 +32,39 @@
 		</div>
 		
 			<div class="block">
-		<p class="text-h2" style="color:#374B9B">Личная информация:</p>
+		<p class="text-h2 col-hse-400">Личная информация:</p>
 		<div class="text-field">
-			<label class="text-field__label" for="surname">Фамилия</label>
-			<input class="text-field__input" type="text" id="surname" name="surname"
+			<label class="text-field__label text-body-regular" for="surname">Фамилия</label>
+			<input class="text-field__input text-caption" type="text" id="surname" name="surname"
 				placeholder="Введите вашу фамилию">
 		</div>
 		<div class="text-field">
-			<label class="text-field__label" for="firstname">Имя</label>
-			<input class="text-field__input" type="text" id="firstname" name="firstname"
+			<label class="text-field__label text-body-regular" for="firstname">Имя</label>
+			<input class="text-field__input text-caption" type="text" id="firstname" name="firstname"
 				placeholder="Введите ваше имя">
 		</div>
 		<div class="text-field">
-			<label class="text-field__label" for="patronymic">Отчество</label>
-			<input class="text-field__input" type="text" id="patronymic" name="patronymic"
+			<label class="text-field__label text-body-regular" for="patronymic">Отчество</label>
+			<input class="text-field__input text-caption" type="text" id="patronymic" name="patronymic"
 				placeholder="Введите ваше отчество (при наличии)">
 		</div>
 		<div class="text-field">
-			<label class="text-field__label" for="school">Школа и класс обучения</label>
-			<input class="text-field__input" type="text" id="school" name="school"
+			<label class="text-field__label text-body-regular" for="school">Школа и класс обучения</label>
+			<input class="text-field__input text-caption" type="text" id="school" name="school"
 				placeholder="Введите школу и класс, где вы обучаетесь">
 		</div>
 		<div class="text-field">
-			<label class="text-field__label" for="phone">Телефон</label>
-			<input class="text-field__input" type="text" id="phone" name="phone"
+			<label class="text-field__label text-body-regular" for="phone">Телефон</label>
+			<input class="text-field__input text-caption" type="text" id="phone" name="phone"
 				placeholder="Введите номер телефона для связи с вами">
 		</div>
 		<div class="text-field">
-			<label class="text-field__label" for="telegram">Телеграм</label>
-			<input class="text-field__input" type="text" id="telegram" name="telegram"
+			<label class="text-field__label text-body-regular" for="telegram">Телеграм</label>
+			<input class="text-field__input text-caption" type="text" id="telegram" name="telegram"
 				placeholder="Введите свой ник в телеграме">
 		</div>
 		<br><button id="submit" name="submit" type="submit" value="signup"
-			class="primary-button">Сохранить</button>
+			class="primary-button text-button">Сохранить</button>
 	</div>
 </div>
 	</form>

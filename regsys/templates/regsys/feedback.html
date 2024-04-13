@@ -10,7 +10,7 @@
 
 <body>
 	{% if messages %}
-		<div class="messages">
+		<div class="messages text-caption">
 		{% for message in messages %}
 			<p{% if message.tags %} class="message_{{ message.tags }}"{% endif %}>{{ message }}</p>
 		{% endfor %}
