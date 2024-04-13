@@ -1,5 +1,12 @@
 import datetime
 import csv
+import io
+from PyPDF2 import PdfWriter, PdfReader
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from functools import cmp_to_key
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMessage, send_mail
@@ -124,15 +131,18 @@ def dispatcher(request):
             return redirect(signup)
             
     if sender == "feedback":
-        author = "Автор письма: " + Guest.objects.get(id=request.POST["guest_id"]).user.username
-        reply_to = "Ответить на почту: " + request.POST["email"]
-        message_body = "Текст письма:\n" + request.POST["message"]
+        author = Guest.objects.get(id=request.POST["guest_id"]).user.username
+        attachment = request.FILES['attachment']
+        email = EmailMessage(
+            subject=request.POST["subject"],
+            body=request.POST["message"],
+            from_email=settings.EMAIL_HOST_USER,
+            to=[settings.EMAIL_RECEIVER],
+            cc=[author],
+            reply_to=[author])
+        email.attach(attachment.name, attachment.read(), attachment.content_type)
         try:
-            send_mail(
-                subject=request.POST["subject"],
-                message="\n\n".join([author, reply_to, message_body]),
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[settings.EMAIL_RECEIVER])
+            email.send()
         except:
             messages.error(request, "При отправке сообщения произошла ошибка, попробуйте снова")
             return redirect(feedback)
@@ -370,3 +380,55 @@ def feedback(request):
         'navbar': navbar_profile,
     }
     return render(request, 'regsys/feedback.html', context)
+    
+@login_required    
+def certificate(request):
+    response = HttpResponse(
+        content_type="application/pdf",
+        headers={"Content-Disposition": 'attachment; filename="certificate.pdf"'},
+    )
+    
+    event = Event.objects.get(id=request.GET["event_key"])
+    guest = request.user.guest
+    regs = Registration.objects.filter(guest=guest, status=Registration.Status.VIS, timetable__event=event)
+    
+    pdfmetrics.registerFont(TTFont('HSESans-Regular', 'regsys/static/regsys/fonts/HSESans-Regular.ttf'))
+    pdfmetrics.registerFont(TTFont('HSESans-SemiBold', 'regsys/static/regsys/fonts/HSESans-SemiBold.ttf'))
+    packet = io.BytesIO()
+    can = canvas.Canvas(packet, pagesize=A4)
+    x, y = A4
+    
+    #TODO line wrapping
+    can.setFont("HSESans-SemiBold", 24)
+    can.setFillColorRGB(0.43, 0.43, 0.43)
+    can.drawCentredString(x/2, y-310, str(guest))
+    can.setFillColorRGB(0.12, 0.12, 0.12)
+    can.drawCentredString(x/2, y-428, str(event))
+    date_str = event.start_date.strftime('%d.%m.%Y')
+    if event.start_date != event.end_date:
+        date_str = 'с ' + event.start_date.strftime('%d.%m.%Y') + ' по ' + event.end_date.strftime('%d.%m.%Y')
+    can.setFont("HSESans-SemiBold", 16)
+    can.setFillColorRGB(0.43, 0.43, 0.43)
+    can.drawCentredString(x/2, y-468, date_str)
+    can.showPage()
+    
+    textobject = can.beginText()
+    textobject.setFont("HSESans-Regular", 16)
+    textobject.setFillColorRGB(0.12, 0.12, 0.12)
+    textobject.setTextOrigin(64, y-160)
+    for reg in regs:
+        textobject.textLine(str(reg.timetable))
+    can.drawText(textobject)
+    can.save()
+    packet.seek(0)
+    
+    new_pdf = PdfReader(packet)
+    template_pdf = PdfReader(open('regsys/static/regsys/template-certificate.pdf', 'rb'))
+    output = PdfWriter(response)
+    for i in range(len(template_pdf.pages)):
+        page = template_pdf.pages[i]
+        page.merge_page(new_pdf.pages[i])
+        output.add_page(page)
+    output.write(response)
+    
+    return response
