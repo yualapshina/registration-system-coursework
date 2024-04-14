@@ -1,0 +1,230 @@
+/* 
+Цвета.
+В этом файле подгружается вся палитра необходимых цветов.
+*/
+
+/*
+Сначала база - оттенки серого (самую капельку в синеву).
+*/
+
+.col-base-900 {
+  color: #2d2d30;
+}
+
+.col-base-800 {
+  color: #4f5053;
+}
+
+.col-base-700 {
+  color: #6f7073;
+}
+
+.col-base-600 {
+  color: #848588;
+}
+
+.col-base-500 {
+  color: #aeafb3;
+}
+
+.col-base-400 {
+  color: #cbccd0;
+}
+
+.col-base-300 {
+  color: #edeef1;
+}
+
+.col-base-200 {
+  color: #f2f2f6;
+}
+
+.col-base-100 {
+  color: #f6f7fb;
+}
+
+.col-base-50 {
+  color: #fbfcff;
+}
+
+/*
+Теперь основной цвет - синий на базе #374b9b из брендбука.
+*/
+
+.col-primary-900 {
+  color: #1a276d;
+}
+
+.col-primary-800 {
+  color: #273883;
+}
+
+.col-primary-700 {
+  color: #2e418f;
+}
+
+/*Вот он, солнышко наше, h-s-e..*/
+.col-primary-600 {
+  color: #374b9b;
+}
+
+.col-primary-500 {
+  color: #3d53a4;
+}
+
+.col-primary-400 {
+  color: #5a6cb1;
+}
+
+.col-primary-300 {
+  color: #7786be;
+}
+
+.col-primary-200 {
+  color: #9da8d1;
+}
+
+.col-primary-100 {
+  color: #c4cae4;
+}
+
+.col-primary-50 {
+  color: #e8eaf4;
+}
+
+/*
+Дальше идут цвета для фидбека - предупреждений, сообщений и т.д.
+В начале успешные-зелененькие.
+*/
+
+.col-success-900 {
+  color: #009a67;
+}
+
+.col-success-800 {
+  color: #00bc80;
+}
+
+.col-success-700 {
+  color: #00cf8e;
+}
+
+.col-success-600 {
+  color: #00e49f;
+}
+
+.col-success-500 {
+  color: #00f6ad;
+}
+
+.col-success-400 {
+  color: #33fabb;
+}
+
+.col-success-300 {
+  color: #68fec9;
+}
+
+.col-success-200 {
+  color: #9cffd9;
+}
+
+.col-success-100 {
+  color: #c6fee7;
+}
+
+.col-success-50 {
+  color: #e7fff6;
+}
+
+/*
+Теперь тревожно-желтые.
+*/
+
+.col-warning-900 {
+  color: #e36c2e;
+}
+
+.col-warning-800 {
+  color: #e68836;
+}
+
+.col-warning-700 {
+  color: #e8973b;
+}
+
+.col-warning-600 {
+  color: #eba73f;
+}
+
+.col-warning-500 {
+  color: #edb343;
+}
+
+.col-warning-400 {
+  color: #f0be53;
+}
+
+.col-warning-300 {
+  color: #f3ca69;
+}
+
+.col-warning-200 {
+  color: #f6d790;
+}
+
+.col-warning-100 {
+  color: #fae7ba;
+}
+
+.col-warning-50 {
+  color: #fdf6e4;
+}
+
+/*
+И агрессивно-трагично-красные ошибки.
+*/
+
+.col-error-900 {
+  color: #cc171a;
+}
+
+.col-error-800 {
+  color: #db2527;
+}
+
+.col-error-700 {
+  color: #e82d2f;
+}
+
+.col-error-600 {
+  color: #fb3835;
+}
+
+.col-error-500 {
+  color: #ff4234;
+}
+
+.col-error-400 {
+  color: #ff5350;
+}
+
+.col-error-300 {
+  color: #f87575;
+}
+
+.col-error-200 {
+  color: #fd9d9c;
+}
+
+.col-error-100 {
+  color: #ffcfd4;
+}
+
+.col-error-50 {
+  color: #ffecef;
+}
+
+/*
+Ура, мы собрали цветовую палитру! Ы.
+*/

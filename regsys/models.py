@@ -84,7 +84,7 @@ class Registration(models.Model):
     status = models.CharField(choices=Status.choices, default=Status.AFF, verbose_name="Статус")
     
     def __str__(self):
-        return str(self.timetable) + " (" + self.timetable.event.event_name + ") / " + str(self.guest)
+        return str(self.timetable) + " / " + str(self.guest)
     
     def is_past(self):
         return self.status in {self.Status.VIS, self.Status.MIS}

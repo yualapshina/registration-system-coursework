@@ -1,6 +1,7 @@
 import datetime
 import csv
 import io
+import qrcode
 from PyPDF2 import PdfWriter, PdfReader
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -20,6 +21,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+from django.urls import path, reverse_lazy
+from django.views.generic.base import RedirectView
 from .models import Event, Timetable, Guest, Registration, Label, Labelmap
 
 navbar_sign = {
@@ -432,3 +436,37 @@ def certificate(request):
     output.write(response)
     
     return response
+    
+@login_required    
+def qr_generate(request):
+    response = HttpResponse(
+        content_type="image/png",
+        headers={"Content-Disposition": 'attachment; filename="qr.png"'},
+    )
+    
+    link = 'http://127.0.0.1:8000/qr/read/'
+    link += '?timetable=' + str(request.GET["timetable"])
+    link += '&guest=' + str(request.GET["guest"])
+    qr = qrcode.QRCode()
+    qr.add_data(link)
+    qr.make()
+    img = qr.make_image(back_color=(232,234,244), fill_color=(26,39,109))
+    img.save(response)
+    return response
+    
+@staff_member_required
+def qr_read(request):
+    timetable = Timetable.objects.get(id=request.GET["timetable"])
+    guest = Guest.objects.get(id=request.GET["guest"])  
+    try:
+        reg = Registration.objects.get(timetable=timetable, guest=guest)
+        if reg.status == Registration.Status.AFF:
+            reg.status = Registration.Status.VIS
+            reg.save()
+        link = '../../admin/regsys/registration/'
+        link += '?timetable=' + str(request.GET["timetable"])
+        link += '&guest=' + str(request.GET["guest"])
+        return redirect(link)
+    except:
+        pass
+    return redirect('admin:index')

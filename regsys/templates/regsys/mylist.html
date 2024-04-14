@@ -38,7 +38,20 @@
 			<table>
 				{% for date, entries in dates.items %}
 				<tr>
+<<<<<<< HEAD
 					<td class="date-header text-label col-primary-400">{{ date }}</td>
+=======
+				<form action="{% url 'qr_generate' %}" method="get">
+					<input type="text" id="guest" name="guest" value="{{ guest.id }}" hidden>
+					<input type="text" id="timetable" name="timetable" value="{{ entry.id }}" hidden>
+					<td><button type="submit" class="secondary-button text-button" id="submit" name="submit" value="qr_generate">QR</button>
+				</td></form>
+				<td class="text-body-regular">{{ entry.category }}</td>
+				<td class="text-body-regular">{{ entry.timetable_name }}</td>
+				<td class="text-body-italic col-base-400">{{ event.place }}, {{ entry.place }}</td>
+				<td class="text-body-italic col-base-400">{{ entry.host }}</td>
+				<td class="{{ status }} text-caption col-base-400">{{ status.label }}</td>
+>>>>>>> 98f56cbf3182bde73a1838a5635100cccc534146
 				</tr>
 				{% for entry, status in entries.items %}
 				<tr>
@@ -79,6 +92,7 @@
 			<br><br>
 
 			{% endfor %}
+<<<<<<< HEAD
 			{% else %}
 			<p class="text-regular col-base-600">Здесь пока пусто. Переходи на страницу регистрации и выбирай
 				мероприятие для себя!</p>
@@ -90,6 +104,29 @@
 			<span class="text-header-semibold col-primary-600">{{ event.event_name }}</span>
 			<table>
 				{% for date, entries in dates.items %}
+=======
+		{% endfor %}
+		</table><br><br>
+	{% endfor %}
+	{% else %}
+	<p class="text-body-regular col-base-400">Здесь пока пусто. Переходи на страницу регистрации и выбирай мероприятие для себя!</p>
+	{% endif %}
+	<br>
+	
+	<p class="text-h1 col-hse-400">Прошедшие события</p>
+	{% if regs_past %}
+	{% for event, dates in regs_past.items %}
+		<table><tr>
+		<td class="text-h2 col-hse-400">{{ event.event_name }}</td>
+		<form action="{% url 'certificate' %}" method="get">
+			<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
+			<td><button type="submit" class="primary-button text-button" id="submit" name="submit" value="certificate">Скачать сертификат (PDF)</button>
+		</td></form></tr></table>
+		<table>
+		{% for date, entries in dates.items %}
+			<tr><td class="date-header text-body-semibold col-hse-400">{{ date }}</td></tr>
+			{% for entry, status in entries.items %}
+>>>>>>> 98f56cbf3182bde73a1838a5635100cccc534146
 				<tr>
 					<td class="date-header text-label col-primary-400">{{ date }}</td>
 				</tr>

@@ -7,6 +7,8 @@ from .models import Event, Timetable, Guest, Registration, Label, Labelmap
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ("event_name", "start_date", "end_date", "place", "timetables_link")
+    list_filter = ["start_date", "end_date", "place"]
+    search_fields = ["event_name", "start_date", "end_date", "place"]
     
     def timetables_link(self, obj):
         count = obj.timetable_set.count()
@@ -22,6 +24,8 @@ class EventAdmin(admin.ModelAdmin):
 @admin.register(Timetable)
 class TimetableAdmin(admin.ModelAdmin):
     list_display = ("timetable_name", "event", "category", "date", "place", "host", "repeating", "seats", "registrations_link")
+    list_filter = ["event", "category", "date", "repeating"]
+    search_fields = ["timetable_name", "event__event_name", "category", "date", "place", "host", "seats"]
     
     def registrations_link(self, obj):
         count = obj.registration_set.count()
@@ -37,6 +41,8 @@ class TimetableAdmin(admin.ModelAdmin):
 @admin.register(Guest)
 class GuestAdmin(admin.ModelAdmin):
     list_display = ("user", "phone", "surname", "firstname", "patronymic", "school", "telegram", "registrations_link")
+    list_filter = []
+    search_fields = ["user__username", "phone", "surname", "firstname", "patronymic", "school", "telegram"]
     
     def registrations_link(self, obj):
         count = obj.registration_set.count()
@@ -52,6 +58,8 @@ class GuestAdmin(admin.ModelAdmin):
 @admin.register(Registration)
 class RegistrationAdmin(admin.ModelAdmin):
     list_display = ("key", "status_verbose")
+    list_filter = ["timetable__event", "status"]
+    search_fields = ["timetable__timetable_name", "guest__surname", "guest__firstname", "timetable__event__event_name"]
     
     def key(self, obj):
         return str(obj)
@@ -65,6 +73,8 @@ class RegistrationAdmin(admin.ModelAdmin):
 @admin.register(Label)
 class LabelAdmin(admin.ModelAdmin):
     list_display = ("label_name", "type_verbose", "events_link")
+    list_filter = ["type"]
+    search_fields = ["label_name"]
     
     def type_verbose(self, obj):
         return Label.Type[obj.type].label
@@ -84,6 +94,8 @@ class LabelAdmin(admin.ModelAdmin):
 @admin.register(Labelmap)
 class LabelmapAdmin(admin.ModelAdmin):
     list_display = ("key",)
+    list_filter = ["event", "label__type"]
+    search_fields = ["event__event_name", "label__label_name"]
     
     def key(self, obj):
         return str(obj)

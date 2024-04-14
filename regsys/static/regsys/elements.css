@@ -1,0 +1,342 @@
+/*
+Элементы.
+В этом файле стилизуются все нужные нам элементы.
+*/
+
+/*
+Для начала - задний фон для всего-всего.
+*/
+.background {
+  background-color: #fbfcff;
+}
+
+/*
+Задаем базовые настройки для различных информационных блоков.
+*/
+.parent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.block {
+  margin-top: 52px;
+  margin-left: 400px;
+  margin-right: 400px;
+}
+
+.block_in_group {
+  margin-top: 52px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/*
+Настраиваем навбар - положение, цвета, состояния.
+*/
+.navbar {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: auto;
+  background-color: #e8eaf4;
+  padding-left: 5%;
+}
+
+a:link,
+a:visited {
+  padding: 16px;
+  display: inline-block;
+  color: #374b9b;
+  text-decoration: none;
+}
+
+a:hover,
+a:active {
+  color: #5a6cb1;
+}
+
+
+/*
+Настраиваем фильтрбар - он нужен будет для фильтрации мероприятий при регистрации.
+*/
+.filterbar {
+  position: fixed;
+  top: 64px;
+  left: 2%;
+  height: auto;
+  width: 256px;
+  padding: 16px;
+}
+
+/*
+Здесь про сообщения - всплывающие оповещения при успешном выполнении действий, ошибках и предупреждениях.
+Настраиваем их позицию и цвета.
+*/
+.messages {
+  position: fixed;
+  bottom: 2px;
+}
+
+.message_success {
+  max-width: 85%;
+  color: #009a67;
+  background-color: #9cffd9;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+.message_warning {
+  max-width: 85%;
+  color: #e36c2e;
+  background-color: #fae7ba;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+.message_error {
+  max-width: 85%;
+  color: #cc171a;
+  background-color: #ffcfd4;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+
+
+
+/*
+Настраиваем кнопки - главную и второстепенные + различные состояния.
+*/
+.primary-button {
+  cursor: pointer;
+  border: none;
+  border-radius: 16px;
+  background: #273883;
+  color: #e8eaf4;
+  padding: 8px 16px;
+}
+
+.primary-button:hover {
+  background: #374b9b;
+}
+
+.primary-button:disabled {
+  background: #6f7073;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  cursor: pointer;
+  border: none;
+  border-radius: 16px;
+  background: #e8eaf4;
+  color: #273883;
+  padding: 8px 16px;
+}
+
+.secondary-button:hover {
+  color: #374b9b;
+}
+
+.secondary-button:disabled {
+  color: #6f7073;
+  cursor: not-allowed;
+}
+
+
+/*
+Здесь стили для инпутов.
+*/
+.text-field {
+  margin-bottom: 16px;
+}
+
+.text-field__input,
+textarea {
+  min-width: 250px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  background-color: #edeef1;
+  margin-top: 4px;
+  color: #4f5053;
+  outline: 0;
+}
+
+textarea {
+  min-height: 100px;
+}
+
+.text-field__input::placeholder,
+textarea::placeholder {
+  color: #848588;
+}
+
+.text-field__input:disabled,
+textarea:disabled {
+  background: #cbccd0;
+  cursor: not-allowed;
+}
+
+.text-field__input:focus,
+.text-field__input:hover textarea:focus,
+textarea:hover {
+  background-color: #e8eaf4;
+}
+
+.text-field__input:focus,
+textarea:focus {
+  color: #1a276d;
+  caret-color: #1a276d;
+}
+
+.text-field__label {
+  color: #848588;
+}
+
+/*
+Стилизуем загрузку файла.
+Этот человек святой https://nikitahl.com/custom-styled-input-type-file
+*/
+input[type=file] {
+  width: 100%;
+  margin-top: 4px;
+  color: #848588;
+  padding: 16px 0px;
+  background: #fbfcff;
+  border-radius: 8px;
+  border: 0;
+}
+
+input[type=file]::file-selector-button {
+  margin-right: 20px;
+  cursor: pointer;
+  border: 0px;
+  border-radius: 8px;
+  color: #848588;
+  background-color: #E6E6E6;
+  padding: 8px 16px;
+  font-family: 'HSE Sans', Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+input[type=file]::file-selector-button:hover {
+  background-color: #e8eaf4;
+}
+
+
+/*
+Здесь настраиваются чекбоксы и радио.
+Сдвигаем до невидимости оригиналы и заменяем их подгружаемыми изображениями (свои для всех состояний).
+*/
+.radio,
+.checkbox {
+  appearance: none;
+  display: inline-block;
+  margin: 4px;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  vertical-align: middle;
+}
+
+.radio {
+  background-image: url(./images/radio_empty_default.png);
+}
+
+.checkbox {
+  background-image: url(./images/checkbox_empty_default.png);
+}
+
+.radio:empty:hover {
+  background-image: url(./images/radio_empty_hover.png);
+}
+
+.checkbox:empty:hover {
+  background-image: url(./images/checkbox_empty_hover.png);
+}
+
+.radio:checked {
+  background-image: url(./images/radio_filled_default.png);
+}
+
+.checkbox:checked {
+  background-image: url(./images/checkbox_filled_default.png);
+}
+
+.radio:checked:hover {
+  background-image: url(./images/radio_filled_hover.png);
+}
+
+.checkbox:checked:hover {
+  background-image: url(./images/checkbox_filled_hover.png);
+}
+
+.select-field__label {
+  color: #4f5053;
+}
+
+.select-field__label:hover {
+  color: #2d2d30;
+}
+
+
+
+/* 
+Стили для fieldset - он нам нужен для полей расписания.
+*/
+fieldset {
+  border: none;
+}
+
+.legend1 {
+  margin-bottom: 16px;
+  margin-left: 16px;
+}
+
+/* 
+Тут настариваем тултипы.
+*/
+.tooltip {
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+  background-color: #fff;
+  color: #848588;
+  width: fit-content;
+  max-width: 35%;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+/* 
+Стили для table - они нам нужны, чтобы красиво выводить готовое расписание.
+*/
+td {
+  padding-right: 20px;
+}
+
+.date-header {
+  text-align: center;
+  padding-top: 20px;
+}
