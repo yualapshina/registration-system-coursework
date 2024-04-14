@@ -9,4 +9,4 @@
 - [Архитектура базы данных](https://www.figma.com/file/cpJIurC4qGIu2jrA6UtA9I/Registration-System%3A-ER-Diagram?type=whiteboard&t=XQAnZ1MlXFPwVaEB-6)
 ### release notes
 - возможна доустановка новых библиотек, просто pip install в терминале
-- настройка пдф - *views.py*, самая нижняя функция *certificate*
+- настройка пдф - *views.py*, одна из самых нижних функция *certificate*

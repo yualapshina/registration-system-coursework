@@ -55,6 +55,11 @@
 			<tr><td class="date-header text-body-semibold col-hse-400">{{ date }}</td></tr>
 			{% for entry, status in entries.items %}
 				<tr>
+				<form action="{% url 'qr_generate' %}" method="get">
+					<input type="text" id="guest" name="guest" value="{{ guest.id }}" hidden>
+					<input type="text" id="timetable" name="timetable" value="{{ entry.id }}" hidden>
+					<td><button type="submit" class="secondary-button text-button" id="submit" name="submit" value="qr_generate">QR</button>
+				</td></form>
 				<td class="text-body-regular">{{ entry.category }}</td>
 				<td class="text-body-regular">{{ entry.timetable_name }}</td>
 				<td class="text-body-italic col-base-400">{{ event.place }}, {{ entry.place }}</td>
@@ -77,7 +82,7 @@
 		<td class="text-h2 col-hse-400">{{ event.event_name }}</td>
 		<form action="{% url 'certificate' %}" method="get">
 			<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
-			<td><button type="submit" class="primary-button" id="submit" name="submit" value="certificate">Скачать сертификат (PDF)</button>
+			<td><button type="submit" class="primary-button text-button" id="submit" name="submit" value="certificate">Скачать сертификат (PDF)</button>
 		</td></form></tr></table>
 		<table>
 		{% for date, entries in dates.items %}
