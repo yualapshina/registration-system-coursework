@@ -9,91 +9,95 @@
 	<link rel="icon" href="{% static 'regsys/images/favicon.png' %}" type="image/png">
 </head>
 
-<body>
-		<div class="parent">
-		
-		<div class="navbar text-body-regular">
-		{% for name, link in navbar.items %}
+<body class="background">
+	<div class="parent">
+
+		<div class="navbar text-label">
+			{% for name, link in navbar.items %}
 			{% if name == "Зарегистрироваться" %}
-				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
+			<a class="navbar_current" href="{% url link %}">{{ name }}</a>
 			{% else %}
-				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
+			<a class="navbar_link" href="{% url link %}">{{ name }}</a>
 			{% endif %}
-		{% endfor %}
+			{% endfor %}
 		</div>
-		
-			<div class="filterbar">
-		{% if filterbar %}
-		<form action="{% url 'register' %}" method="get">
-		{% for type, labels in filterbar.items %}
-			<br><p class="{{ type.0 }} text-body-regular col-base-500"> {{ type.1 }}</p>
-			{% for label, checked in labels.items %}
+
+		<div class="filterbar">
+			{% if filterbar %}
+			<form action="{% url 'register' %}" method="get">
+				{% for type, labels in filterbar.items %}
+				<p class="{{ type.0 }} text-regular col-base-700"> {{ type.1 }}</p>
+				{% for label, checked in labels.items %}
 				{% if checked %}
-				<input type="checkbox" id="label_{{ label.id }}" name="label_{{ label.id }}" checked>
-				<label class="text-field__label text-body-regular col-hse-400" for="label_{{ label.id }}">{{ label.label_name }}</label><br>
+				<input type="checkbox" class="checkbox" id="label_{{ label.id }}" name="label_{{ label.id }}" checked>
+				<label class="select-field__label text-regular" for="label_{{ label.id }}">{{ label.label_name
+					}}</label><br>
 				{% else %}
-				<input type="checkbox" id="label_{{ label.id }}" name="label_{{ label.id }}">
-				<label class="text-field__label text-body-regular" for="label_{{ label.id }}">{{ label.label_name }}</label><br>
+				<input type="checkbox" class="checkbox" id="label_{{ label.id }}" name="label_{{ label.id }}">
+				<label class="select-field__label text-regular" for="label_{{ label.id }}">{{ label.label_name
+					}}</label><br>
 				{% endif %}
-			{% endfor %}
-		{% endfor %}
-		<br><br><button id="submit" name="submit" type="submit" value="filter" 
-			class="secondary-button text-button">Фильтровать</button>	
-		</form>
-		{% endif %}
+				{% endfor %}
+				{% endfor %}
+				<br><br><button id="submit" name="submit" type="submit" value="filter"
+					class="secondary-button text-label">Фильтровать</button>
+			</form>
+			{% endif %}
 		</div>
-		
+
 		<div class="block">
-	<form action="{% url 'timetable' %}" method="post">
-		{% csrf_token %}		
-		<p class="text-h1 col-hse-400">Текущие мероприятия</p>
-		{% if events_future %}
-		{% for event, labels in events_future.items %}
-		<div class="tooltip">
-			<p class="text-h2 col-hse-400"> {{ event.event_name }}</p>
-			<span class="tooltiptext text-caption">{{ event.annotation }}</span>
-		</div><br>
+			<form action="{% url 'timetable' %}" method="post">
+				{% csrf_token %}
+				<p class="text-header-black col-primary-800">Текущие мероприятия</p>
+				{% if events_future %}
+				{% for event, labels in events_future.items %}
+				<div class="tooltip">
+					<span class="text-header-semibold col-primary-600"> {{ event.event_name }}</span>
+					<span class="tooltiptext text-caption">{{ event.annotation }}</span>
+				</div><br>
+				{% for label in labels %}
+				<span class="{{ label.type }} text-caption col-base-500">{{ label.label_name }}&emsp;</span>
+				{% endfor %}
+				<br><span class="text-regular col-base-700">{{ event.place }}&emsp;</span>
+				{% if event.start_date != event.end_date %}
+				<span class="text-regular col-base-700">{{ event.start_date }} - {{ event.end_date }}</span>
+				{% else %}
+				<span class="text-regular col-base-700">{{ event.start_date }}</span>
+				{% endif %}
+				<br><br><button id="event_{{ event.id }}" name="event_key" type="submit" value="{{ event.id }}"
+					class="primary-button text-label">Регистрация</button><br>
+				{% endfor %}
+				{% else %}
+				<p class="text-regular col-base-600">
+					К сожалению, сейчас нет доступных для регистрации мероприятий.
+					<br>Попробуйте изменить фильтры, если вы их выбирали.
+				</p>
+				{% endif %}
+			</form>
+
+			<br>
+			<p class="text-header-black col-primary-800">Завершённые мероприятия</p>
+			{% if events_past %}
+			{% for event, labels in events_past.items %}
+			<div class="tooltip">
+				<span class="text-header-semibold col-primary-600"> {{ event.event_name }}</span>
+				<span class="tooltiptext text-caption">{{ event.annotation }}</span>
+			</div><br>
 			{% for label in labels %}
-			<span class="{{ label.type }} text-caption col-base-400">{{ label.label_name }}&emsp;</span>
+			<span class="{{ label.type }} text-caption col-base-500">{{ label.label_name }}&emsp;</span>
 			{% endfor %}
-		<br><span class="text-body-regular col-base-500">{{ event.place }}&emsp;</span>
-		{% if event.start_date != event.end_date %}
-			<span class="text-body-regular col-base-500">{{ event.start_date }} - {{ event.end_date }}</span>
+			<br><span class="text-regular col-base-700">{{ event.place }}&emsp;</span>
+			{% if event.start_date != event.end_date %}
+			<span class="text-regular col-base-700">{{ event.start_date }} - {{ event.end_date }}</span><br>
 			{% else %}
-			<span class="text-body-regular col-base-500">{{ event.start_date }}</span>
-		{% endif %}
-		<br><br><button id="event_{{ event.id }}" name="event_key" type="submit" value="{{ event.id }}"
-			class="primary-button text-button">Регистрация</button><br>
-		{% endfor %}
-		{% else %}
-		<p class="text-body-regular col-base-400">
-			К сожалению, сейчас нет доступных для регистрации мероприятий.
-			<br>Попробуйте изменить фильтры, если вы их выбирали.</p>
-		{% endif %}
-	</form>
-		
-		<br><p class="text-h1 col-hse-400">Завершённые мероприятия</p>
-		{% if events_past %}
-		{% for event, labels in events_past.items %}
-		<div class="tooltip">
-			<p class="text-h2 col-hse-400"> {{ event.event_name }}</p>
-			<span class="tooltiptext text-caption">{{ event.annotation }}</span>
-		</div><br>
-			{% for label in labels %}
-			<span class="{{ label.type }} text-caption col-base-400">{{ label.label_name }}&emsp;</span>
-			{% endfor %}
-		<br><span class="text-body-regular col-base-500">{{ event.place }}&emsp;</span>
-		{% if event.start_date != event.end_date %}
-			<span class="text-body-regular col-base-500">{{ event.start_date }} - {{ event.end_date }}</span><br>
+			<span class="text-regular col-base-700">{{ event.start_date }}</span><br>
+			{% endif %}
+			{% endfor %}<br>
 			{% else %}
-			<span class="text-body-regular col-base-500">{{ event.start_date }}</span><br>
-		{% endif %}
-		{% endfor %}<br>
-		{% else %}
-		<p class="text-body-regular col-base-400">Кажется, завершенных мероприятий сейчас нет.</p><br>
-		{% endif %}
+			<p class="text-body-regular col-base-600">Кажется, завершенных мероприятий сейчас нет.</p><br>
+			{% endif %}
+		</div>
 	</div>
-</div>
 </body>
 
 </html>

@@ -9,67 +9,78 @@
 	<link rel="icon" href="{% static 'regsys/images/favicon.png' %}" type="image/png">
 </head>
 
-<body>
+<body class="background">
 	<form action="{% url 'completed' %}" method="post">
 		{% csrf_token %}
 		<input type="text" id="event_id" name="event_id" value="{{ event_id }}" hidden>
 		<div class="parent">
-		
-		<div class="navbar text-body-regular">
-		{% for name, link in navbar.items %}
-			{% if name == "Зарегистрироваться" %}
+
+			<div class="navbar text-label">
+				{% for name, link in navbar.items %}
+				{% if name == "Зарегистрироваться" %}
 				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
-			{% else %}
+				{% else %}
 				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
-			{% endif %}
-		{% endfor %}
-		</div>
-		
-			<div class="block">
-		<p class="text-h2 col-hse-400">{{ event.event_name }}: Уточнение расписания</p>
-		<p class="text-caption col-base-400">Будьте внимательны! Некоторые мероприятия идут одновременно - выбрать можно только одно.<br>А еще, некоторые из них повторяются в разное время.</p>
-		{% if timetable %}
-		{% for date, cats in timetable.items %}
-		<fieldset>
-			<legend class="text-body-semibold col-hse-400">{{ date }}</legend>
-			<div id="content_{{ forloop0.counter }}">
-			{% for cat, entries in cats.items %}
-			<div>
-				<p class="text-body-regular col-hse-400">{{ cat }}</p>
-				{% for entry, chosen in entries.items %}
-				{% if not chosen %}
-					{% if entry.seats == 0 %}
-						<input type="radio" id="entry_{{ entry.id }}" name="category_{{ date }}_{{ cat }}" value="{{ entry.id }}" disabled>
-					{% else %}
-						<input type="radio" id="entry_{{ entry.id }}" name="category_{{ date }}_{{ cat }}" value="{{ entry.id }}" required>
-					{% endif %}
-				{% else %}
-				<input type="radio" id="entry_{{ entry.id }}" name="category_{{ date }}_{{ cat }}" value="{{ entry.id }}" checked required>
 				{% endif %}
-				<div class="tooltip">
-					<p class="text-body-regular col-hse-400">{{ entry.timetable_name }}&emsp;&emsp;</p>
-					<span class="tooltiptext">{{ entry.annotation }}<span>
-				</div>
-				<span><br><span class="text-body-regular col-base-400">Место: </span><span class="text-body-regular col-base-400">{{ entry.place}}</span>&emsp;<span class="text-body-regular col-base-400">Ведущий: </span><span
-						class="text-body-regular col-base-400">{{ entry.host }}</span>&emsp; <span class="text-body-regular col-base-400">Свободных мест: </span>
-					{% if entry.seats < 0 %} <span class="text-body-regular col-base-400">не ограничено</span>
-				{% else %}
-				<span class="text-body-regular col-base-400">{{ entry.seats }}</span>
-				{% endif %}
-				{% if entry.repeating %}
-				<span class="text-caption col-base-400"><br>*Мероприятие также проводится в другое время</span>
-				{% endif %}
-				<br><br>
 				{% endfor %}
 			</div>
-			{% endfor %}
-			</div>
-		</fieldset>
-		{% endfor %} <br><br>
-		<button type="submit" id="submit" name="submit" class="primary-button text-button" value="to_completed">Завершить регистрацию</button><br>
-		{% else %}
-		<p class="text-body-regular col-base-400">Кажется, вы не выбрали ни одного дня для регистрации. Попробуйте снова!</p>
-		{% endif %}
+
+			<div class="block">
+				<p class="text-header-black col-primary-800">{{ event.event_name }}: Уточнение расписания</p>
+				<p class="text-caption col-base-600">Будьте внимательны! Некоторые мероприятия идут одновременно -
+					выбрать можно только одно.<br>А еще, некоторые из них повторяются в разное время.</p>
+				{% if timetable %}
+				{% for date, cats in timetable.items %}
+				<fieldset>
+					<legend class="legend1 text-header-semibold col-primary-600">{{ date }}</legend>
+					<div id="content_{{ forloop0.counter }}">
+						{% for cat, entries in cats.items %}
+						<div>
+							<span class="text-caption col-primary-600">{{ cat }}</span><br>
+							{% for entry, chosen in entries.items %}
+							{% if not chosen %}
+							{% if entry.seats == 0 %}
+							<input type="radio" class="radio" id="entry_{{ entry.id }}"
+								name="category_{{ date }}_{{ cat }}" value="{{ entry.id }}" disabled>
+							{% else %}
+							<input type="radio" class="radio" id="entry_{{ entry.id }}"
+								name="category_{{ date }}_{{ cat }}" value="{{ entry.id }}" required>
+							{% endif %}
+							{% else %}
+							<input type="radio" id="entry_{{ entry.id }}" name="category_{{ date }}_{{ cat }}"
+								value="{{ entry.id }}" checked required>
+							{% endif %}
+							<div class="tooltip">
+								<p class="select-field__label text-regular">{{ entry.timetable_name }}&emsp;&emsp;</p>
+								<span class="tooltiptext">{{ entry.annotation }}<span>
+							</div>
+							<span><br><span class="text-regular col-base-700">Место: </span><span
+									class="text-regular col-base-600">{{ entry.place}}</span>&emsp;<span
+									class="text-regular col-base-700">Ведущий: </span><span
+									class="text-regular col-base-600">{{ entry.host }}</span>&emsp; <span
+									class="text-regular col-base-700">Свободных мест: </span>
+								{% if entry.seats < 0 %} <span class="text-regular col-base-600">не
+									ограничено</span>
+							{% else %}
+							<span class="text-regular col-base-600">{{ entry.seats }}</span>
+							{% endif %}
+							{% if entry.repeating %}
+							<span class="text-caption col-base-500"><br>*Мероприятие также проводится в другое
+								время</span>
+							{% endif %}
+							<br><br>
+							{% endfor %}
+						</div>
+						{% endfor %}
+					</div>
+				</fieldset>
+				{% endfor %}
+				<button type="submit" id="submit" name="submit" class="primary-button text-label"
+					value="to_completed">Завершить регистрацию</button><br>
+				{% else %}
+				<p class="text-body-regular col-base-600">Кажется, вы не выбрали ни одного дня для регистрации.
+					Попробуйте снова!</p>
+				{% endif %}
 			</div>
 		</div>
 	</form>

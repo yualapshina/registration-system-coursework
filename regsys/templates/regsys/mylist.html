@@ -9,95 +9,117 @@
 	<link rel="icon" href="{% static 'regsys/images/favicon.png' %}" type="image/png">
 </head>
 
-<body>
+<body class="background">
 	{% if messages %}
-		<div class="messages text-caption">
+	<div class="messages text-caption">
 		{% for message in messages %}
-			<p{% if message.tags %} class="message_{{ message.tags }}"{% endif %}>{{ message }}</p>
-		{% endfor %}
-		</div>
+		<p{% if message.tags %} class="message_{{ message.tags }}" {% endif %}>{{ message }}</p>
+			{% endfor %}
+	</div>
 	{% endif %}
 
 	<div class="parent">
-	
-	<div class="navbar text-body-regular">
-		{% for name, link in navbar.items %}
+
+		<div class="navbar text-label">
+			{% for name, link in navbar.items %}
 			{% if name == "Моё расписание" %}
-				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
+			<a class="navbar_current" href="{% url link %}">{{ name }}</a>
 			{% else %}
-				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
+			<a class="navbar_link" href="{% url link %}">{{ name }}</a>
 			{% endif %}
-		{% endfor %}
+			{% endfor %}
 		</div>
-	
-	<div class="block">
-	<p class="text-h1 col-hse-400">Текущее расписание</p>
-	{% if regs_future %}
-	{% for event, dates in regs_future.items %}
-		<table><tr>
-		<td class="text-h2 col-hse-400">{{ event.event_name }}</td>
-		<form action="{% url 'download' %}" method="get">
-			<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
-			<td><button type="submit" class="primary-button text-button" id="submit" name="submit" value="download">Скачать расписание (CSV)</button>
-		</td></form>
-		<form action="{% url 'timetable' %}" method="post">
-			{% csrf_token %}
-			<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
-			<td><button type="submit" class="secondary-button text-button" id="submit" name="submit" value="edit">Изменить</button>
-		</td></form>
-		<form action="{% url 'dispatcher' %}" method="post">
-			{% csrf_token %}
-			<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
-			<td><button type="submit" class="secondary-button text-button" id="submit" name="submit" value="delete">Удалить</button>
-		</td></form></tr></table>
-		<table>
-		{% for date, entries in dates.items %}
-			<tr><td class="date-header text-body-semibold col-hse-400">{{ date }}</td></tr>
-			{% for entry, status in entries.items %}
+
+		<div class="block">
+			<p class="text-header-black col-primary-800">Текущее расписание</p>
+			{% if regs_future %}
+			{% for event, dates in regs_future.items %}
+			<span class="text-header-semibold col-primary-600">{{ event.event_name }}</span>
+			<table>
+				{% for date, entries in dates.items %}
 				<tr>
-				<td class="text-body-regular">{{ entry.category }}</td>
-				<td class="text-body-regular">{{ entry.timetable_name }}</td>
-				<td class="text-body-italic col-base-400">{{ event.place }}, {{ entry.place }}</td>
-				<td class="text-body-italic col-base-400">{{ entry.host }}</td>
-				<td class="{{ status }} text-caption col-base-400">{{ status.label }}</td>
+					<td class="date-header text-label col-primary-400">{{ date }}</td>
 				</tr>
-			{% endfor %}
-		{% endfor %}
-		</table><br><br>
-	{% endfor %}
-	{% else %}
-	<p class="text-body-regular col-base-400">Здесь пока пусто. Переходи на страницу регистрации и выбирай мероприятие для себя!</p>
-	{% endif %}
-	<br>
-	
-	<p class="text-h1 col-hse-400">Прошедшие события</p>
-	{% if regs_past %}
-	{% for event, dates in regs_past.items %}
-		<table><tr>
-		<td class="text-h2 col-hse-400">{{ event.event_name }}</td>
-		<form action="{% url 'certificate' %}" method="get">
-			<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
-			<td><button type="submit" class="primary-button" id="submit" name="submit" value="certificate">Скачать сертификат (PDF)</button>
-		</td></form></tr></table>
-		<table>
-		{% for date, entries in dates.items %}
-			<tr><td class="date-header text-body-semibold col-hse-400">{{ date }}</td></tr>
-			{% for entry, status in entries.items %}
+				{% for entry, status in entries.items %}
 				<tr>
-				<td class="text-body-regular col-base-500">{{ entry.category }}</td>
-				<td class="text-body-regular col-base-500">{{ entry.timetable_name }}</td>
-				<td class="text-body-italic col-base-500">{{ event.place }}, {{ entry.place }}</td>
-				<td class="text-body-italic col-base-500">{{ entry.host }}</td>
-				<td class="{{ status }} text-caption col-base-400">{{ status.label }}</td>
+					<td class="text-regular col-base-600">{{ entry.category }}</td>
+					<td class="text-regular col-base-800">{{ entry.timetable_name }}</td>
+					<td class="text-regular col-base-600">{{ event.place }}, {{ entry.place }}</td>
+					<td class="text-regular col-base-600">{{ entry.host }}</td>
+					<td class="{{ status }} text-caption col-base-500">{{ status.label }}</td>
 				</tr>
+				{% endfor %}
+				{% endfor %}
+			</table>
+			<br>
+			<table>
+				<tr>
+					<form action="{% url 'download' %}" method="get">
+						<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
+						<td><button type="submit" class="primary-button text-label" id="submit" name="submit"
+								value="download">Скачать</button>
+						</td>
+					</form>
+					<form action="{% url 'timetable' %}" method="post">
+						{% csrf_token %}
+						<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
+						<td><button type="submit" class="secondary-button text-label" id="submit" name="submit"
+								value="edit">Изменить</button>
+						</td>
+					</form>
+					<form action="{% url 'dispatcher' %}" method="post">
+						{% csrf_token %}
+						<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
+						<td><button type="submit" class="secondary-button text-label" id="submit" name="submit"
+								value="delete">Удалить</button>
+						</td>
+					</form>
+				</tr>
+			</table>
+			<br><br>
+
 			{% endfor %}
-		{% endfor %}
-		</table><br><br>
-	{% endfor %}
-	{% else %}
-	<p class="text-body-regular col-base-400">Кажется, ты пока не был ни на одном мероприятии.</p>
-	{% endif %}
-	</div><br>
+			{% else %}
+			<p class="text-regular col-base-600">Здесь пока пусто. Переходи на страницу регистрации и выбирай
+				мероприятие для себя!</p>
+			{% endif %}
+
+			<p class="text-header-black col-primary-800">Прошедшие события</p>
+			{% if regs_past %}
+			{% for event, dates in regs_past.items %}
+			<span class="text-header-semibold col-primary-600">{{ event.event_name }}</span>
+			<table>
+				{% for date, entries in dates.items %}
+				<tr>
+					<td class="date-header text-label col-primary-400">{{ date }}</td>
+				</tr>
+				{% for entry, status in entries.items %}
+				<tr>
+					<td class="text-regular col-base-600">{{ entry.category }}</td>
+					<td class="text-regular col-base-800">{{ entry.timetable_name }}</td>
+					<td class="text-regular col-base-600">{{ event.place }}, {{ entry.place }}</td>
+					<td class="text-regular col-base-600">{{ entry.host }}</td>
+					<td class="{{ status }} text-caption col-base-500">{{ status.label }}</td>
+				</tr>
+				{% endfor %}
+				{% endfor %}
+			</table>
+			<br>
+			<table>
+				<tr>
+					<form action="{% url 'certificate' %}" method="get">
+						<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
+						<td><button type="submit" class="primary-button text-label" id="submit" name="submit"
+								value="certificate">Сертификат</button>
+						</td>
+					</form>
+				</tr>
+			</table>
+			{% endfor %}
+			{% else %}
+			<p class="text-regular col-base-600">Кажется, ты пока не был ни на одном мероприятии.</p>
+			{% endif %}
+		</div>
 	</div>
 </body>
 

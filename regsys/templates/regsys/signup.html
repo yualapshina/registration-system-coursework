@@ -9,51 +9,51 @@
 	<link rel="icon" href="{% static 'regsys/images/favicon.png' %}" type="image/png">
 </head>
 
-<body>
+<body class="background">
 	{% if messages %}
-		<div class="messages text-caption">
+	<div class="messages text-caption">
 		{% for message in messages %}
-			<p{% if message.tags %} class="message_{{ message.tags }}"{% endif %}>{{ message }}</p>
-		{% endfor %}
-		</div>
+		<p{% if message.tags %} class="message_{{ message.tags }}" {% endif %}>{{ message }}</p>
+			{% endfor %}
+	</div>
 	{% endif %}
-	
+
 	<form action="{% url 'personal' %}" method="post">
 		{% csrf_token %}
 		<div class="parent">
-		
-		<div class="navbar text-body-regular">
-		{% for name, link in navbar.items %}
-			{% if name == "Создание профиля" %}
+
+			<div class="navbar text-label">
+				{% for name, link in navbar.items %}
+				{% if name == "Создание профиля" %}
 				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
-			{% else %}
+				{% else %}
 				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
-			{% endif %}
-		{% endfor %}
-		</div>
-		
+				{% endif %}
+				{% endfor %}
+			</div>
+
 			<div class="block">
-		<p class="text-h2 col-hse-400">Регистрация</p>
-		<div class="text-field">
-			<label class="text-field__label text-body-regular" for="email">Электронная почта</label>
-			<input class="text-field__input text-caption" type="text" id="email" name="email" required
-				placeholder="Введите ваш адрес электронной почты">
+				<p class="text-header-black col-primary-800">Регистрация</p>
+				<div class="text-field">
+					<label class="text-field__label text-caption" for="email">Электронная почта</label>
+					<input class="text-field__input text-regular" type="text" id="email" name="email" required
+						placeholder="Введите ваш адрес электронной почты">
+				</div>
+				<div class="text-field">
+					<label class="text-field__label text-caption" for="password">Пароль</label>
+					<input class="text-field__input text-regular" type="password" id="password" name="password" required
+						placeholder="Введите пароль, который будете использовать">
+				</div>
+				<div class="text-field">
+					<label class="text-field__label text-caption" for="repeat">Повторите пароль</label>
+					<input class="text-field__input text-regular" type="password" id="repeat" name="repeat" required
+						placeholder="Введите пароль, который будете использовать">
+				</div>
+				<p class="text-caption col-base-500"">Пароль должен быть не короче 8 символов</p>
+		<button id=" submit" name="submit" type="submit" value="to_personal" class="primary-button text-label">Создать
+					профиль</button>
+			</div>
 		</div>
-		<div class="text-field">
-			<label class="text-field__label text-body-regular" for="password">Пароль</label>
-			<input class="text-field__input text-caption" type="password" id="password" name="password" required
-				placeholder="Введите пароль, который будете использовать">
-		</div>
-		<div class="text-field">
-			<label class="text-field__label text-body-regular" for="repeat">Повторите пароль</label>
-			<input class="text-field__input text-caption" type="password" id="repeat" name="repeat" required
-				placeholder="Введите пароль, который будете использовать">
-		</div>
-		<p class="text-caption col-base-400"">Пароль должен быть не короче 8 символов</p>
-		<button id="submit" name="submit" type="submit" value="to_personal"
-			class="primary-button text-button">Создать профиль</button>
-	</div>
-</div>
 	</form>
 
 </body>
