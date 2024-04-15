@@ -141,7 +141,7 @@ a:active {
 }
 
 .secondary-button:hover {
-  color: #374b9b;
+  color: #3d53a4;
 }
 
 .secondary-button:disabled {
@@ -186,7 +186,8 @@ textarea:disabled {
 }
 
 .text-field__input:focus,
-.text-field__input:hover textarea:focus,
+.text-field__input:hover, 
+textarea:focus,
 textarea:hover {
   background-color: #e8eaf4;
 }
