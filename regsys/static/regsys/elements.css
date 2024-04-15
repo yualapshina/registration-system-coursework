@@ -332,11 +332,16 @@ fieldset {
 /* 
 Стили для table - они нам нужны, чтобы красиво выводить готовое расписание.
 */
+table{
+  padding-bottom: 20px;
+}
+
 td {
-  padding-right: 20px;
+  padding-right: 10px;
 }
 
 .date-header {
   text-align: left;
   padding-top: 20px;
+  padding-bottom: 10px;
 }
