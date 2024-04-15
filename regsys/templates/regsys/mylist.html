@@ -44,8 +44,6 @@
 				<tr>
 					<td class="text-regular col-base-600">{{ entry.category }}</td>
 					<td class="text-regular col-base-800">{{ entry.timetable_name }}</td>
-					<td class="text-regular col-base-600">{{ event.place }}, {{ entry.place }}</td>
-					<td class="text-regular col-base-600">{{ entry.host }}</td>
 					<form action="{% url 'qr_generate' %}" method="get">
 						<input type="text" id="guest" name="guest" value="{{ guest.id }}" hidden>
 						<input type="text" id="timetable" name="timetable" value="{{ entry.id }}" hidden>
@@ -53,6 +51,10 @@
 								value="qr_generate">QR</button>
 						</td>
 					</form>
+				</tr>
+				<tr>
+					<td class="text-regular col-base-500">{{ event.place }}, {{ entry.place }}</td>
+					<td class="text-regular col-base-500">{{ entry.host }}</td>
 					<td class="{{ status }} text-caption col-base-500">{{ status.label }}</td>
 				</tr>
 				{% endfor %}
@@ -104,8 +106,10 @@
 				<tr>
 					<td class="text-regular col-base-600">{{ entry.category }}</td>
 					<td class="text-regular col-base-800">{{ entry.timetable_name }}</td>
-					<td class="text-regular col-base-600">{{ event.place }}, {{ entry.place }}</td>
-					<td class="text-regular col-base-600">{{ entry.host }}</td>
+				</tr>
+				<tr>
+					<td class="text-regular col-base-500">{{ event.place }}, {{ entry.place }}</td>
+					<td class="text-regular col-base-500">{{ entry.host }}</td>
 					<td class="{{ status }} text-caption col-base-500">{{ status.label }}</td>
 				</tr>
 				{% endfor %}

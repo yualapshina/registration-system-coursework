@@ -21,8 +21,8 @@
 
 .block {
   margin-top: 52px;
-  margin-left: 300px;
-  margin-right:300px;
+  margin-left: 22%;
+  margin-right: 22%;
 }
 
 .block_in_group {
@@ -67,7 +67,7 @@ a:active {
   top: 64px;
   left: 2%;
   height: auto;
-  width: 256px;
+  width: 20%;
   padding: 16px;
 }
 
@@ -337,6 +337,6 @@ td {
 }
 
 .date-header {
-  text-align: center;
+  text-align: left;
   padding-top: 20px;
 }
