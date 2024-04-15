@@ -21,8 +21,8 @@
 
 .block {
   margin-top: 52px;
-  margin-left: 400px;
-  margin-right: 400px;
+  margin-left: 300px;
+  margin-right:300px;
 }
 
 .block_in_group {
@@ -208,9 +208,8 @@ textarea:focus {
 */
 input[type=file] {
   width: 100%;
-  margin-top: 4px;
   color: #848588;
-  padding: 16px 0px;
+  padding: 0px 0px;
   background: #fbfcff;
   border-radius: 8px;
   border: 0;
