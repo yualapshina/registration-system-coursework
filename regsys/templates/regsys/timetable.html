@@ -36,7 +36,7 @@
 					<div id="content_{{ forloop0.counter }}">
 						{% for cat, entries in cats.items %}
 						<div>
-							<span class="text-caption col-primary-600">{{ cat }}</span><br>
+							<span class="text-regular col-primary-600">{{ cat }}</span><br>
 							{% for entry, chosen in entries.items %}
 							{% if not chosen %}
 							{% if entry.seats == 0 %}
@@ -52,12 +52,12 @@
 							{% endif %}
 							<div class="tooltip">
 								<p class="select-field__label text-regular">{{ entry.timetable_name }}&emsp;&emsp;</p>
-								<span class="tooltiptext">{{ entry.annotation }}<span>
+								<span class="tooltiptext text-caption">{{ entry.annotation }}<span>
 							</div>
 							<span><br><span class="text-regular col-base-700">Место: </span><span
 									class="text-regular col-base-600">{{ entry.place}}</span>&emsp;<span
 									class="text-regular col-base-700">Ведущий: </span><span
-									class="text-regular col-base-600">{{ entry.host }}</span>&emsp; <span
+									class="text-regular col-base-600">{{ entry.host }}</span>&emsp;<span
 									class="text-regular col-base-700">Свободных мест: </span>
 								{% if entry.seats < 0 %} <span class="text-regular col-base-600">не
 									ограничено</span>
@@ -68,8 +68,9 @@
 							<span class="text-caption col-base-500"><br>*Мероприятие также проводится в другое
 								время</span>
 							{% endif %}
-							<br><br>
+							<br>
 							{% endfor %}
+							<br><br>
 						</div>
 						{% endfor %}
 					</div>

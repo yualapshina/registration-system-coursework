@@ -81,7 +81,6 @@ a:active {
 }
 
 .message_success {
-  max-width: 85%;
   color: #009a67;
   background-color: #9cffd9;
   border: none;
@@ -90,7 +89,6 @@ a:active {
 }
 
 .message_warning {
-  max-width: 85%;
   color: #e36c2e;
   background-color: #fae7ba;
   border: none;
@@ -99,7 +97,6 @@ a:active {
 }
 
 .message_error {
-  max-width: 85%;
   color: #cc171a;
   background-color: #ffcfd4;
   border: none;
@@ -302,7 +299,7 @@ fieldset {
 
 .legend1 {
   margin-bottom: 16px;
-  margin-left: 16px;
+  margin-left: 0px;
 }
 
 /* 
@@ -337,7 +334,8 @@ table{
 }
 
 td {
-  padding-right: 10px;
+  padding-right: 20px;
+  padding-bottom: 10px;
 }
 
 .date-header {

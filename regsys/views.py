@@ -27,13 +27,13 @@ from django.views.generic.base import RedirectView
 from .models import Event, Timetable, Guest, Registration, Label, Labelmap
 
 navbar_sign = {
-    "Вход в профиль": "signin",
-    "Создание профиля": "signup",
+    "Войти": "signin",
+    "Зарегистрироваться": "signup",
 }
 navbar_profile = {
     "Профиль": "profile",
     "Моё расписание": "mylist",
-    "Зарегистрироваться": "register",
+    "Регистрация": "register",
     "Обратная связь": "feedback",
 }
 
@@ -121,17 +121,17 @@ def dispatcher(request):
             user.save()
             try:
                 send_mail(
-                    subject="Восстановление пароля",
+                    subject="Восстановление пароля в системе регистрации ВШЭ",
                     message="Вам сгенерирован новый пароль для доступа в систему регистрации на мероприятия НИУ ВШЭ. Его можно сменить после входа в профиль или оставить.\nНовый пароль:\n" + password,
                     from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[user.username])
             except:
                 messages.error(request, "При отправке письма произошла ошибка, попробуйте снова")
                 return redirect(signin)
-            messages.success(request, "Инструкции по восстановлению отправлены на почту")
+            messages.success(request, "Инструкции по восстановлению аккаунта отправлены на почту")
             return redirect(signin)
         else:
-            messages.error(request, "Профиль с такой почтой не найден")
+            messages.error(request, "Аккаунт с такой почтой не найден")
             return redirect(signup)
             
     if sender == "feedback":
@@ -178,7 +178,7 @@ def personal(request):
     email = request.POST["email"]
     password = request.POST["password"]
     if request.POST["repeat"] != password:
-        messages.error(request, "Пароль не совпадает")
+        messages.error(request, "Пароли не совпадают")
         return redirect(signup)
     try:
         validate_password(password)
@@ -188,24 +188,24 @@ def personal(request):
     try:
         user = User.objects.create_user(username=email, password=password)
     except IntegrityError:
-        messages.error(request, "Профиль с такой почтой уже существует")
+        messages.error(request, "К этой почте уже привязан другой аккаунт")
         return redirect(signup)
     guest = Guest(user=user)
     guest.save()
     user = authenticate(request, username=email, password=password)
     if user is not None:
         login(request, user)
-        messages.success(request, "Профиль успешно создан")
+        messages.success(request, "Аккаунт успешно создан")
         try:
             send_mail(
-                subject='Профиль в системе регистрации',
-                message='Вы успешно создали профиль в системе регистрации на мероприятия НИУ ВШЭ - Нижний Новгород. Выбирайте интересующие вас события - и увидимся там!',
+                subject='Аккаунт в системе регистрации ВШЭ',
+                message='Вы успешно создали аккаунт в системе регистрации на мероприятия НИУ ВШЭ - Нижний Новгород. Выбирайте интересующие вас события - и увидимся там!',
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[email])
         except:
             messages.error(request, "При отправке приветственного письма произошла ошибка")
     else:
-        messages.error(request, "Ошибка при создании")
+        messages.error(request, "Ошибка при создании аккаунта")
         return redirect(signup)
     context = {
         'navbar': navbar_sign,

@@ -37,27 +37,29 @@
 			<span class="text-header-semibold col-primary-600">{{ event.event_name }}</span>
 			<table>
 				{% for date, entries in dates.items %}
-				<tr>
-					<td class="date-header text-label col-primary-400">{{ date }}</td>
-				</tr>
-				{% for entry, status in entries.items %}
-				<tr>
-					<td class="text-regular col-base-600">{{ entry.category }}</td>
-					<td class="text-regular col-base-800">{{ entry.timetable_name }}</td>
-					<form action="{% url 'qr_generate' %}" method="get">
-						<input type="text" id="guest" name="guest" value="{{ guest.id }}" hidden>
-						<input type="text" id="timetable" name="timetable" value="{{ entry.id }}" hidden>
-						<td><button type="submit" class="secondary-button text-regular" id="submit" name="submit"
-								value="qr_generate">QR</button>
-						</td>
-					</form>
-				</tr>
-				<tr>
-					<td class="text-regular col-base-500">{{ event.place }}, {{ entry.place }}</td>
-					<td class="text-regular col-base-500">{{ entry.host }}</td>
-					<td class="{{ status }} text-caption col-base-500">{{ status.label }}</td>
-				</tr>
-				{% endfor %}
+				<table>
+					<tr>
+						<td class="date-header text-label col-primary-400">{{ date }}</td>
+					</tr>
+					{% for entry, status in entries.items %}
+					<tr>
+						<td class="text-regular col-base-600">{{ entry.category }}</td>
+						<td class="text-regular col-base-800">{{ entry.timetable_name }}</td>
+						<form action="{% url 'qr_generate' %}" method="get">
+							<input type="text" id="guest" name="guest" value="{{ guest.id }}" hidden>
+							<input type="text" id="timetable" name="timetable" value="{{ entry.id }}" hidden>
+							<td><button type="submit" class="secondary-button text-regular" id="submit" name="submit"
+									value="qr_generate">QR</button>
+							</td>
+						</form>
+					</tr>
+					<tr>
+						<td class="text-regular col-base-500">{{ event.place }}, {{ entry.place }}</td>
+						<td class="text-regular col-base-500">{{ entry.host }}</td>
+						<td class="{{ status }} text-caption col-base-500">{{ status.label }}</td>
+					</tr>
+					{% endfor %}
+				</table>
 				{% endfor %}
 			</table>
 			<br>
@@ -85,13 +87,14 @@
 					</form>
 				</tr>
 			</table>
-			<br><br>
 
 			{% endfor %}
 			{% else %}
 			<p class="text-regular col-base-600">Здесь пока пусто. Переходи на страницу регистрации и выбирай
 				мероприятие для себя!</p>
 			{% endif %}
+			
+			<br><br>
 
 			<p class="text-header-black col-primary-800">Прошедшие события</p>
 			{% if regs_past %}
@@ -99,33 +102,27 @@
 			<span class="text-header-semibold col-primary-600">{{ event.event_name }}</span>
 			<table>
 				{% for date, entries in dates.items %}
-				<tr>
-					<td class="date-header text-label col-primary-400">{{ date }}</td>
-				</tr>
-				{% for entry, status in entries.items %}
-				<tr>
-					<td class="text-regular col-base-600">{{ entry.category }}</td>
-					<td class="text-regular col-base-800">{{ entry.timetable_name }}</td>
-				</tr>
-				<tr>
-					<td class="text-regular col-base-500">{{ event.place }}, {{ entry.place }}</td>
-					<td class="text-regular col-base-500">{{ entry.host }}</td>
-					<td class="{{ status }} text-caption col-base-500">{{ status.label }}</td>
-				</tr><br><br><br>
-				{% endfor %}
+					<tr>
+						<td class="date-header text-label col-primary-400">{{ date }}</td>
+					</tr>
+					{% for entry, status in entries.items %}
+					<tr>
+						<td class="text-regular col-base-600">{{ entry.category }}</td>
+						<td class="text-regular col-base-800">{{ entry.timetable_name }}</td>
+					</tr>
+					<tr>
+						<td class="text-regular col-base-500">{{ event.place }}, {{ entry.place }}</td>
+						<td class="text-regular col-base-500">{{ entry.host }}</td>
+						<td class="{{ status }} text-caption col-base-500">{{ status.label }}</td>
+					</tr>
+					{% endfor %}
 				{% endfor %}
 			</table>
-			<br>
-			<table>
-				<tr>
 					<form action="{% url 'certificate' %}" method="get">
 						<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
-						<td><button type="submit" class="primary-button text-label" id="submit" name="submit"
+						<button type="submit" class="primary-button text-label" id="submit" name="submit"
 								value="certificate">Сертификат</button>
-						</td>
 					</form>
-				</tr>
-			</table>
 			{% endfor %}
 			{% else %}
 			<p class="text-regular col-base-600">Кажется, ты пока не был ни на одном мероприятии.</p>

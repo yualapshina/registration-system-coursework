@@ -82,9 +82,9 @@
 				<span class="tooltiptext text-caption">{{ event.annotation }}</span>
 			</div><br>
 			{% for label in labels %}
-			<span class="{{ label.type }} text-caption col-base-500">{{ label.label_name }}</span>
+			<span class="{{ label.type }} text-caption col-base-500">{{ label.label_name }}&emsp;</span>
 			{% endfor %}
-			<br><span class="text-regular col-base-700">{{ event.place }}</span>
+			<br><span class="text-regular col-base-700">{{ event.place }}&emsp;</span>
 			{% if event.start_date != event.end_date %}
 			<span class="text-regular col-base-700">{{ event.start_date }} - {{ event.end_date }}</span><br>
 			{% else %}
@@ -92,7 +92,7 @@
 			{% endif %}
 			{% endfor %}<br>
 			{% else %}
-			<p class="text-body-regular col-base-600">Кажется, завершенных мероприятий сейчас нет.</p><br>
+			<p class="text-regular col-base-600">Кажется, завершенных мероприятий сейчас нет.</p><br>
 			{% endif %}
 		</div>
 	</div>
