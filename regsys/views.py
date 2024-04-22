@@ -404,21 +404,21 @@ def certificate(request):
     
     #TODO line wrapping
     can.setFont("HSESans-SemiBold", 24)
-    can.setFillColorRGB(0.43, 0.43, 0.43)
+    can.setFillColorRGB(0.22, 0.29, 0.61)
     can.drawCentredString(x/2, y-310, str(guest))
-    can.setFillColorRGB(0.12, 0.12, 0.12)
+    can.setFillColorRGB(0.15, 0.22, 0.51)
     can.drawCentredString(x/2, y-428, str(event))
     date_str = event.start_date.strftime('%d.%m.%Y')
     if event.start_date != event.end_date:
         date_str = 'с ' + event.start_date.strftime('%d.%m.%Y') + ' по ' + event.end_date.strftime('%d.%m.%Y')
-    can.setFont("HSESans-SemiBold", 16)
-    can.setFillColorRGB(0.43, 0.43, 0.43)
+    can.setFont("HSESans-Regular", 16)
+    can.setFillColorRGB(0.52, 0.52, 0.53)
     can.drawCentredString(x/2, y-468, date_str)
     can.showPage()
     
     textobject = can.beginText()
     textobject.setFont("HSESans-Regular", 16)
-    textobject.setFillColorRGB(0.12, 0.12, 0.12)
+    textobject.setFillColorRGB(0.52, 0.52, 0.53)
     textobject.setTextOrigin(64, y-160)
     for reg in regs:
         textobject.textLine(str(reg.timetable))
