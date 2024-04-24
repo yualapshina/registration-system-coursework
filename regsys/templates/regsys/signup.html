@@ -18,7 +18,7 @@
 	</div>
 	{% endif %}
 
-	<form action="{% url 'personal' %}" method="post">
+	<form action="{% url 'dispatcher' %}" method="post">
 		{% csrf_token %}
 		<div class="parent">
 
@@ -39,18 +39,8 @@
 					<input class="text-field__input text-regular" type="text" id="email" name="email" required
 						placeholder="Введите ваш адрес электронной почты">
 				</div>
-				<div class="text-field">
-					<label class="text-field__label text-caption" for="password">Пароль</label>
-					<input class="text-field__input text-regular" type="password" id="password" name="password" required
-						placeholder="Введите пароль, который будете использовать">
-				</div>
-				<div class="text-field">
-					<label class="text-field__label text-caption" for="repeat">Повторите пароль</label>
-					<input class="text-field__input text-regular" type="password" id="repeat" name="repeat" required
-						placeholder="Введите пароль, который будете использовать">
-				</div>
-				<p class="text-caption col-base-500"">Пароль должен быть не короче 8 символов</p>
-		<button id=" submit" name="submit" type="submit" value="to_personal" class="primary-button text-label">Создать
+				<p class="text-caption col-base-500">На введённый вами адрес будет направлен пароль, который вы сможете изменить после входа в профиль.</p>
+		<button id=" submit" name="submit" type="submit" value="signup" class="primary-button text-label">Создать
 					профиль</button>
 			</div>
 		</div>

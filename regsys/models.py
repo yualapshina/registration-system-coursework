@@ -64,7 +64,7 @@ class Guest(models.Model):
     telegram = models.CharField(max_length=100, verbose_name="Телеграм")
     
     def __str__(self):
-        return self.surname + " " + self.firstname
+        return self.user.username
             
     class Meta:
         verbose_name = "Участник"

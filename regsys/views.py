@@ -29,12 +29,14 @@ from .models import Event, Timetable, Guest, Registration, Label, Labelmap
 navbar_sign = {
     "Войти": "signin",
     "Зарегистрироваться": "signup",
+    "Обратная связь": "feedback_anon",
 }
 navbar_profile = {
     "Профиль": "profile",
     "Моё расписание": "mylist",
     "Регистрация": "register",
     "Обратная связь": "feedback",
+    "Выйти из профиля": "signout",
 }
 
 @cmp_to_key
@@ -90,19 +92,30 @@ def dispatcher(request):
             messages.error(request, "Неверный старый пароль")
             return redirect(profile)
     
-    if sender == "signout":
-        logout(request)
-    
     if sender == "signup":
-        guest = request.user.guest
-        guest.surname = request.POST.get("surname", "")
-        guest.firstname = request.POST.get("firstname", "")
-        guest.patronymic = request.POST.get("patronymic", "")
-        guest.school = request.POST.get("school", "")
-        guest.phone = request.POST.get("phone", "")
-        guest.telegram = request.POST.get("telegram", "")
-        messages.success(request, "Данные успешно сохранены")
+        email = request.POST["email"]
+        password = get_random_string(10)
+        try:
+            user = User.objects.create_user(username=email, password=password)
+        except IntegrityError:
+            messages.error(request, "К этой почте уже привязан другой аккаунт")
+            return redirect(signup)
+        guest = Guest(user=user)
         guest.save()
+        messages.success(request, "Ваш аккаунт успешно создан")
+        
+        try:
+            send_mail(
+                subject='Аккаунт в системе регистрации ВШЭ',
+                message='Вы успешно создали аккаунт в системе регистрации на мероприятия НИУ ВШЭ - Нижний Новгород. Выбирайте интересующие вас события - и увидимся там!\n\nНе забывайте заполнить личную информацию в профиле, если хотите получать именные сертификаты.\n\nВаш текущий пароль: ' + password,
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[email])
+        except:
+            messages.error(request, "При отправке письма произошла ошибка")
+            return redirect(signup)
+        
+        messages.success(request, "Инструкции по входу отправлены на почту")
+        return redirect(signin)
     
     if sender == "signin":
         user = authenticate(request, username=request.POST["email"], password=request.POST["password"])
@@ -122,7 +135,7 @@ def dispatcher(request):
             try:
                 send_mail(
                     subject="Восстановление пароля в системе регистрации ВШЭ",
-                    message="Вам сгенерирован новый пароль для доступа в систему регистрации на мероприятия НИУ ВШЭ. Его можно сменить после входа в профиль или оставить.\nНовый пароль:\n" + password,
+                    message="Вам сгенерирован новый пароль для доступа в систему регистрации на мероприятия НИУ ВШЭ. Его можно сменить после входа в профиль или оставить.\n\nНовый пароль: " + password,
                     from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[user.username])
             except:
@@ -135,16 +148,20 @@ def dispatcher(request):
             return redirect(signup)
             
     if sender == "feedback":
-        author = Guest.objects.get(id=request.POST["guest_id"]).user.username
-        attachment = request.FILES['attachment']
+        guest_id = request.POST["guest_id"]
+        if guest_id == "anon":
+            author = request.POST["email"]
+        else:
+            author = Guest.objects.get(id=guest_id).user.username
+        attachment = request.FILES.get('attachment', None)
         email = EmailMessage(
             subject=request.POST["subject"],
             body=request.POST["message"],
             from_email=settings.EMAIL_HOST_USER,
             to=[settings.EMAIL_RECEIVER],
-            cc=[author],
             reply_to=[author])
-        email.attach(attachment.name, attachment.read(), attachment.content_type)
+        if attachment:
+            email.attach(attachment.name, attachment.read(), attachment.content_type)
         try:
             email.send()
         except:
@@ -170,8 +187,6 @@ def signup(request):
         'navbar': navbar_sign,
     }
     return render(request, 'regsys/signup.html', context)
-    
-def personal(request):
     if request.POST.get("submit", "") != "to_personal":
         return redirect(mylist)
 
@@ -211,6 +226,27 @@ def personal(request):
         'navbar': navbar_sign,
     }
     return render(request, 'regsys/personal.html', context)
+
+def feedback_anon(request):
+    if request.user.is_authenticated:
+        return redirect(feedback)
+    context = {
+        'navbar': navbar_sign,
+    }
+    return render(request, 'regsys/feedback_anon.html', context)
+    
+def forgot(request):
+    if request.user.is_authenticated:
+        return redirect(mylist)
+    context = {
+        'navbar': navbar_sign,
+    }
+    return render(request, 'regsys/forgot.html', context)
+
+@login_required
+def signout(request):
+    logout(request)
+    return redirect(signin)
 
 @login_required
 def mylist(request):
