@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from dotenv import load_dotenv
 import os
 from pathlib import Path
+from regsys.validators import  RegularValidator
 
 load_dotenv()
 
@@ -99,9 +100,11 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'regsys.validators.RegularValidator',
         "OPTIONS": {
             "min_length": 8,
+            "capital": True,
+            "digit": True
         },
     },
 ]

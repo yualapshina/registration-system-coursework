@@ -95,6 +95,13 @@ def dispatcher(request):
     if sender == "signup":
         email = request.POST["email"]
         password = get_random_string(10)
+        needs_validation = True
+        while needs_validation:
+            try:
+                validate_password(password)
+                needs_validation = False
+            except ValidationError:
+                password = get_random_string(10)
         try:
             user = User.objects.create_user(username=email, password=password)
         except IntegrityError:
