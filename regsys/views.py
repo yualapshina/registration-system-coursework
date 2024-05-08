@@ -249,6 +249,14 @@ def forgot(request):
         'navbar': navbar_sign,
     }
     return render(request, 'regsys/forgot.html', context)
+    
+def landing(request):
+    if request.user.is_authenticated:
+        return redirect(mylist)
+    context = {
+        'navbar': navbar_sign,
+    }
+    return render(request, 'regsys/landing.html', context)
 
 @login_required
 def signout(request):
@@ -425,7 +433,7 @@ def feedback(request):
     context = {
         'guest' : guest,
         'navbar': navbar_profile,
-    }
+    }   
     return render(request, 'regsys/feedback.html', context)
     
 @login_required    

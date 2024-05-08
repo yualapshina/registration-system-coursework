@@ -1,0 +1,130 @@
+/* 
+Шрифты. 
+В этом файле подгружаются различные начертания шрифта Hse Sans и создаются текстовые стили.
+*/
+
+/*
+Не все загружаемые начертания используются в дальнейшем, однако для некоторой мобильности они нужны.
+*/
+
+/* Regular */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: auto;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-Regular.woff2') format('woff2'),
+    url('./fonts/HSESans-Regular.woff') format('woff'),
+    url('./fonts/HSESans-Regular.otf') format('otf'),
+    url('./fonts/HSESans-Regular.eot') format('eot');
+}
+
+/* Bold */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: auto;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-Bold.woff2') format('woff2'),
+    url('./fonts/HSESans-Bold.woff') format('woff'),
+    url('./fonts/HSESans-Bold.otf') format('otf'),
+    url('./fonts/HSESans-Bold.eot') format('eot');
+}
+
+/* Italic */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: italic;
+  font-weight: 400;
+  font-display: auto;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-Italic.woff2') format('woff2'),
+    url('./fonts/HSESans-Italic.woff') format('woff'),
+    url('./fonts/HSESans-Italic.otf') format('otf'),
+    url('./fonts/HSESans-Italic.eot') format('eot');
+}
+
+/* SemiBold */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: auto;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-SemiBold.woff2') format('woff2'),
+    url('./fonts/HSESans-SemiBold.woff') format('woff'),
+    url('./fonts/HSESans-SemiBold.otf') format('otf'),
+    url('./fonts/HSESans-SemiBold.eot') format('eot');
+}
+
+/* Thin */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 100;
+  font-display: auto;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-Thin.woff2') format('woff2'),
+    url('./fonts/HSESans-Thin.woff') format('woff'),
+    url('./fonts/HSESans-Thin.otf') format('otf'),
+    url('./fonts/HSESans-Thin.eot') format('eot');
+}
+
+/* Black */
+@font-face {
+  font-family: 'HSE Sans';
+  font-style: normal;
+  font-weight: 900;
+  font-display: auto;
+  src: local('HSE Sans'),
+    url('./fonts/HSESans-Black.woff2') format('woff2'),
+    url('./fonts/HSESans-Black.woff') format('woff'),
+    url('./fonts/HSESans-Black.otf') format('otf'),
+    url('./fonts/HSESans-Black.eot') format('eot');
+}
+
+/* 
+После подгрузки шрифтов создаем нужные нам текстовые стили. 
+Если Hse Sans все же не смог найтись, используем Roboto. 
+*/
+
+.text-regular {
+  font-family: 'HSE Sans', Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.text-label {
+  font-family: 'HSE Sans', Roboto;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.text-caption {
+  font-family: 'HSE Sans', Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.text-header-black {
+  font-family: 'HSE Sans', Roboto;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 28px;
+}
+
+.text-header-semibold {
+  font-family: 'HSE Sans', Roboto;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+}
+
+/*
+Ура, шрифты можно использовать! Ы.
+*/

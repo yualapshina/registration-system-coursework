@@ -1,8 +1,11 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
+from django.views.static import serve
+from django.conf import settings
 
 urlpatterns = [
-    path('', views.mylist, name='mylist'),
+    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
+    path('', views.landing, name='landing'),
     path('dispatcher/', views.dispatcher, name='dispatcher'),
     path('signup/', views.signup, name='signup'),
     path('signin/', views.signin, name='signin'),
