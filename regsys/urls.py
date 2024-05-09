@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.mylist, name='mylist'),
+    path('', views.landing, name='landing'),
     path('dispatcher/', views.dispatcher, name='dispatcher'),
     path('signup/', views.signup, name='signup'),
     path('signin/', views.signin, name='signin'),
@@ -19,4 +19,5 @@ urlpatterns = [
     path('certificate/', views.certificate, name='certificate'),
     path('qr/generate/', views.qr_generate, name='qr_generate'),
     path('qr/read/', views.qr_read, name='qr_read'),
+    path('errors', views.errors, name='errors'),
 ]

@@ -30,6 +30,7 @@ navbar_sign = {
     "Войти": "signin",
     "Зарегистрироваться": "signup",
     "Обратная связь": "feedback_anon",
+    "Тест ошибок": "errors",
 }
 navbar_profile = {
     "Профиль": "profile",
@@ -249,6 +250,26 @@ def forgot(request):
         'navbar': navbar_sign,
     }
     return render(request, 'regsys/forgot.html', context)
+
+def landing(request):
+    if request.user.is_authenticated:
+        return redirect(mylist)
+    context = {
+        'navbar': navbar_sign,
+    }
+    return render(request, 'regsys/landing.html', context)
+
+def errors(request):
+    if request.user.is_authenticated:
+        return redirect(mylist)
+    context = {
+        'navbar': navbar_sign,
+    }
+    try:
+        error = request.GET["submit"]
+        return render(request, 'regsys/' + error + '.html', context)
+    except:
+        return render(request, 'regsys/errors.html', context)
 
 @login_required
 def signout(request):

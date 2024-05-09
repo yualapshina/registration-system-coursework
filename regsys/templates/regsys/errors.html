@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
+	<meta charset="utf-8" />
+	<title>Тест ошибок</title>
+	<link rel="icon" href="{% static 'regsys/images/favicon.png' %}" type="image/png">
+</head>
+
+<body class="background">
+	{% if messages %}
+	<div class="messages text-caption">
+		{% for message in messages %}
+		<p{% if message.tags %} class="message_{{ message.tags }}" {% endif %}>{{ message }}</p>
+			{% endfor %}
+	</div>
+	{% endif %}
+
+		<div class="parent">
+
+			<div class="navbar text-label">
+				{% for name, link in navbar.items %}
+				{% if name == "Тест ошибок" %}
+				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
+				{% else %}
+				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
+				{% endif %}
+				{% endfor %}
+			</div>
+
+			<div class="block">
+				<form action="{% url 'errors' %}" method="get">
+					<button id="400" name="submit" type="submit" value="400"
+						class="secondary-button text-label">400</button>
+					<button id="403" name="submit" type="submit" value="403"
+						class="secondary-button text-label">403</button>
+					<button id="404" name="submit" type="submit" value="404"
+						class="secondary-button text-label">404</button>
+					<button id="500" name="submit" type="submit" value="500"
+						class="secondary-button text-label">500</button>
+				</form>
+			</div>
+		</div>
+</body>
+
+</html>

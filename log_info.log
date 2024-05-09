@@ -1,0 +1,320 @@
+
+INFO D:\all\code\reg-sys-coursework\reg_sys_cw\settings.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO Watching for file changes with StatReloader
+INFO "GET /mylist/ HTTP/1.1" 200 5643
+WARNING "GET /static/regsys/style.css HTTP/1.1" 404 179
+INFO "GET /mylist/ HTTP/1.1" 200 5643
+WARNING "GET /static/regsys/style.css HTTP/1.1" 404 179
+INFO "GET /admin/regsys/labelmap/ HTTP/1.1" 200 14215
+WARNING "GET /static/admin/js/core.js HTTP/1.1" 404 179
+WARNING "GET /static/admin/css/base.css HTTP/1.1" 404 179
+WARNING "GET /static/admin/js/vendor/jquery/jquery.min.js HTTP/1.1" 404 179
+WARNING "GET /static/admin/js/jquery.init.js HTTP/1.1" 404 179
+WARNING "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 179
+INFO - Broken pipe from ('127.0.0.1', 62425)
+WARNING "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 404 179
+WARNING "GET /static/admin/css/changelists.css HTTP/1.1" 404 179
+WARNING "GET /static/admin/js/actions.js HTTP/1.1" 404 179
+WARNING "GET /static/admin/js/prepopulate.js HTTP/1.1" 404 179
+INFO - Broken pipe from ('127.0.0.1', 62427)
+WARNING "GET /static/admin/js/urlify.js HTTP/1.1" 404 179
+INFO - Broken pipe from ('127.0.0.1', 62422)
+WARNING "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 404 179
+WARNING "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+WARNING "GET /static/admin/js/vendor/xregexp/xregexp.min.js HTTP/1.1" 404 179
+INFO - Broken pipe from ('127.0.0.1', 62430)
+WARNING "GET /static/admin/js/theme.js HTTP/1.1" 404 179
+WARNING "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 404 179
+WARNING "GET /static/admin/js/filters.js HTTP/1.1" 404 179
+WARNING "GET /static/admin/img/search.svg HTTP/1.1" 404 179
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+WARNING "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+INFO "GET /signout/ HTTP/1.1" 302 0
+INFO "GET /signin/ HTTP/1.1" 200 1962
+WARNING "GET /static/regsys/style.css HTTP/1.1" 404 179
+INFO "POST /dispatcher/ HTTP/1.1" 302 0
+INFO "GET /mylist/ HTTP/1.1" 200 5643
+WARNING "GET /static/regsys/style.css HTTP/1.1" 404 179
+INFO "GET /profile/ HTTP/1.1" 200 4842
+WARNING "GET /static/regsys/style.css HTTP/1.1" 404 179
+INFO D:\all\code\reg-sys-coursework\reg_sys_cw\settings.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO D:\all\code\reg-sys-coursework\regsys\urls.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO Watching for file changes with StatReloader
+INFO "GET /profile/ HTTP/1.1" 200 4842
+INFO "GET /static/regsys/style.css HTTP/1.1" 200 404
+INFO "GET /static/regsys/colors.css HTTP/1.1" 200 2945
+INFO "GET /static/regsys/fonts.css HTTP/1.1" 200 3546
+INFO "GET /static/regsys/elements.css HTTP/1.1" 200 6443
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff2 HTTP/1.1" 200 54957
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff2 HTTP/1.1" 200 59073
+INFO "GET /static/regsys/fonts/HSESans-Black.woff2 HTTP/1.1" 200 45349
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff HTTP/1.1" 200 23524
+INFO "GET /static/regsys/fonts/HSESans-Black.woff HTTP/1.1" 200 24136
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff HTTP/1.1" 200 28276
+INFO "GET /admin/regsys/labelmap/ HTTP/1.1" 200 14215
+INFO "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2929
+INFO "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2694
+INFO "GET /static/admin/css/changelists.css HTTP/1.1" 200 6584
+INFO "GET /static/admin/css/base.css HTTP/1.1" 200 21207
+INFO "GET /static/admin/js/actions.js HTTP/1.1" 200 7872
+INFO "GET /static/admin/css/responsive.css HTTP/1.1" 200 18557
+INFO "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 8943
+INFO "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO "GET /static/admin/js/core.js HTTP/1.1" 200 5682
+INFO "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO "GET /static/admin/js/vendor/jquery/jquery.min.js HTTP/1.1" 200 89795
+INFO "GET /static/admin/js/vendor/xregexp/xregexp.min.js HTTP/1.1" 200 125266
+INFO "GET /static/admin/js/theme.js HTTP/1.1" 200 1943
+INFO "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+INFO "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+INFO "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+INFO "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+INFO "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO D:\all\code\reg-sys-coursework\reg_sys_cw\settings.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /profile/ HTTP/1.1" 200 4842
+INFO "GET /static/regsys/style.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/colors.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/elements.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff HTTP/1.1" 304 0
+WARNING "GET /lol/ HTTP/1.1" 404 179
+INFO Watching for file changes with StatReloader
+WARNING "GET /lol/ HTTP/1.1" 404 179
+INFO Watching for file changes with StatReloader
+WARNING "GET /lol/ HTTP/1.1" 404 443
+INFO "GET /static/regsys/style.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/colors.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/elements.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff HTTP/1.1" 304 0
+WARNING "GET /404 HTTP/1.1" 404 443
+INFO "GET /static/regsys/style.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/colors.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/elements.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff HTTP/1.1" 304 0
+WARNING "GET /403 HTTP/1.1" 404 443
+WARNING "GET /lol HTTP/1.1" 404 443
+WARNING "GET /lol HTTP/1.1" 404 443
+INFO "GET /static/regsys/style.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/colors.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/elements.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff HTTP/1.1" 304 0
+WARNING "GET /lol HTTP/1.1" 404 443
+WARNING "GET /lol HTTP/1.1" 404 448
+INFO "GET / HTTP/1.1" 302 0
+INFO "GET /mylist/ HTTP/1.1" 200 5643
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff HTTP/1.1" 304 0
+INFO D:\all\code\reg-sys-coursework\regsys\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO D:\all\code\reg-sys-coursework\regsys\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /profile/ HTTP/1.1" 200 4842
+INFO D:\all\code\reg-sys-coursework\regsys\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+WARNING "GET /lol HTTP/1.1" 404 566
+INFO "GET /static/regsys/style.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/colors.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/elements.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff HTTP/1.1" 304 0
+WARNING "GET /lol HTTP/1.1" 404 566
+INFO D:\all\code\reg-sys-coursework\reg_sys_cw\settings.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO D:\all\code\reg-sys-coursework\regsys\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO D:\all\code\reg-sys-coursework\regsys\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /profile/ HTTP/1.1" 200 4842
+INFO "GET /static/regsys/style.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/colors.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/elements.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff HTTP/1.1" 304 0
+WARNING "GET /feedback/ HTTP/1.1" 404 0
+INFO D:\all\code\reg-sys-coursework\regsys\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+WARNING "GET /feedback/ HTTP/1.1" 404 566
+INFO "GET /static/regsys/style.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/colors.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/elements.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff HTTP/1.1" 304 0
+INFO D:\all\code\reg-sys-coursework\regsys\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /profile/ HTTP/1.1" 200 4842
+ERROR "GET /feedback/ HTTP/1.1" 500 0
+INFO D:\all\code\reg-sys-coursework\regsys\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /profile/ HTTP/1.1" 200 4842
+INFO "GET /static/regsys/style.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/colors.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/elements.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff HTTP/1.1" 304 0
+INFO "GET /admin/regsys/labelmap/ HTTP/1.1" 200 14215
+INFO "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO "GET /static/admin/js/vendor/jquery/jquery.min.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/core.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/vendor/xregexp/xregexp.min.js HTTP/1.1" 304 0
+INFO "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+INFO "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/filters.js HTTP/1.1" 304 0
+INFO "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+INFO "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+INFO "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+INFO "GET /signout/ HTTP/1.1" 302 0
+INFO "GET /signin/ HTTP/1.1" 200 1962
+INFO "GET /admin/regsys/labelmap/ HTTP/1.1" 302 0
+INFO "GET /admin/login/?next=/admin/regsys/labelmap/ HTTP/1.1" 200 4303
+INFO "GET /static/admin/css/login.css HTTP/1.1" 200 958
+INFO "GET /mylist/ HTTP/1.1" 302 0
+INFO "GET /signin/?next=/mylist/ HTTP/1.1" 200 1962
+INFO "POST /admin/login/?next=/admin/regsys/labelmap/ HTTP/1.1" 302 0
+INFO "GET /admin/regsys/labelmap/ HTTP/1.1" 200 14215
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+INFO "GET /admin/auth/user/ HTTP/1.1" 200 15167
+INFO "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+INFO "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+INFO "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+INFO "GET /admin/regsys/guest/ HTTP/1.1" 200 13745
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+INFO "POST /admin/logout/ HTTP/1.1" 200 3713
+INFO "GET /signin/?next=/mylist/ HTTP/1.1" 200 1962
+INFO "POST /dispatcher/ HTTP/1.1" 302 0
+INFO "GET /mylist/ HTTP/1.1" 200 1376
+INFO "GET /admin/ HTTP/1.1" 302 0
+INFO "GET /admin/login/?next=/admin/ HTTP/1.1" 200 3978
+INFO "GET /qr/read/?timetable=21&guest=141 HTTP/1.1" 302 0
+INFO "GET /admin/login/?next=/qr/read/%3Ftimetable%3D21%26guest%3D141 HTTP/1.1" 200 4040
+INFO "GET /signout/ HTTP/1.1" 302 0
+INFO "GET /signin/ HTTP/1.1" 200 1962
+INFO "POST /dispatcher/ HTTP/1.1" 302 0
+INFO "GET /mylist/ HTTP/1.1" 200 5643
+INFO "GET /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO "GET /admin/ HTTP/1.1" 200 12033
+INFO "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+INFO "GET /profile/ HTTP/1.1" 200 4842
+INFO "GET /static/regsys/style.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/elements.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/colors.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff HTTP/1.1" 304 0
+INFO "GET /register/ HTTP/1.1" 200 6157
+INFO "GET /static/regsys/images/checkbox_empty_default.png HTTP/1.1" 200 1348
+INFO "POST /timetable/ HTTP/1.1" 200 5265
+INFO "GET /static/regsys/images/radio_empty_default.png HTTP/1.1" 200 2162
+INFO "GET /admin/regsys/label/ HTTP/1.1" 200 14459
+INFO "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO "GET /static/admin/js/vendor/jquery/jquery.min.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/core.js HTTP/1.1" 304 0
+INFO "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/vendor/xregexp/xregexp.min.js HTTP/1.1" 304 0
+INFO "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+INFO "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/filters.js HTTP/1.1" 304 0
+INFO "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+INFO "GET /admin/regsys/label/add/ HTTP/1.1" 200 11198
+INFO "GET /static/admin/css/forms.css HTTP/1.1" 200 8953
+INFO "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO "GET /static/admin/css/widgets.css HTTP/1.1" 200 11952
+INFO "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+INFO "POST /admin/regsys/label/add/ HTTP/1.1" 302 0
+INFO "GET /admin/regsys/label/ HTTP/1.1" 200 15032
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+INFO "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+INFO "GET /static/regsys/images/radio_empty_hover.png HTTP/1.1" 200 2084
+INFO "GET /static/regsys/images/radio_filled_hover.png HTTP/1.1" 200 2614
+INFO "GET /static/regsys/images/radio_filled_default.png HTTP/1.1" 200 2699
+INFO "POST /completed/ HTTP/1.1" 302 0
+INFO "GET /mylist/ HTTP/1.1" 200 9619
+INFO "POST /dispatcher/ HTTP/1.1" 302 0
+INFO "GET /mylist/ HTTP/1.1" 200 5825
+INFO "GET /feedback/ HTTP/1.1" 200 2723
+INFO "POST /admin/regsys/label/ HTTP/1.1" 200 9706
+INFO "GET /static/admin/js/cancel.js HTTP/1.1" 200 884
+INFO "POST /admin/regsys/label/ HTTP/1.1" 302 0
+INFO "GET /admin/regsys/label/ HTTP/1.1" 200 14608
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+INFO "POST /dispatcher/ HTTP/1.1" 302 0
+INFO "GET /feedback/ HTTP/1.1" 200 2864
+INFO "GET /mylist/ HTTP/1.1" 200 5643
+INFO D:\all\code\reg-sys-coursework\reg_sys_cw\settings.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO Watching for file changes with StatReloader
+INFO Watching for file changes with StatReloader
+INFO "GET /mylist/ HTTP/1.1" 200 5643
+INFO "GET /static/regsys/style.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/elements.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/colors.css HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff2 HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-SemiBold.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Black.woff HTTP/1.1" 304 0
+INFO "GET /static/regsys/fonts/HSESans-Regular.woff HTTP/1.1" 304 0
