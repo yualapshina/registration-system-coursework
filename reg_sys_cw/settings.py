@@ -14,7 +14,9 @@ import os
 from pathlib import Path
 from regsys.validators import  RegularValidator
 
-load_dotenv()
+load_dotenv(
+    os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,12 +27,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
+# SECRET_KEY = 'lmao'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['94.241.140.56', 'hse-reg-sys.dns-dynamic.net', 'www.hse-reg-sys.dns-dynamic.net']
 
+# SSL
+SECURE_SSL_REDIRECT = True
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # Application definition
 
@@ -136,8 +144,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Logging
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -150,7 +156,7 @@ LOGGING = {
     "handlers": {
         "file_info": {
             "class": "logging.FileHandler",
-            "filename": "log_info.log",
+            "filename": "/var/www/reg-sys-coursework/log_info.log",
             "formatter": "simple",
         },
         "mail_admins": {
@@ -181,6 +187,7 @@ ADMINS = [
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
 STATIC_ROOT = BASE_DIR / 'static/'
 
 LOGIN_URL = "signin"
