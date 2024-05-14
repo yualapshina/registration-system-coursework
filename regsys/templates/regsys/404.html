@@ -11,13 +11,36 @@
 
 <body class="background">
 
-		<div class="parent">
+	<div class="parent">
 
-			<div class="block">
-				<p class="text-header-black col-primary-800">Такая страница не найдена :(</p>
-				<p class="text-regular col-base-700">Проверьте, правильно ли введена ссылка.</p>
+		<div class="block">
+			<div style="display: flex; justify-content:left;">
+				<img src="{% static 'regsys/images/error.svg' %}" />
+				<p class="text-header-black col-primary-800">Мы не нашли страницу</p>
 			</div>
+			<br><br>
+			<p class="text-regular col-base-700">Мы не можем найти страницу по этому адресу. Проверь, может быть, ты
+				ввел неверную ссылку? А при любых затруднениях и сбоях в работе можно писать нам - мы ответим на вопросы
+				или исправим баги!</p>
+			<table>
+				<tr>
+
+					<td>
+						<form action="{% url 'feedback_anon' %}" method="get">
+							<button id="submit" name="submit" type="submit" value="feedback_anon"
+								class="primary-button text-label">Рассказать об ошибке</button>
+						</form>
+					</td>
+					<td>
+						<form action="{% url 'landing' %}" method="get">
+							<button id="submit" name="submit" type="submit" value="landing"
+								class="secondary-button text-label">Назад в систему</button>
+						</form>
+					</td>
+				</tr>
+			</table>
 		</div>
+	</div>
 </body>
 
 </html>

@@ -21,8 +21,8 @@
 
 .block {
   margin-top: 52px;
-  margin-left: 22%;
-  margin-right: 22%;
+  margin-left: 20%;
+  margin-right: 20%;
 }
 
 .block_in_group {
@@ -334,7 +334,7 @@ fieldset {
 }
 
 /* 
-Стили для table - они нам нужны, чтобы красиво выводить готовое расписание.
+Стили для table - они нам нужны, чтобы красиво выводить готовое расписание и лендинг.
 */
 table{
   padding-top: 0px;
