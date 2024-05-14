@@ -45,13 +45,20 @@
   padding-left: 5%;
 }
 
-a:link,
-a:visited {
+.navbar_link {
   padding: 16px;
+}
+.navbar_current {
+  padding: 16px;
+  color: #273883;
+}
+
+a {
   display: inline-block;
   color: #374b9b;
   text-decoration: none;
 }
+
 
 a:hover,
 a:active {
@@ -330,12 +337,24 @@ fieldset {
 Стили для table - они нам нужны, чтобы красиво выводить готовое расписание.
 */
 table{
+  padding-top: 0px;
   padding-bottom: 20px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  padding-right: 20px;
+  padding-bottom: 10px;
+  text-align: left;
+  vertical-align:middle;
 }
 
 td {
   padding-right: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
+  text-align: left;
+  vertical-align: top;
 }
 
 .date-header {

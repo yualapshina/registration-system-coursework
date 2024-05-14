@@ -42,14 +42,15 @@
 				<div class="text-field">
 					<label class="text-field__label text-caption" for="old">Старый пароль</label>
 					<input class="text-field__input text-regular" type="password" id="old" name="old"
-						placeholder="Введите старый пароль">
+						placeholder="введите старый пароль">
 				</div>
 				<div class="text-field">
 					<label class="text-field__label text-caption" for="new">Новый пароль</label>
 					<input class="text-field__input text-regular" type="password" id="new" name="new"
-						placeholder="Введите новый пароль">
+						placeholder="введите новый пароль">
 				</div>
-				<p class="text-caption col-base-500">Пароль содержать как минимум 8 символов, одну заглавную букву и одну цифру</p>
+				<p class="text-caption col-base-500">Пароль содержать как минимум 8 символов, одну заглавную букву и
+					одну цифру</p>
 				<p class="text-caption col-base-500">После изменения пароля потребуется заново зайти в профиль</p>
 				<table>
 					<tr>
@@ -96,9 +97,10 @@
 						placeholder="{{ guest.telegram }}">
 				</div>
 				<div class="text-field">
-					<input type="checkbox" id="agree" name="agree" required>
-					<label class="text-field__label text-caption" for="agree">Я даю согласие на 
-						<a href="{% static 'regsys/data-agreement.pdf' %}" download="data-agreement.pdf">обработку персональных данных</a></label>
+					<input type="checkbox" class="checkbox" id="agree" name="agree" required>
+					<label class="text-field__label text-caption" for="agree">Я даю согласие на <a
+							href="{% static 'regsys/data-agreement.pdf' %}" download="data-agreement.pdf">обработку
+							персональных данных</a></label>
 				</div>
 				<button type="submit" id="submit" name="submit" class="primary-button text-label"
 					value="edit_info">Сохранить</button>

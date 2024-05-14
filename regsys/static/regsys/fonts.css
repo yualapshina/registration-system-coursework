@@ -102,6 +102,7 @@
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
+  text-transform: lowercase;
 }
 
 .text-caption {
@@ -115,7 +116,8 @@
   font-family: 'HSE Sans', Roboto;
   font-style: normal;
   font-weight: 900;
-  font-size: 28px;
+  font-size: 32px;
+  text-transform: lowercase;
 }
 
 .text-header-semibold {
