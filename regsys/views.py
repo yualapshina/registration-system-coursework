@@ -30,6 +30,7 @@ navbar_sign = {
     "Войти": "signin",
     "Зарегистрироваться": "signup",
     "Обратная связь": "feedback_anon",
+    "Справка": "help_anon",
     "Тест ошибок": "errors",
 }
 navbar_profile = {
@@ -37,6 +38,7 @@ navbar_profile = {
     "Моё расписание": "mylist",
     "Регистрация": "register",
     "Обратная связь": "feedback",
+    "Справка": "help",
     "Выйти из профиля": "signout",
 }
 
@@ -195,45 +197,6 @@ def signup(request):
         'navbar': navbar_sign,
     }
     return render(request, 'regsys/signup.html', context)
-    if request.POST.get("submit", "") != "to_personal":
-        return redirect(mylist)
-
-    email = request.POST["email"]
-    password = request.POST["password"]
-    if request.POST["repeat"] != password:
-        messages.error(request, "Пароли не совпадают")
-        return redirect(signup)
-    try:
-        validate_password(password)
-    except ValidationError:
-        messages.error(request, "Пароль слишком слабый. Обратите внимание на условия")
-        return redirect(signup)
-    try:
-        user = User.objects.create_user(username=email, password=password)
-    except IntegrityError:
-        messages.error(request, "К этой почте уже привязан другой аккаунт")
-        return redirect(signup)
-    guest = Guest(user=user)
-    guest.save()
-    user = authenticate(request, username=email, password=password)
-    if user is not None:
-        login(request, user)
-        messages.success(request, "Аккаунт успешно создан")
-        try:
-            send_mail(
-                subject='Аккаунт в системе регистрации ВШЭ',
-                message='Вы успешно создали аккаунт в системе регистрации на мероприятия НИУ ВШЭ - Нижний Новгород. Выбирайте интересующие вас события - и увидимся там!',
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[email])
-        except:
-            messages.error(request, "При отправке приветственного письма произошла ошибка")
-    else:
-        messages.error(request, "Ошибка при создании аккаунта")
-        return redirect(signup)
-    context = {
-        'navbar': navbar_sign,
-    }
-    return render(request, 'regsys/personal.html', context)
 
 def feedback_anon(request):
     if request.user.is_authenticated:
@@ -258,6 +221,14 @@ def landing(request):
         'navbar': navbar_sign,
     }
     return render(request, 'regsys/landing.html', context)
+
+def help_anon(request):
+    if request.user.is_authenticated:
+        return redirect(help)
+    context = {
+        'navbar': navbar_sign,
+    }
+    return render(request, 'regsys/help_anon.html', context)
 
 def errors(request):
     if request.user.is_authenticated:
@@ -424,20 +395,62 @@ def completed(request):
 @login_required    
 def download(request):
     response = HttpResponse(
-        content_type="text/csv",
-        headers={"Content-Disposition": 'attachment; filename="reg-list.csv"'},
+        content_type="application/pdf",
+        headers={"Content-Disposition": 'attachment; filename="timetable.pdf"'},
     )
-    response.write(u'\ufeff'.encode('utf8'))
-    #att = 
-    writer = csv.writer(response, delimiter =';')
+    
+    pdfmetrics.registerFont(TTFont('HSESans-Regular', 'regsys/static/regsys/fonts/HSESans-Regular.ttf'))
+    pdfmetrics.registerFont(TTFont('HSESans-SemiBold', 'regsys/static/regsys/fonts/HSESans-SemiBold.ttf'))
+    packet = io.BytesIO()
+    can = canvas.Canvas(packet, pagesize=A4)
+    x, y = A4
     
     event = Event.objects.get(id=request.GET["event_key"])
+    event_str = 'Расписание: ' + str(event)
+    can.setFont("HSESans-SemiBold", 24)
+    can.setFillColorRGB(0.22, 0.29, 0.61)
+    can.drawCentredString(x/2, y-50, event_str)
+    textobject = can.beginText()
+    textobject.setTextOrigin(64, y-70)
+    
+    dates = []
+    i = 0
+    while True:
+        cur_date = event.start_date + datetime.timedelta(days=i)
+        dates.append(cur_date)
+        i += 1
+        if cur_date == event.end_date:
+            break
+            
     guest = request.user.guest
-    tts = Timetable.objects.filter(event=event, registration__guest=guest.id, date__gte=datetime.date.today()).order_by("date", "category")
-    for tt in tts:
-        reg = Registration.objects.get(timetable=tt, guest=guest)
-        writer.writerow([tt.event.event_name + ": " + str(tt.date), tt.category, tt.timetable_name, tt.event.place + " - " + tt.place, tt.host, Registration.Status[reg.status].label])
-
+    all_tts = Timetable.objects.filter(event=event, registration__guest=guest.id, date__gte=datetime.date.today()).order_by("date", "category")
+    for date in dates:
+        textobject.setFont("HSESans-SemiBold", 16)
+        textobject.setFillColorRGB(0.52, 0.52, 0.53)
+        textobject.textLine()
+        textobject.textLine(date.strftime('%d.%m.%Y'))
+        
+        dated_tts = all_tts.filter(date=date)
+        cats = list(dated_tts.order_by("category").values_list("category", flat=True).distinct())
+        cats.sort(key=letter_first_cmp)
+        for cat in cats:
+            tt = dated_tts.filter(category=cat)[0]
+            tt_str = str(tt.category) + ':  ' + str(tt.timetable_name) + ',  ' + str(tt.place)
+            textobject.setFont("HSESans-Regular", 16)
+            textobject.setFillColorRGB(0.52, 0.52, 0.53)
+            textobject.textLine(tt_str)
+    
+    can.drawText(textobject)
+    can.showPage()
+    can.save()
+    packet.seek(0)
+    new_pdf = PdfReader(packet)
+    output = PdfWriter(response)
+    for i in range(len(new_pdf.pages)):
+        page = new_pdf.pages[i]
+        output.add_page(page)
+    output.write(response)
+    
     return response
     
 @login_required    
@@ -448,6 +461,15 @@ def feedback(request):
         'navbar': navbar_profile,
     }
     return render(request, 'regsys/feedback.html', context)
+
+@login_required   
+def help(request):
+    guest = request.user.guest
+    context = {
+        'guest' : guest,
+        'navbar': navbar_profile,
+    }
+    return render(request, 'regsys/help.html', context)
     
 @login_required    
 def certificate(request):
@@ -534,3 +556,11 @@ def qr_read(request):
     except:
         pass
     return redirect('admin:index')
+    
+@staff_member_required   
+def help_admin(request):
+    user = request.user
+    context = {
+        'user' : user,
+    }
+    return render(request, 'admin/help.html', context)
