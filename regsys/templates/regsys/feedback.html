@@ -33,11 +33,11 @@
 					{% endfor %}
 					{% else %}
 					{% for name, link in links.items %}
-						{% if name == "Выйти" %}
-						<a class="navbar_logout" href="{% url link %}">{{ name }}</a>
-						{% else %}
-						<a class="navbar_right" href="{% url link %}">{{ name }}</a>
-						{% endif %}
+					{% if name == "Выйти" %}
+					<a class="navbar_logout" href="{% url link %}">{{ name }}</a>
+					{% else %}
+					<a class="navbar_right" href="{% url link %}">{{ name }}</a>
+					{% endif %}
 					{% endfor %}
 					{% endif %}
 				</div>
@@ -46,8 +46,9 @@
 
 			<div class="block">
 				<p class="text-header-black col-primary-800">Форма обратной связи</p>
-				<p class="text-caption col-base-700">Здесь вы можете оставить комментарии о работе системы регистрации.
-					При необходимости мы пришлем ответ на почту, к которой привязан ваш аккаунт.</p>
+				<p class="text-caption col-base-700">Здесь можно сказать что-то о работе системы регистрации или о
+					возникших проблемах. При необходимости мы пришлем ответ на почту, к которой привязан твой аккаунт.
+				</p>
 				<div class="text-field">
 					<label class="text-field__label text-caption" for="subject">Тема сообщения</label>
 					{% if subject %}
@@ -55,18 +56,18 @@
 						value="{{ subject }}">
 					{% else %}
 					<input class="text-field__input text-regular" type="text" id="subject" name="subject" required
-						placeholder="Про что вы хотите сказать?">
+						placeholder="Про что ты хочешь сказать?">
 					{% endif %}
 				</div>
 				<div class="text-field">
 					<label class="text-field__label text-caption" for="message">Сообщение</label><br>
 					<textarea class="text-regular" type="text" id="message" name="message" required
-						placeholder="Любые вопросы и пожелания касательно работы системы"></textarea>
+						placeholder="Любые вопросы и пожелания по работе системы"></textarea>
 				</div>
 				<div>
 					<label class="text-field__label text-caption" for="attachment">Вложение</label>
 					<input class="text-caption" type="file" id="attachment" name="attachment" accept="image/*,.pdf" />
-					<span class="text-caption col-base-500">Можете прикрепить изображение или PDF-файл</span>
+					<span class="text-caption col-base-500">Можно прикрепить изображение или PDF-файл</span>
 					</label>
 				</div>
 				<br><button id="submit" name="submit" type="submit" value="feedback"

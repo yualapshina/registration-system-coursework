@@ -37,7 +37,7 @@
 
 			<div class="block">
 				<p class="text-header-black col-primary-800">{{ event.event_name }}: Уточнение расписания</p>
-				<p class="text-caption col-base-600">Будьте внимательны! Некоторые мероприятия идут одновременно -
+				<p class="text-caption col-base-600">Будь внимателен! Некоторые мероприятия идут одновременно -
 					выбрать можно только одно.<br>А еще, некоторые из них повторяются в разное время.</p>
 				{% if timetable %}
 				{% for date, cats in timetable.items %}
@@ -89,8 +89,8 @@
 				<button type="submit" id="submit" name="submit" class="primary-button text-label"
 					value="to_completed">Завершить регистрацию</button><br>
 				{% else %}
-				<p class="text-body-regular col-base-600">Кажется, вы не выбрали ни одного дня для регистрации.
-					Попробуйте снова!</p>
+				<p class="text-body-regular col-base-600">Кажется, ты не выбрал ни одного дня для регистрации.
+					Попробуй снова!</p>
 				{% endif %}
 			</div>
 		</div>
