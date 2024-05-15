@@ -1,22 +1,26 @@
-<!DOCTYPE html>
-<html lang="en-US">
+{% extends "admin/base_site.html" %}
 
-<head>
-	{% load static %}
-	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
-	<meta charset="utf-8" />
-	<title>Справка администрирования Django</title>
-	<link rel="icon" href="{% static 'regsys/images/favicon.png' %}" type="image/png">
-</head>
+{% load static %}
 
-<body class="background">
+{% block extrahead %}
+    <link rel="icon" href="{% static 'regsys/images/favicon.png' %}" type="image/png">
+{% endblock %}
 
-		<div class="parent">
+{% block title %}
+	Справка
+{{ block.super }}
+{% endblock %}
 
-			<div class="block">
-				<p class="text-header-black col-primary-800">справка для админов обалдеть</p>
-			</div>
-		</div>
-</body>
+{% block branding %}
+	<h1 id="site-name">Справка администрирования Django</h1>
+{% endblock %}
 
-</html>
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">Назад в систему</a>
+    </div>
+{% endblock %}
+
+{% block content %}
+	<p>справка для админов обалдеть</p>
+{% endblock %}
