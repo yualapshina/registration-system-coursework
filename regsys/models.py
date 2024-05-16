@@ -101,7 +101,6 @@ class Label(models.Model):
     class Type(models.TextChoices):
         TAR = "TAR", "Аудитория"
         FIE = "FIE", "Направление"
-        CON = "CON", "Подтверждение"
         
     id = models.AutoField(primary_key=True, verbose_name="Номер")
     label_name = models.CharField(max_length=50, verbose_name="Название")

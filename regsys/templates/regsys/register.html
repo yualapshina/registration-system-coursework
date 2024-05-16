@@ -82,28 +82,6 @@
 				</p>
 				{% endif %}
 			</form>
-
-			<br><br>
-			<p class="text-header-black col-primary-800">Завершённые мероприятия</p>
-			{% if events_past %}
-			{% for event, labels in events_past.items %}
-			<div class="tooltip">
-				<span class="text-header-semibold col-primary-600"> {{ event.event_name }}</span>
-				<span class="tooltiptext text-caption">{{ event.annotation }}</span>
-			</div><br>
-			{% for label in labels %}
-			<span class="{{ label.type }} text-caption col-base-500">{{ label.label_name }}&emsp;</span>
-			{% endfor %}
-			<br><span class="text-regular col-base-700">{{ event.place }}&emsp;</span>
-			{% if event.start_date != event.end_date %}
-			<span class="text-regular col-base-700">{{ event.start_date }} - {{ event.end_date }}</span><br>
-			{% else %}
-			<span class="text-regular col-base-700">{{ event.start_date }}</span><br>
-			{% endif %}
-			{% endfor %}<br>
-			{% else %}
-			<p class="text-regular col-base-600">Кажется, завершенных мероприятий сейчас нет.</p><br>
-			{% endif %}
 		</div>
 	</div>
 </body>

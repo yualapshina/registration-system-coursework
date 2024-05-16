@@ -322,11 +322,6 @@ def register(request):
                 all_events = all_events.filter(labelmap__label=label)
         filterbar.update({type: t})
     
-    events_past = {}
-    all_past = all_events.filter(end_date__lt=datetime.date.today())
-    for event in all_past:
-        labels = Label.objects.filter(labelmap__event=event)
-        events_past.update({event: labels}) 
     events_future = {}
     all_future = all_events.filter(end_date__gte=datetime.date.today())
     for event in all_future:
@@ -335,7 +330,6 @@ def register(request):
     context = {
         'navbar': navbar_profile,
         'filterbar': filterbar,
-        'events_past': events_past,
         'events_future': events_future,
     }
     return render(request, 'regsys/register.html', context)
