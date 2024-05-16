@@ -112,6 +112,11 @@ class TimetableAdmin(admin.ModelAdmin):
         )
         return format_html('<a href="{}">Записей: {}</a>', url, count)
 
+    def seats(self, obj):
+        if obj.seats_all > -1:
+            return str(obj.seats_all - obj.seats_taken) + "/" + str(obj.seats_all)
+        return str(obj.seats_taken) + "/" + "не ограничено"
+
     registrations_link.short_description = "Записи"
 
 @admin.register(Guest)

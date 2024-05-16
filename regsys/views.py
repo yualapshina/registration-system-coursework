@@ -559,8 +559,9 @@ def qr_read(request):
     
 @staff_member_required   
 def help_admin(request):
-    user = request.user
-    context = {
-        'user' : user,
-    }
-    return render(request, 'admin/help.html', context)
+    response = HttpResponse(
+        open('regsys/static/regsys/help-admin.pdf', 'rb'),
+        content_type="application/pdf",
+        headers={"Content-Disposition": 'attachment; filename="help-admin.pdf"'},
+    )
+    return response

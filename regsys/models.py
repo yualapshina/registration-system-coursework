@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import F, Q
 from django.core.exceptions import ValidationError
-from django.db.models.signals import pre_save, pre_delete
+from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 
@@ -37,9 +37,10 @@ class Timetable(models.Model):
     place = models.CharField(max_length=100, verbose_name="Место")
     host = models.CharField(max_length=100, verbose_name="Ведущий")
     annotation = models.CharField(max_length=1000, verbose_name="Аннотация")
-    repeating = models.BooleanField(verbose_name="Повтор?")
+    repeating = models.BooleanField(default=False, editable=False, verbose_name="Повтор?")
     event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name="Событие")
-    seats = models.IntegerField(default=-1, verbose_name="Свободных мест")
+    seats_all = models.IntegerField(default=-1, verbose_name="Всего мест")
+    seats_taken = models.IntegerField(default=0, editable=False, verbose_name="Занято мест")
     
     def __str__(self):
         return self.timetable_name
@@ -125,31 +126,50 @@ class Labelmap(models.Model):
         verbose_name = "Лейблмап"
         verbose_name_plural = "Лейблмап"
 
+@receiver(post_save, sender=Timetable)
+def add_repeat(sender, instance, created, **kwargs):
+    similar = Timetable.objects.filter(~Q(id=instance.id), timetable_name=instance.timetable_name, event=instance.event)
+    if similar:
+        Timetable.objects.filter(id=instance.id).update(repeating=True)
+        similar.update(repeating=True)
+    else:
+        Timetable.objects.filter(id=instance.id).update(repeating=False)
+
+@receiver(pre_save, sender=Timetable)
+def clean_repeat(sender, instance, **kwargs):
+    if instance.id:
+        previous = Timetable.objects.get(id=instance.id)
+        similar = Timetable.objects.filter(~Q(id=instance.id), timetable_name=previous.timetable_name, event=previous.event)
+        if len(similar) == 1:
+            similar.update(repeating=False)
+            
+@receiver(pre_delete, sender=Timetable)
+def clean_repeat(sender, instance, **kwargs):
+    similar = Timetable.objects.filter(~Q(id=instance.id), timetable_name=instance.timetable_name, event=instance.event)
+    if len(similar) == 1:
+        similar.update(repeating=False)
+
 @receiver(pre_save, sender=Registration)
-def minus_seat(sender, instance, **kwargs):
+def alloc_seat(sender, instance, **kwargs):
     if instance.id is None:
         if instance.is_seated:
             t = instance.timetable
-            if t.seats > 0:
-                t.seats -= 1
-                t.save()
+            t.seats_taken += 1
+            t.save()
     else:
         previous = Registration.objects.get(id=instance.id)
         t = instance.timetable
         if not previous.is_seated and instance.is_seated:
-            if t.seats > 0:
-                t.seats -= 1
-                t.save()
+            t.seats_taken += 1
+            t.save()
         if previous.is_seated and not instance.is_seated:
-            if t.seats > -1:
-                t.seats += 1
-                t.save()
+            t.seats_taken -= 1
+            t.save()
                 
 @receiver(pre_delete, sender=Registration)
-def plus_seat(sender, instance, **kwargs):
+def free_seat(sender, instance, **kwargs):
     if instance.is_seated:
         t = instance.timetable
-        if t.seats > -1:
-            t.seats += 1
-            t.save()
+        t.seats_taken -= 1
+        t.save()
         

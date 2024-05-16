@@ -3,6 +3,7 @@
 
 <head>
 	{% load static %}
+	{% load extra-tags %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
 	<meta charset="utf-8" />
 	<title>Настройка расписания</title>
@@ -49,7 +50,7 @@
 							<span class="text-regular col-primary-600">{{ cat }}</span><br>
 							{% for entry, chosen in entries.items %}
 							{% if not chosen %}
-							{% if entry.seats == 0 %}
+							{% if entry.seats_all|subtract:entry.seats_taken == 0 %}
 							<input type="radio" class="radio" id="entry_{{ entry.id }}"
 								name="category_{{ date }}_{{ cat }}" value="{{ entry.id }}" disabled>
 							{% else %}
@@ -69,13 +70,13 @@
 									class="text-regular col-base-700">Ведущий: </span><span
 									class="text-regular col-base-600">{{ entry.host }}</span>&emsp;<span
 									class="text-regular col-base-700">Свободных мест: </span>
-								{% if entry.seats < 0 %} <span class="text-regular col-base-600">не
+								{% if entry.seats_all < 0 %} <span class="text-regular col-base-600">не
 									ограничено</span>
 							{% else %}
-							<span class="text-regular col-base-600">{{ entry.seats }}</span>
+							<span class="text-regular col-base-600">{{ entry.seats_all|subtract:entry.seats_taken }}/{{ entry.seats_all }}</span>
 							{% endif %}
 							{% if entry.repeating %}
-							<span class="text-caption col-base-500"><br>*Мероприятие также проводится в другое
+							<span class="text-caption col-base-500"><br>* Мероприятие также проводится в другое
 								время</span>
 							{% endif %}
 							<br>
