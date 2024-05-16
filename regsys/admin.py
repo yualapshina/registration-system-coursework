@@ -115,7 +115,7 @@ class TimetableAdmin(admin.ModelAdmin):
     def seats(self, obj):
         if obj.seats_all > -1:
             return str(obj.seats_all - obj.seats_taken) + "/" + str(obj.seats_all)
-        return str(obj.seats_taken) + "/" + "не ограничено"
+        return "не ограничено"
 
     registrations_link.short_description = "Записи"
 
