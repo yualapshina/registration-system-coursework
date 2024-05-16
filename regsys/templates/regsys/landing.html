@@ -21,12 +21,18 @@
 	<div class="parent">
 
 		<div class="navbar text-label">
-			{% for name, link in navbar.items %}
-			{% if name == "Добро пожаловать" %}
-			<a class="navbar_current" href="{% url link %}">{{ name }}</a>
-			{% else %}
-			<a class="navbar_link" href="{% url link %}">{{ name }}</a>
-			{% endif %}
+			{% for side, links in navbar.items %}
+			<div>
+				{% if side == "left" %}
+				{% for name, link in links.items %}
+				<a class="navbar_left" href="{% url link %}">{{ name }}</a>
+				{% endfor %}
+				{% else %}
+				{% for name, link in links.items %}
+				<a class="navbar_right" href="{% url link %}">{{ name }}</a>
+				{% endfor %}
+				{% endif %}
+			</div>
 			{% endfor %}
 		</div>
 
@@ -48,8 +54,7 @@
 				</tr>
 				<tr>
 					<td class="text-regular col-base-700">Нажимай “зарегистрироваться” и заходи в систему через
-						электронную
-						почту</td>
+						электронную почту</td>
 					<td class="text-regular col-base-700">Нужно будет заполнить небольшую форму - сказать, как тебя
 						зовут, где ты учишься, как с тобой связаться. Мы используем эту информацию для связи с
 						участниками мероприятий и для создания сертификатов</td>

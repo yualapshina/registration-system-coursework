@@ -27,19 +27,26 @@ from django.views.generic.base import RedirectView
 from .models import Event, Timetable, Guest, Registration, Label, Labelmap
 
 navbar_sign = {
-    "Войти": "signin",
-    "Зарегистрироваться": "signup",
-    "Обратная связь": "feedback_anon",
-    "Справка": "help_anon",
-    "Тест ошибок": "errors",
+    "left": {
+        "Войти": "signin",
+        "Зарегистрироваться": "signup",
+    },
+    "right": {
+        "Обратная связь": "feedback_anon",
+        "Справка": "help_anon",
+    }
 }
 navbar_profile = {
-    "Профиль": "profile",
-    "Моё расписание": "mylist",
-    "Регистрация": "register",
-    "Обратная связь": "feedback",
-    "Справка": "help",
-    "Выйти из профиля": "signout",
+    "left": {
+        "Профиль": "profile",
+        "Моё расписание": "mylist",
+        "Регистрация": "register",
+    },
+    "right": {
+        "Обратная связь": "feedback",
+        "Справка": "help",
+        "Выйти": "signout",
+    }
 }
 
 @cmp_to_key
@@ -406,10 +413,9 @@ def download(request):
     x, y = A4
     
     event = Event.objects.get(id=request.GET["event_key"])
-    event_str = 'Расписание: ' + str(event)
-    can.setFont("HSESans-SemiBold", 24)
+    can.setFont("HSESans-SemiBold", 22)
     can.setFillColorRGB(0.22, 0.29, 0.61)
-    can.drawCentredString(x/2, y-50, event_str)
+    can.drawCentredString(x/2, y-50, str(event))
     textobject = can.beginText()
     textobject.setTextOrigin(64, y-70)
     

@@ -25,19 +25,25 @@
 		<div class="parent">
 
 			<div class="navbar text-label">
-				{% for name, link in navbar.items %}
-				{% if name == "Обратная связь" %}
-				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
-				{% else %}
-				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
-				{% endif %}
+				{% for side, links in navbar.items %}
+				<div>
+					{% if side == "left" %}
+					{% for name, link in links.items %}
+					<a class="navbar_left" href="{% url link %}">{{ name }}</a>
+					{% endfor %}
+					{% else %}
+					{% for name, link in links.items %}
+					<a class="navbar_right" href="{% url link %}">{{ name }}</a>
+					{% endfor %}
+					{% endif %}
+				</div>
 				{% endfor %}
 			</div>
 
 			<div class="block">
 				<p class="text-header-black col-primary-800">Форма обратной связи</p>
-				<p class="text-caption col-base-700">Здесь вы можете оставить комментарии о работе системы регистрации.
-					При необходимости мы пришлем ответ на почту, которую вы укажете.</p>
+				<p class="text-caption col-base-700">Здесь можно сказать что-то о работе системы регистрации или о
+					возникших проблемах. При необходимости мы пришлем ответ на почту, которую ты укажешь.</p>
 				<div class="text-field">
 					<label class="text-field__label text-caption" for="email">Электронная почта</label><br>
 					<input class="text-field__input text-regular" type="text" id="email" name="email" required
@@ -50,18 +56,18 @@
 						value="{{ subject }}">
 					{% else %}
 					<input class="text-field__input text-regular" type="text" id="subject" name="subject" required
-						placeholder="Про что вы хотите сказать?">
+						placeholder="Про что ты хочешь сказать?">
 					{% endif %}
 				</div>
 				<div class="text-field">
 					<label class="text-field__label text-caption" for="message">Сообщение</label><br>
 					<textarea class="text-regular" type="text" id="message" name="message" required
-						placeholder="Любые вопросы и пожелания касательно работы системы"></textarea>
+						placeholder="Любые вопросы и пожелания по работе системы"></textarea>
 				</div>
 				<div>
 					<label class="text-field__label text-caption" for="attachment">Вложение</label>
 					<input class="text-caption" type="file" id="attachment" name="attachment" accept="image/*,.pdf" />
-					<span class="text-caption col-base-500">Можете прикрепить изображение или PDF-файл</span>
+					<span class="text-caption col-base-500">Можно прикрепить изображение или PDF-файл</span>
 					</label>
 				</div>
 				<br><button id="submit" name="submit" type="submit" value="feedback"

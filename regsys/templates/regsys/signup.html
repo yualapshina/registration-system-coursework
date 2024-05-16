@@ -23,12 +23,18 @@
 		<div class="parent">
 
 			<div class="navbar text-label">
-				{% for name, link in navbar.items %}
-				{% if name == "Создание профиля" %}
-				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
-				{% else %}
-				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
-				{% endif %}
+				{% for side, links in navbar.items %}
+				<div>
+					{% if side == "left" %}
+					{% for name, link in links.items %}
+					<a class="navbar_left" href="{% url link %}">{{ name }}</a>
+					{% endfor %}
+					{% else %}
+					{% for name, link in links.items %}
+					<a class="navbar_right" href="{% url link %}">{{ name }}</a>
+					{% endfor %}
+					{% endif %}
+				</div>
 				{% endfor %}
 			</div>
 
@@ -39,8 +45,10 @@
 					<input class="text-field__input text-regular" type="text" id="email" name="email" required
 						placeholder="Введите ваш адрес электронной почты">
 				</div>
-				<p class="text-caption col-base-500">На введённый вами адрес будет направлен пароль, который вы сможете изменить после входа в профиль.</p>
-		<button id=" submit" name="submit" type="submit" value="signup" class="primary-button text-label">Создать
+				<p class="text-caption col-base-500">На введённый вами адрес будет направлен пароль, который вы сможете
+					изменить после входа в профиль.</p>
+				<button id=" submit" name="submit" type="submit" value="signup"
+					class="primary-button text-label">Создать
 					профиль</button>
 			</div>
 		</div>

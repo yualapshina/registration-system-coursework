@@ -13,12 +13,22 @@
 	<div class="parent">
 
 		<div class="navbar text-label">
-			{% for name, link in navbar.items %}
-			{% if name == "Зарегистрироваться" %}
-			<a class="navbar_current" href="{% url link %}">{{ name }}</a>
-			{% else %}
-			<a class="navbar_link" href="{% url link %}">{{ name }}</a>
-			{% endif %}
+			{% for side, links in navbar.items %}
+			<div>
+				{% if side == "left" %}
+				{% for name, link in links.items %}
+				<a class="navbar_left" href="{% url link %}">{{ name }}</a>
+				{% endfor %}
+				{% else %}
+				{% for name, link in links.items %}
+					{% if name == "Выйти" %}
+					<a class="navbar_logout" href="{% url link %}">{{ name }}</a>
+					{% else %}
+					<a class="navbar_right" href="{% url link %}">{{ name }}</a>
+					{% endif %}
+				{% endfor %}
+				{% endif %}
+			</div>
 			{% endfor %}
 		</div>
 
@@ -63,12 +73,12 @@
 				<span class="text-regular col-base-700">{{ event.start_date }}</span>
 				{% endif %}
 				<br><br><button id="event_{{ event.id }}" name="event_key" type="submit" value="{{ event.id }}"
-					class="primary-button text-label">Регистрация</button><br>
+					class="primary-button text-label">Хочу сюда</button><br>
 				{% endfor %}
 				{% else %}
 				<p class="text-regular col-base-600">
 					К сожалению, сейчас нет доступных для регистрации мероприятий.
-					<br>Попробуйте изменить фильтры, если вы их выбирали.
+					<br>Попробуй изменить фильтры, если ты их настраивал.
 				</p>
 				{% endif %}
 			</form>
