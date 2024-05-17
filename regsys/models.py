@@ -144,7 +144,7 @@ def clean_repeat(sender, instance, **kwargs):
             similar.update(repeating=False)
             
 @receiver(pre_delete, sender=Timetable)
-def delete_repeat(sender, instance, **kwargs):
+def clean_repeat(sender, instance, **kwargs):
     similar = Timetable.objects.filter(~Q(id=instance.id), timetable_name=instance.timetable_name, event=instance.event)
     if len(similar) == 1:
         similar.update(repeating=False)

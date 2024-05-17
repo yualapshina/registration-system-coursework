@@ -400,8 +400,8 @@ def download(request):
         headers={"Content-Disposition": 'attachment; filename="timetable.pdf"'},
     )
     
-    pdfmetrics.registerFont(TTFont('HSESans-Regular', 'regsys/static/regsys/fonts/HSESans-Regular.ttf'))
-    pdfmetrics.registerFont(TTFont('HSESans-SemiBold', 'regsys/static/regsys/fonts/HSESans-SemiBold.ttf'))
+    pdfmetrics.registerFont(TTFont('HSESans-Regular', str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-Regular.ttf'))
+    pdfmetrics.registerFont(TTFont('HSESans-SemiBold', str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-SemiBold.ttf'))
     packet = io.BytesIO()
     can = canvas.Canvas(packet, pagesize=A4)
     x, y = A4
@@ -482,8 +482,8 @@ def certificate(request):
     guest = request.user.guest
     regs = Registration.objects.filter(guest=guest, status=Registration.Status.VIS, timetable__event=event)
     
-    pdfmetrics.registerFont(TTFont('HSESans-Regular', 'regsys/static/regsys/fonts/HSESans-Regular.ttf'))
-    pdfmetrics.registerFont(TTFont('HSESans-SemiBold', 'regsys/static/regsys/fonts/HSESans-SemiBold.ttf'))
+    pdfmetrics.registerFont(TTFont('HSESans-Regular', str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-Regular.ttf'))
+    pdfmetrics.registerFont(TTFont('HSESans-SemiBold', str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-SemiBold.ttf'))
     packet = io.BytesIO()
     can = canvas.Canvas(packet, pagesize=A4)
     x, y = A4
@@ -513,7 +513,7 @@ def certificate(request):
     packet.seek(0)
     
     new_pdf = PdfReader(packet)
-    template_pdf = PdfReader(open('regsys/static/regsys/template-certificate.pdf', 'rb'))
+    template_pdf = PdfReader(open(str(settings.STATIC_ROOT) + '/regsys/template-certificate.pdf', 'rb'))
     output = PdfWriter(response)
     for i in range(len(template_pdf.pages)):
         page = template_pdf.pages[i]
@@ -560,7 +560,7 @@ def qr_read(request):
 @staff_member_required   
 def help_admin(request):
     response = HttpResponse(
-        open('regsys/static/regsys/help-admin.pdf', 'rb'),
+        open(str(settings.STATIC_ROOT) + '/regsys/help-admin.pdf', 'rb'),
         content_type="application/pdf",
         headers={"Content-Disposition": 'attachment; filename="help-admin.pdf"'},
     )
