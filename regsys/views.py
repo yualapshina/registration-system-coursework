@@ -8,6 +8,8 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.platypus import Paragraph
+from reportlab.lib.styles import ParagraphStyle
 from functools import cmp_to_key
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMessage, send_mail
@@ -48,6 +50,60 @@ navbar_profile = {
         "Выйти": "signout",
     }
 }
+
+def get_paragraph_style(style):
+    if style == 'header':
+        pdfmetrics.registerFont(
+            TTFont('HSESans-SemiBold', 
+            str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-SemiBold.ttf')
+        )
+        return ParagraphStyle('header',
+            fontName="HSESans-SemiBold",
+            fontSize=22,
+            textColor='#808080',
+            alignment=1,
+            leading=30,
+        )
+    if style == 'subheader':
+        pdfmetrics.registerFont(
+            TTFont('HSESans-SemiBold', 
+            str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-SemiBold.ttf')
+        )
+        return ParagraphStyle('subheader',
+            fontName="HSESans-SemiBold",
+            fontSize=16,
+            textColor='#808080',
+            alignment=0,
+            leading=20,
+        )
+    if style == 'regular':
+        pdfmetrics.registerFont(
+            TTFont('HSESans-Regular', 
+            str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-Regular.ttf')
+        )
+        return ParagraphStyle('regular',
+            fontName="HSESans-Regular",
+            fontSize=16,
+            textColor='#1F1F1F',
+            alignment=0,
+            leading=20,
+            leftIndent=30,
+            firstLineIndent=-30,
+        )
+    if style == 'regular_centered':
+        pdfmetrics.registerFont(
+            TTFont('HSESans-Regular', 
+            str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-Regular.ttf')
+        )
+        return ParagraphStyle('regular',
+            fontName="HSESans-Regular",
+            fontSize=16,
+            textColor='#1F1F1F',
+            alignment=1,
+            leading=20,
+            leftIndent=30,
+            firstLineIndent=-30,
+        )
 
 @cmp_to_key
 def letter_first_cmp(a, b):
@@ -400,18 +456,17 @@ def download(request):
         headers={"Content-Disposition": 'attachment; filename="timetable.pdf"'},
     )
     
-    pdfmetrics.registerFont(TTFont('HSESans-Regular', str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-Regular.ttf'))
-    pdfmetrics.registerFont(TTFont('HSESans-SemiBold', str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-SemiBold.ttf'))
     packet = io.BytesIO()
     can = canvas.Canvas(packet, pagesize=A4)
     x, y = A4
+    margin = 30
+    h_cur = margin
     
     event = Event.objects.get(id=request.GET["event_key"])
-    can.setFont("HSESans-SemiBold", 22)
-    can.setFillColorRGB(0.22, 0.29, 0.61)
-    can.drawCentredString(x/2, y-50, str(event))
-    textobject = can.beginText()
-    textobject.setTextOrigin(64, y-70)
+    header = Paragraph(str(event), get_paragraph_style('header'))
+    w, h = header.wrapOn(can, x - 2*margin, y - 2*margin)
+    header.drawOn(can, margin, y - h - h_cur)
+    h_cur += h
     
     dates = []
     i = 0
@@ -421,26 +476,28 @@ def download(request):
         i += 1
         if cur_date == event.end_date:
             break
-            
     guest = request.user.guest
     all_tts = Timetable.objects.filter(event=event, registration__guest=guest.id, date__gte=datetime.date.today()).order_by("date", "category")
-    for date in dates:
-        textobject.setFont("HSESans-SemiBold", 16)
-        textobject.setFillColorRGB(0.52, 0.52, 0.53)
-        textobject.textLine()
-        textobject.textLine(date.strftime('%d.%m.%Y'))
+    for date in dates:   
+        h_cur += 20
+        subheader = Paragraph(date.strftime('%d.%m.%Y'), get_paragraph_style('subheader'))
+        w, h = subheader.wrapOn(can, x - 2*margin, y - 2*margin)
+        subheader.drawOn(can, margin, y - h - h_cur)
+        h_cur += h
         
         dated_tts = all_tts.filter(date=date)
         cats = list(dated_tts.order_by("category").values_list("category", flat=True).distinct())
         cats.sort(key=letter_first_cmp)
         for cat in cats:
             tt = dated_tts.filter(category=cat)[0]
-            tt_str = str(tt.category) + ':  ' + str(tt.timetable_name) + ',  ' + str(tt.place)
-            textobject.setFont("HSESans-Regular", 16)
-            textobject.setFillColorRGB(0.52, 0.52, 0.53)
-            textobject.textLine(tt_str)
+            line = Paragraph(
+                str(tt.category) + ':  ' + str(tt.timetable_name) + ',  ' + str(tt.place),
+                get_paragraph_style('regular')
+            )
+            w, h = line.wrapOn(can, x - 2*margin, y - 2*margin)
+            line.drawOn(can, margin, y - h - h_cur)
+            h_cur += h
     
-    can.drawText(textobject)
     can.showPage()
     can.save()
     packet.seek(0)
@@ -482,33 +539,37 @@ def certificate(request):
     guest = request.user.guest
     regs = Registration.objects.filter(guest=guest, status=Registration.Status.VIS, timetable__event=event)
     
-    pdfmetrics.registerFont(TTFont('HSESans-Regular', str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-Regular.ttf'))
-    pdfmetrics.registerFont(TTFont('HSESans-SemiBold', str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-SemiBold.ttf'))
     packet = io.BytesIO()
     can = canvas.Canvas(packet, pagesize=A4)
     x, y = A4
+    margin = 30
     
-    #TODO line wrapping
-    can.setFont("HSESans-SemiBold", 24)
-    can.setFillColorRGB(0.22, 0.29, 0.61)
-    can.drawCentredString(x/2, y-310, str(guest))
-    can.setFillColorRGB(0.15, 0.22, 0.51)
-    can.drawCentredString(x/2, y-428, str(event))
+    name_par = Paragraph(str(guest), get_paragraph_style('header'))
+    w, h = name_par.wrapOn(can, x - 2*margin, 80)
+    name_par.drawOn(can, margin, y - h - 280 - (80-h)/2)
+    
+    event_par = Paragraph(str(event), get_paragraph_style('header'))
+    w, h = event_par.wrapOn(can, x - 2*margin, 200)
+    event_par.drawOn(can, margin, y - h - 400)
+    h_cur = h + 420
+    
     date_str = event.start_date.strftime('%d.%m.%Y')
     if event.start_date != event.end_date:
         date_str = 'с ' + event.start_date.strftime('%d.%m.%Y') + ' по ' + event.end_date.strftime('%d.%m.%Y')
-    can.setFont("HSESans-Regular", 16)
-    can.setFillColorRGB(0.52, 0.52, 0.53)
-    can.drawCentredString(x/2, y-468, date_str)
+    date_par = Paragraph(date_str, get_paragraph_style('regular_centered'))
+    w, h = date_par.wrapOn(can, x - 2*margin, y - 2*margin)
+    date_par.drawOn(can, margin, y - h - h_cur)
+    
     can.showPage()
     
-    textobject = can.beginText()
-    textobject.setFont("HSESans-Regular", 16)
-    textobject.setFillColorRGB(0.52, 0.52, 0.53)
-    textobject.setTextOrigin(64, y-160)
+    margin = 50
+    h_cur = 140
     for reg in regs:
-        textobject.textLine(str(reg.timetable))
-    can.drawText(textobject)
+        line = Paragraph(str(reg.timetable), get_paragraph_style('regular'))
+        w, h = line.wrapOn(can, x - 2*margin, y - 2*margin)
+        line.drawOn(can, margin, y - h - h_cur)
+        h_cur += h
+    
     can.save()
     packet.seek(0)
     
