@@ -46,17 +46,17 @@
 					{% csrf_token %}
 					<p class="text-header-black col-primary-800">Данные для входа:</p>
 					<div class="text-field">
-						<label class="text-field__label text-caption" for="email">Электронная почта</label>
+						<label class="text-field__label text-caption" for="email">электронная почта</label>
 						<input class="text-field__input text-regular" type="text" id="email" name="email" disabled
 							placeholder="{{ guest.user.username }}">
 					</div>
 					<div class="text-field">
-						<label class="text-field__label text-caption" for="old">Старый пароль</label>
+						<label class="text-field__label text-caption" for="old">старый пароль</label>
 						<input class="text-field__input text-regular" type="password" id="old" name="old"
 							placeholder="Введи старый пароль">
 					</div>
 					<div class="text-field">
-						<label class="text-field__label text-caption" for="new">Новый пароль</label>
+						<label class="text-field__label text-caption" for="new">новый пароль</label>
 						<input class="text-field__input text-regular" type="password" id="new" name="new"
 							placeholder="Введи новый пароль">
 					</div>
@@ -78,32 +78,32 @@
 					{% csrf_token %}
 					<p class="text-header-black col-primary-800">Личная информация:</p>
 					<div class="text-field">
-						<label class="text-field__label text-caption" for="surname">Фамилия</label>
+						<label class="text-field__label text-caption" for="surname">фамилия</label>
 						<input class="text-field__input text-regular" type="text" id="surname" name="surname"
 							placeholder="{{ guest.surname }}">
 					</div>
 					<div class="text-field">
-						<label class="text-field__label text-caption" for="firstname">Имя</label>
+						<label class="text-field__label text-caption" for="firstname">имя</label>
 						<input class="text-field__input text-regular" type="text" id="firstname" name="firstname"
 							placeholder="{{ guest.firstname }}">
 					</div>
 					<div class="text-field">
-						<label class="text-field__label text-caption" for="patronymic">Отчество</label>
+						<label class="text-field__label text-caption" for="patronymic">отчество</label>
 						<input class="text-field__input text-regular" type="text" id="patronymic" name="patronymic"
 							placeholder="{{ guest.patronymic }}">
 					</div>
 					<div class="text-field">
-						<label class="text-field__label text-caption" for="school">Место обучения</label>
+						<label class="text-field__label text-caption" for="school">место обучения</label>
 						<input class="text-field__input text-regular" type="text" id="school" name="school"
 							placeholder="{{ guest.school }}">
 					</div>
 					<div class="text-field">
-						<label class="text-field__label text-caption" for="phone">Телефон</label>
+						<label class="text-field__label text-caption" for="phone">телефон</label>
 						<input class="text-field__input text-regular" type="text" id="phone" name="phone"
 							placeholder="{{ guest.phone }}">
 					</div>
 					<div class="text-field">
-						<label class="text-field__label text-caption" for="telegram">Телеграм</label>
+						<label class="text-field__label text-caption" for="telegram">телеграм</label>
 						<input class="text-field__input text-regular" type="text" id="telegram" name="telegram"
 							placeholder="{{ guest.telegram }}">
 					</div>
