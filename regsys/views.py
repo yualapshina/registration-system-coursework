@@ -17,7 +17,7 @@ from django.conf import settings
 from django.utils.crypto import get_random_string
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.db.utils import IntegrityError
+from django.db.utils import IntegrityError, DataError
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -138,7 +138,11 @@ def dispatcher(request):
             guest.phone = request.POST.get("phone", "")
         if request.POST.get("telegram", ""):
             guest.telegram = request.POST.get("telegram", "")
-        guest.save()
+        try:
+            guest.save()
+        except DataError:
+            messages.error(request, "Ошибка сохранения - возможно, введена слишком длинная строка. Попробуй сократить!")
+            return redirect(profile)
         messages.success(request, "Изменения успешно сохранены")
         return redirect(profile)
     
@@ -203,6 +207,13 @@ def dispatcher(request):
         if filter:
             user = filter[0]
             password = get_random_string(10)
+            needs_validation = True
+            while needs_validation:
+                try:
+                    validate_password(password)
+                    needs_validation = False
+                except ValidationError:
+                    password = get_random_string(10)
             user.set_password(password)
             user.save()
             try:
