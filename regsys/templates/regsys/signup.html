@@ -47,6 +47,17 @@
 				</div>
 				<p class="text-caption col-base-500">На введённый тобой адрес будет направлен пароль, который ты сможешь
 					изменить после входа в профиль</p>
+				<div class="text-field">
+					<input type="checkbox" class="checkbox" id="data_agree" name="data_agree" required>
+					<label class="text-field__label text-caption" for="data_agree">Я даю согласие на <a
+							href="{% static 'regsys/data-agreement.pdf' %}" download="data-agreement.pdf">обработку
+							персональных данных</a></label>
+				</div>
+				<div class="text-field">
+					<input type="checkbox" class="checkbox" id="photo_agree" name="photo_agree" required>
+					<label class="text-field__label text-caption" for="photo_agree">Я даю согласие на <a
+							href="{% static 'regsys/photo-agreement.pdf' %}" download="photo-agreement.pdf">фотографирование</a></label>
+				</div>
 				<button id=" submit" name="submit" type="submit" value="signup"
 					class="primary-button text-label">Создать аккаунт</button>
 			</div>
