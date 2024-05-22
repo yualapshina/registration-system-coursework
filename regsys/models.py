@@ -32,7 +32,7 @@ class Event(models.Model):
 class Timetable(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="Номер")
     timetable_name = models.CharField(max_length=200, verbose_name="Название")
-    category = models.CharField(max_length=100, verbose_name="Категория")
+    category = models.CharField(max_length=100, verbose_name="Категория", help_text="чё делать с этой штукой я не понимаю")
     date = models.DateField(verbose_name="Дата")
     place = models.CharField(max_length=100, verbose_name="Место")
     host = models.CharField(max_length=100, verbose_name="Ведущий")
