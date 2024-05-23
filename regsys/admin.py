@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.core.mail import EmailMessage
-from .models import Event, Timetable, Guest, Registration, Label, Labelmap
+from .models import Event, Timetable, Guest, Registration, Tag, Tagmap
     
 @admin.action(description="Пометить выбранные записи как Посещённые")
 def mark_visited(modeladmin, request, queryset):
@@ -52,7 +52,8 @@ def mass_mail(modeladmin, request, queryset):
             body=request.POST["message"],
             from_email=settings.EMAIL_HOST_USER,
             to=[settings.EMAIL_RECEIVER],
-            bcc=emails)
+            bcc=emails,
+            reply_to=[settings.EMAIL_RECEIVER])
         if attachment:
             email.attach(attachment.name, attachment.read(), attachment.content_type)
         try:
@@ -80,9 +81,9 @@ def mass_mail(modeladmin, request, queryset):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("event_name", "start_date", "end_date", "place", "timetables_link")
+    list_display = ("event_name", "start_date", "end_date", "place", "timetables_link", "tags_link")
     list_filter = ["start_date", "end_date", "place"]
-    search_fields = ["event_name", "start_date", "end_date", "place"]
+    search_fields = ["event_name", "start_date", "end_date", "place", "tagmap__tag__type"]
     actions = [mass_mail]
     
     def timetables_link(self, obj):
@@ -95,12 +96,23 @@ class EventAdmin(admin.ModelAdmin):
         return format_html('<a href="{}">Мероприятий: {}</a>', url, count)
 
     timetables_link.short_description = "Расписание"
+    
+    def tags_link(self, obj):
+        count = obj.tagmap_set.count()
+        url = (
+            reverse("admin:regsys_tagmap_changelist")
+            + "?"
+            + urlencode({"event__id": f"{obj.id}"})
+        )
+        return format_html('<a href="{}">Тегов: {}</a>', url, count)
+
+    tags_link.short_description = "Теги"
 
 @admin.register(Timetable)
 class TimetableAdmin(admin.ModelAdmin):
     list_display = ("timetable_name", "event", "category", "date", "place", "host", "repeating", "seats", "registrations_link")
     list_filter = ["event", "category", "date", "repeating"]
-    search_fields = ["timetable_name", "event__event_name", "category", "date", "place", "host", "seats"]
+    search_fields = ["timetable_name", "event__event_name", "category", "date", "place", "host"]
     actions = [mass_mail]
     
     def registrations_link(self, obj):
@@ -153,32 +165,32 @@ class RegistrationAdmin(admin.ModelAdmin):
     key.short_description = "Ключ"
     status_verbose.short_description = "Статус"
     
-@admin.register(Label)
-class LabelAdmin(admin.ModelAdmin):
-    list_display = ("label_name", "type_verbose", "events_link")
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ("tag_name", "type_verbose", "events_link")
     list_filter = ["type"]
-    search_fields = ["label_name"]
+    search_fields = ["tag_name"]
     
     def type_verbose(self, obj):
-        return Label.Type[obj.type].label
+        return Tag.Type[obj.type].label
     
     def events_link(self, obj):
-        count = obj.labelmap_set.count()
+        count = obj.tagmap_set.count()
         url = (
-            reverse("admin:regsys_labelmap_changelist")
+            reverse("admin:regsys_tagmap_changelist")
             + "?"
-            + urlencode({"label__id": f"{obj.id}"})
+            + urlencode({"tag__id": f"{obj.id}"})
         )
         return format_html('<a href="{}">Событий: {}</a>', url, count)
     
     events_link.short_description = "События"
     type_verbose.short_description = "Тип"
 
-@admin.register(Labelmap)
-class LabelmapAdmin(admin.ModelAdmin):
+@admin.register(Tagmap)
+class TagmapAdmin(admin.ModelAdmin):
     list_display = ("key",)
-    list_filter = ["event", "label__type"]
-    search_fields = ["event__event_name", "label__label_name"]
+    list_filter = ["event", "tag__type"]
+    search_fields = ["event__event_name", "tag__tag_name"]
     
     def key(self, obj):
         return str(obj)

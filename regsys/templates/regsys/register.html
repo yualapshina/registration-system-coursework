@@ -35,15 +35,15 @@
 		<div class="filterbar">
 			{% if filterbar %}
 			<form action="{% url 'register' %}" method="get">
-				{% for type, labels in filterbar.items %}
+				{% for type, tags in filterbar.items %}
 				<p class="{{ type.0 }} text-regular col-base-700"> {{ type.1 }}</p>
-				{% for label, checked in labels.items %}
+				{% for tag, checked in tags.items %}
 				{% if checked %}
-				<input type="checkbox" class="checkbox" id="label_{{ label.id }}" name="label_{{ label.id }}" checked>
-				<label class="select-field__label text-regular" for="label_{{ label.id }}">{{ label.label_name }}</label><br>
+				<input type="checkbox" class="checkbox" id="tag_{{ tag.id }}" name="tag_{{ tag.id }}" checked>
+				<label class="select-field__label text-regular" for="tag_{{ tag.id }}">{{ tag.tag_name }}</label><br>
 				{% else %}
-				<input type="checkbox" class="checkbox" id="label_{{ label.id }}" name="label_{{ label.id }}">
-				<label class="select-field__label text-regular" for="label_{{ label.id }}">{{ label.label_name }}</label><br>
+				<input type="checkbox" class="checkbox" id="tag_{{ tag.id }}" name="tag_{{ tag.id }}">
+				<label class="select-field__label text-regular" for="tag_{{ tag.id }}">{{ tag.tag_name }}</label><br>
 				{% endif %}
 				{% endfor %}
 				{% endfor %}
@@ -58,13 +58,13 @@
 				{% csrf_token %}
 				<p class="text-header-black col-primary-800">Текущие мероприятия</p>
 				{% if events_future %}
-				{% for event, labels in events_future.items %}
+				{% for event, tags in events_future.items %}
 				<div class="tooltip">
 					<span class="text-header-semibold col-primary-600"> {{ event.event_name }}</span>
 					<span class="tooltiptext text-caption">{{ event.annotation }}</span>
 				</div><br>
-				{% for label in labels %}
-				<span class="{{ label.type }} text-caption col-base-500">{{ label.label_name }}&emsp;</span>
+				{% for tag in tags %}
+				<span class="{{ tag.type }} text-caption col-base-500">{{ tag.tag_name }}&emsp;</span>
 				{% endfor %}
 				<br><span class="text-regular col-base-700">{{ event.place }}&emsp;</span>
 				{% if event.start_date != event.end_date %}

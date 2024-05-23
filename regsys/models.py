@@ -98,29 +98,29 @@ class Registration(models.Model):
         verbose_name_plural = "Записи"
    
      
-class Label(models.Model):
+class Tag(models.Model):
     class Type(models.TextChoices):
         TAR = "TAR", "Аудитория"
         FIE = "FIE", "Направление"
         
     id = models.AutoField(primary_key=True, verbose_name="Номер")
-    label_name = models.CharField(max_length=50, verbose_name="Название")
+    tag_name = models.CharField(max_length=50, verbose_name="Название", unique=True)
     type = models.CharField(choices=Type.choices, verbose_name="Тип")
     
     def __str__(self):
-        return self.label_name
+        return self.tag_name
     
     class Meta:
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
 
 
-class Labelmap(models.Model):  
+class Tagmap(models.Model):  
     event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name="Событие")
-    label = models.ForeignKey(Label, on_delete=models.CASCADE, verbose_name="Тег")
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name="Тег")
     
     def __str__(self):
-        return str(self.event) + " / " + str(self.label)
+        return str(self.event) + " / " + str(self.tag)
     
     class Meta:
         verbose_name = "Тег для события"

@@ -26,7 +26,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import path, reverse_lazy
 from django.views.generic.base import RedirectView
-from .models import Event, Timetable, Guest, Registration, Label, Labelmap
+from .models import Event, Timetable, Guest, Registration, Tag, Tagmap
 
 navbar_sign = {
     "left": {
@@ -153,6 +153,9 @@ def dispatcher(request):
                 validate_password(request.POST["new"])
             except ValidationError:
                 messages.error(request, "Пароль слишком слабый. Обратите внимание на условия")
+                return redirect(profile)
+            if request.POST["new"] != request.POST["repeat"]:
+                messages.error(request, "Повторённый пароль не совпадает с новым")
                 return redirect(profile)
             user.set_password(request.POST["new"])
             user.save()
@@ -380,20 +383,20 @@ def register(request):
     all_events = Event.objects.filter().order_by("start_date")
     
     filterbar = {}
-    for type in Label.Type.choices:
+    for type in Tag.Type.choices:
         t = {}
-        for label in Label.objects.filter(type=type[0]):
-            is_checked = "label_" + str(label.id) in request.GET.dict().keys()
-            t.update({label: is_checked})
+        for tag in Tag.objects.filter(type=type[0]):
+            is_checked = "tag_" + str(tag.id) in request.GET.dict().keys()
+            t.update({tag: is_checked})
             if is_checked:
-                all_events = all_events.filter(labelmap__label=label)
+                all_events = all_events.filter(tagmap__tag=tag)
         filterbar.update({type: t})
     
     events_future = {}
     all_future = all_events.filter(end_date__gte=datetime.date.today())
     for event in all_future:
-        labels = Label.objects.filter(labelmap__event=event)
-        events_future.update({event: labels})
+        tags = Tag.objects.filter(tagmap__event=event)
+        events_future.update({event: tags})
     context = {
         'navbar': navbar_profile,
         'filterbar': filterbar,
@@ -555,7 +558,8 @@ def certificate(request):
     x, y = A4
     margin = 30
     
-    name_par = Paragraph(str(guest), get_paragraph_style('header'))
+    name_str = ' '.join([guest.surname, guest.firstname, guest.patronymic])
+    name_par = Paragraph(name_str, get_paragraph_style('header'))
     w, h = name_par.wrapOn(can, x - 2*margin, 80)
     name_par.drawOn(can, margin, y - h - 280 - (80-h)/2)
     
@@ -602,7 +606,7 @@ def qr_generate(request):
         headers={"Content-Disposition": 'attachment; filename="qr.png"'},
     )
     
-    link = 'http://127.0.0.1:8000/qr/read/'
+    link = 'https://hse-reg-sys.dns-dynamic.net/qr/read/'
     link += '?timetable=' + str(request.GET["timetable"])
     link += '&guest=' + str(request.GET["guest"])
     qr = qrcode.QRCode()
