@@ -32,7 +32,7 @@ class Event(models.Model):
 class Timetable(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="Номер")
     timetable_name = models.CharField(max_length=200, verbose_name="Название")
-    category = models.CharField(max_length=100, verbose_name="Категория", help_text="чё делать с этой штукой я не понимаю")
+    category = models.CharField(max_length=100, verbose_name="Категория", help_text="*в категорию входит время проведения мероприятия (11.00-12.00) или его время и тип (14.00-15.00, обед); для корректности отображения расписания важно вводить время в одном формате")
     date = models.DateField(verbose_name="Дата")
     place = models.CharField(max_length=100, verbose_name="Место")
     host = models.CharField(max_length=100, verbose_name="Ведущий")
@@ -50,8 +50,8 @@ class Timetable(models.Model):
             raise ValidationError("Дата не должна выходить за рамки события")
     
     class Meta:
-        verbose_name = "Расписание"
-        verbose_name_plural = "Расписание"
+        verbose_name = "Элемент расписания"
+        verbose_name_plural = "Элементы расписания"
         
         
 class Guest(models.Model):
@@ -74,7 +74,7 @@ class Guest(models.Model):
         
 class Registration(models.Model):
     class Status(models.TextChoices):
-        AFF = "AFF", "Подтверждено"
+        AFF = "AFF", "Еще не посещено"
         INT = "INT", "Пересекается"
         WAI = "WAI", "Очередь"
         VIS = "VIS", "Посещено"
@@ -111,20 +111,20 @@ class Label(models.Model):
         return self.label_name
     
     class Meta:
-        verbose_name = "Лейбл"
-        verbose_name_plural = "Лейблы"
+        verbose_name = "Тег"
+        verbose_name_plural = "Теги"
 
 
 class Labelmap(models.Model):  
     event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name="Событие")
-    label = models.ForeignKey(Label, on_delete=models.CASCADE, verbose_name="Лейбл")
+    label = models.ForeignKey(Label, on_delete=models.CASCADE, verbose_name="Тег")
     
     def __str__(self):
         return str(self.event) + " / " + str(self.label)
     
     class Meta:
-        verbose_name = "Лейблмап"
-        verbose_name_plural = "Лейблмап"
+        verbose_name = "Тег для события"
+        verbose_name_plural = "Теги событий"
 
 @receiver(post_save, sender=Timetable)
 def add_repeat(sender, instance, created, **kwargs):
