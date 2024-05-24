@@ -40,6 +40,8 @@
 
 			<div class="block">
 				<p class="text-header-black col-primary-800">Авторизация</p>
+				<p class="text-caption col-base-500">Только что зарегистрировался? Тогда иши пароль на своей электронной
+					почте - мы уже отправили его!</p>
 				<div class="text-field">
 					<label class="text-field__label text-caption" for="email">электронная почта</label>
 					<input class="text-field__input text-regular" type="text" id="email" name="email" required
@@ -54,15 +56,18 @@
 					<tr>
 						<td><button id="submit" name="submit" type="submit" value="signin"
 								class="primary-button text-label">Войти</button>
-						</td></form>
-						<td><form action="{% url 'forgot' %}" method="get">
-						<button id="submit" name="submit" type="submit" value="forgot"
-								class="secondary-button text-label">Не помню пароль</button>
-						</form></td>
-					</tr>
-				</table>
-			</div>
-		</div>
+						</td>
+	</form>
+	<td>
+		<form action="{% url 'forgot' %}" method="get">
+			<button id="submit" name="submit" type="submit" value="forgot" class="secondary-button text-label">Не помню
+				пароль</button>
+		</form>
+	</td>
+	</tr>
+	</table>
+	</div>
+	</div>
 </body>
 
 </html>

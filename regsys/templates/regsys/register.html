@@ -56,7 +56,7 @@
 		<div class="block">
 			<form action="{% url 'timetable' %}" method="post">
 				{% csrf_token %}
-				<p class="text-header-black col-primary-800">Текущие мероприятия</p>
+				<p class="text-header-black col-primary-800">Предстоящие мероприятия</p>
 				{% if events_future %}
 				{% for event, labels in events_future.items %}
 				<div class="tooltip">
