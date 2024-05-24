@@ -25,11 +25,11 @@
 					{% endfor %}
 					{% else %}
 					{% for name, link in links.items %}
-						{% if name == "Выйти" %}
-						<a class="navbar_logout" href="{% url link %}">{{ name }}</a>
-						{% else %}
-						<a class="navbar_right" href="{% url link %}">{{ name }}</a>
-						{% endif %}
+					{% if name == "Выйти" %}
+					<a class="navbar_logout" href="{% url link %}">{{ name }}</a>
+					{% else %}
+					<a class="navbar_right" href="{% url link %}">{{ name }}</a>
+					{% endif %}
 					{% endfor %}
 					{% endif %}
 				</div>
@@ -39,7 +39,7 @@
 			<div class="block">
 				<p class="text-header-black col-primary-800">{{ event.event_name }}: Уточнение расписания</p>
 				<p class="text-caption col-base-600">Будь внимателен! Некоторые мероприятия идут одновременно -
-					выбрать можно только одно.<br>А еще, некоторые из них повторяются в разное время.</p>
+					выбрать можно только одно.<br>А еще, некоторые из них могут повторяются в разное время.</p>
 				{% if timetable %}
 				{% for date, cats in timetable.items %}
 				<fieldset>
@@ -58,8 +58,8 @@
 								name="category_{{ date }}_{{ cat }}" value="{{ entry.id }}" required>
 							{% endif %}
 							{% else %}
-							<input type="radio" class="radio" id="entry_{{ entry.id }}" name="category_{{ date }}_{{ cat }}"
-								value="{{ entry.id }}" checked required>
+							<input type="radio" class="radio" id="entry_{{ entry.id }}"
+								name="category_{{ date }}_{{ cat }}" value="{{ entry.id }}" checked required>
 							{% endif %}
 							<div class="tooltip">
 								<p class="select-field__label text-regular">{{ entry.timetable_name }}&emsp;&emsp;</p>
@@ -73,7 +73,8 @@
 								{% if entry.seats_all < 0 %} <span class="text-regular col-base-600">не
 									ограничено</span>
 							{% else %}
-							<span class="text-regular col-base-600">{{ entry.seats_all|subtract:entry.seats_taken }}/{{ entry.seats_all }}</span>
+							<span class="text-regular col-base-600">{{ entry.seats_all|subtract:entry.seats_taken }}/{{
+								entry.seats_all }}</span>
 							{% endif %}
 							{% if entry.repeating %}
 							<span class="text-caption col-base-500"><br>* Мероприятие также проводится в другое
@@ -88,7 +89,7 @@
 				</fieldset>
 				{% endfor %}
 				<button type="submit" id="submit" name="submit" class="primary-button text-label"
-					value="to_completed">Завершить регистрацию</button><br>
+					value="to_completed">Завершить регистрацию</button><br><br>
 				{% else %}
 				<p class="text-body-regular col-base-600">Кажется, ты не выбрал ни одного дня для регистрации.
 					Попробуй снова!</p>

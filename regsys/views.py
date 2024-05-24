@@ -42,7 +42,7 @@ navbar_profile = {
     "left": {
         "Профиль": "profile",
         "Моё расписание": "mylist",
-        "Регистрация": "register",
+        "Мероприятия": "register",
     },
     "right": {
         "Обратная связь": "feedback",
@@ -231,8 +231,8 @@ def dispatcher(request):
             messages.success(request, "Инструкции по восстановлению аккаунта отправлены на почту")
             return redirect(signin)
         else:
-            messages.error(request, "Аккаунт с такой почтой не найден")
-            return redirect(signup)
+            messages.error(request, "Аккаунт с такой почтой не найден. Возможно, вы ввели почту неправильно или еще не регистрировались?")
+            return redirect(forgot)
             
     if sender == "feedback":
         guest_id = request.POST["guest_id"]

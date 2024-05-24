@@ -5,7 +5,7 @@
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'regsys/style.css' %}">
 	<meta charset="utf-8" />
-	<title>Регистрация</title>
+	<title>Мероприятия для регистрации</title>
 	<link rel="icon" href="{% static 'regsys/images/favicon.png' %}" type="image/png">
 </head>
 
@@ -21,11 +21,11 @@
 				{% endfor %}
 				{% else %}
 				{% for name, link in links.items %}
-					{% if name == "Выйти" %}
-					<a class="navbar_logout" href="{% url link %}">{{ name }}</a>
-					{% else %}
-					<a class="navbar_right" href="{% url link %}">{{ name }}</a>
-					{% endif %}
+				{% if name == "Выйти" %}
+				<a class="navbar_logout" href="{% url link %}">{{ name }}</a>
+				{% else %}
+				<a class="navbar_right" href="{% url link %}">{{ name }}</a>
+				{% endif %}
 				{% endfor %}
 				{% endif %}
 			</div>
