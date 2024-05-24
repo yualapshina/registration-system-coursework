@@ -22,7 +22,6 @@ urlpatterns = [
     path('certificate/', views.certificate, name='certificate'),
     path('qr/generate/', views.qr_generate, name='qr_generate'),
     path('qr/read/', views.qr_read, name='qr_read'),
-    path('errors', views.errors, name='errors'),
     path('help/', views.help, name='help'),
     path('help/anonimous', views.help_anon, name='help_anon'),
 ]
