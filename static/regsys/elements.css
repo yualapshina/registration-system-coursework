@@ -25,10 +25,15 @@
   margin-right: 22%;
 }
 
-.block_in_group {
+.blocks_group {
   margin-top: 52px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.block_in_group {
+  width: 30%;
 }
 
 
@@ -39,19 +44,44 @@
   position: fixed;
   top: 0%;
   left: 0%;
-  width: 100%;
+  right: 0%;
+  width: auto;
   height: auto;
   background-color: #e8eaf4;
   padding-left: 5%;
+  padding-right: 5%;
+  display: flex;
+  justify-content: space-between;
 }
 
-a:link,
-a:visited {
+.navbar_left {
   padding: 16px;
+}
+
+.navbar_right {
+  padding: 16px;
+  color: #9da8d1;
+}
+
+.navbar_right:hover {
+  color: #7786be;
+}
+
+.navbar_logout {
+  padding: 16px;
+  color: #fb3835;
+}
+
+.navbar_logout:hover {
+  color: #f87575;
+}
+
+a {
   display: inline-block;
   color: #374b9b;
   text-decoration: none;
 }
+
 
 a:hover,
 a:active {
@@ -177,13 +207,15 @@ textarea::placeholder {
 }
 
 .text-field__input:disabled,
-textarea:disabled {
+textarea:disabled,
+.text-field__input:disabled:hover,
+textarea:disabled:hover {
   background: #cbccd0;
   cursor: not-allowed;
 }
 
 .text-field__input:focus,
-.text-field__input:hover, 
+.text-field__input:hover,
 textarea:focus,
 textarea:hover {
   background-color: #e8eaf4;
@@ -327,15 +359,27 @@ fieldset {
 }
 
 /* 
-Стили для table - они нам нужны, чтобы красиво выводить готовое расписание.
+Стили для table - они нам нужны, чтобы красиво выводить готовое расписание и лендинг.
 */
-table{
+table {
+  padding-top: 0px;
   padding-bottom: 20px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  padding-right: 20px;
+  padding-bottom: 10px;
+  text-align: left;
+  vertical-align: middle;
 }
 
 td {
   padding-right: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
+  text-align: left;
+  vertical-align: top;
 }
 
 .date-header {
