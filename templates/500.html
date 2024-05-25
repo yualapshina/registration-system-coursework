@@ -11,13 +11,35 @@
 
 <body class="background">
 
-		<div class="parent">
+	<div class="parent">
 
-			<div class="block">
-				<p class="text-header-black col-primary-800">Внутренняя ошибка сервера :(</p>
-				<p class="text-regular col-base-700">Дайте нам знать, что именно пошло не так, и попробуйте чуть позже.</p>
+		<div class="block">
+			<div style="display: flex; justify-content:left;">
+				<img src="{% static 'regsys/images/error.svg' %}" />
+				<p class="text-header-black col-primary-800">Наша ошибка</p>
 			</div>
-		</div>
-</body>
+			<br><br>
+			<p class="text-regular col-base-700">Кажется, где-то на нашем сервере произошла ошибка. Расскажи нам, что ты
+				пытался сделать - мы постараемся исправиться. Попробуй повторить свой запрос чуть позже - возможно,
+				проблема уже решается.</p>
+			<table>
+				<tr>
 
+					<td>
+						<form action="{% url 'feedback_anon' %}" method="get">
+							<button id="submit" name="submit" type="submit" value="feedback_anon"
+								class="primary-button text-label">Рассказать об ошибке</button>
+						</form>
+					</td>
+					<td>
+						<form action="{% url 'landing' %}" method="get">
+							<button id="submit" name="submit" type="submit" value="landing"
+								class="secondary-button text-label">Назад в систему</button>
+						</form>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
 </html>

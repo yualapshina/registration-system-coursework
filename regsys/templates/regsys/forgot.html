@@ -23,28 +23,35 @@
 		<div class="parent">
 
 			<div class="navbar text-label">
-				{% for name, link in navbar.items %}
-				{% if name == "Восстановление пароля" %}
-				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
-				{% else %}
-				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
-				{% endif %}
+				{% for side, links in navbar.items %}
+				<div>
+					{% if side == "left" %}
+					{% for name, link in links.items %}
+					<a class="navbar_left" href="{% url link %}">{{ name }}</a>
+					{% endfor %}
+					{% else %}
+					{% for name, link in links.items %}
+					<a class="navbar_right" href="{% url link %}">{{ name }}</a>
+					{% endfor %}
+					{% endif %}
+				</div>
 				{% endfor %}
 			</div>
 
 			<div class="block">
 				<p class="text-header-black col-primary-800">Восстановление пароля</p>
 				<div class="text-field">
-					<label class="text-field__label text-caption" for="email">Электронная почта</label>
+					<label class="text-field__label text-caption" for="email">электронная почта</label>
 					<input class="text-field__input text-regular" type="text" id="email" name="email" required
-						placeholder="Введите ваш адрес электронной почты">
+						placeholder="Введи твой адрес электронной почты">
 				</div>
-				<p class="text-caption col-base-500">На введённый вами адрес будет направлен новый пароль, который вы сможете изменить после входа в профиль.</p>
-		<button id=" submit" name="submit" type="submit" value="forgot" class="primary-button text-label">Отправить пароль</button>
+				<p class="text-caption col-base-500">На введённый тобой адрес будет направлен новый пароль, который ты
+					сможешь изменить после входа в профиль.</p>
+				<button id=" submit" name="submit" type="submit" value="forgot"
+					class="primary-button text-label">Отправить пароль</button><br><br>
 			</div>
 		</div>
 	</form>
 
 </body>
-
 </html>

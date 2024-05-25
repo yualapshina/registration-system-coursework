@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}
+	Рассылка
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<form action="" enctype="multipart/form-data" method="post">
+  {% csrf_token %}
+<h1>Формирование рассылки</h1>  
+  
+	<p>Выбранные получатели:</p>
+	{% for s in selected %}
+		<span>{{ s }}</span><br>
+	{% endfor %}<br>
+  
+	{% for q in queryset %}
+		<input type="hidden" name="_selected_action" value="{{ q.pk }}" />
+	{% endfor %}
+  
+	<label for="subject">Тема письма</label><br>
+	<input type="text" id="subject" name="subject" required><br><br>
+  
+	<label for="message">Содержание письма</label><br>
+	<textarea type="text" id="message" name="message" required></textarea><br><br>
+
+	<label for="attachment">Вложение</label><br>
+	<input type="file" id="attachment" name="attachment" accept="image/*,.pdf" /><br>
+		<span>Можете прикрепить изображение или PDF-файл</span><br><br>
+
+	<input type="hidden" name="action" value="mass_mail" />
+	<input type="submit" name="apply" value="Отправить"/>
+</form>
+{% endblock %}

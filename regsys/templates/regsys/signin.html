@@ -23,40 +23,51 @@
 		<div class="parent">
 
 			<div class="navbar text-label">
-				{% for name, link in navbar.items %}
-				{% if name == "Вход в профиль" %}
-				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
-				{% else %}
-				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
-				{% endif %}
+				{% for side, links in navbar.items %}
+				<div>
+					{% if side == "left" %}
+					{% for name, link in links.items %}
+					<a class="navbar_left" href="{% url link %}">{{ name }}</a>
+					{% endfor %}
+					{% else %}
+					{% for name, link in links.items %}
+					<a class="navbar_right" href="{% url link %}">{{ name }}</a>
+					{% endfor %}
+					{% endif %}
+				</div>
 				{% endfor %}
 			</div>
 
 			<div class="block">
 				<p class="text-header-black col-primary-800">Авторизация</p>
+				<p class="text-caption col-base-500">Только что зарегистрировался? Тогда ищи пароль на своей электронной
+					почте - мы уже отправили его!</p>
 				<div class="text-field">
-					<label class="text-field__label text-caption" for="email">Электронная почта</label>
+					<label class="text-field__label text-caption" for="email">электронная почта</label>
 					<input class="text-field__input text-regular" type="text" id="email" name="email" required
-						placeholder="Введите ваш адрес электронной почты">
+						placeholder="Введи твой адрес электронной почты">
 				</div>
 				<div class="text-field">
-					<label class="text-field__label text-caption" for="password">Пароль</label>
+					<label class="text-field__label text-caption" for="password">пароль</label>
 					<input class="text-field__input text-regular" type="password" id="password" name="password"
-						placeholder="Введите ваш пароль">
+						placeholder="Введи твой пароль">
 				</div>
 				<table>
 					<tr>
 						<td><button id="submit" name="submit" type="submit" value="signin"
 								class="primary-button text-label">Войти</button>
-						</td></form>
-						<td><form action="{% url 'forgot' %}" method="get">
-						<button id="submit" name="submit" type="submit" value="forgot"
-								class="secondary-button text-label">Забыли пароль?</button>
-						</form></td>
-					</tr>
-				</table>
-			</div>
-		</div>
+						</td>
+	</form>
+	<td>
+		<form action="{% url 'forgot' %}" method="get">
+			<button id="submit" name="submit" type="submit" value="forgot" class="secondary-button text-label">Не помню
+				пароль</button>
+		</form>
+	</td>
+	</tr>
+	</table>
+	<br><br>
+	</div>
+	</div>
 </body>
-
 </html>

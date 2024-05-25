@@ -21,48 +21,55 @@
 	<div class="parent">
 
 		<div class="navbar text-label">
-			{% for name, link in navbar.items %}
-			{% if name == "Моё расписание" %}
-			<a class="navbar_current" href="{% url link %}">{{ name }}</a>
-			{% else %}
-			<a class="navbar_link" href="{% url link %}">{{ name }}</a>
-			{% endif %}
+			{% for side, links in navbar.items %}
+			<div>
+				{% if side == "left" %}
+				{% for name, link in links.items %}
+				<a class="navbar_left" href="{% url link %}">{{ name }}</a>
+				{% endfor %}
+				{% else %}
+				{% for name, link in links.items %}
+				{% if name == "Выйти" %}
+				<a class="navbar_logout" href="{% url link %}">{{ name }}</a>
+				{% else %}
+				<a class="navbar_right" href="{% url link %}">{{ name }}</a>
+				{% endif %}
+				{% endfor %}
+				{% endif %}
+			</div>
 			{% endfor %}
 		</div>
 
 		<div class="block">
-			<p class="text-header-black col-primary-800">Текущее расписание</p>
+			<p class="text-header-black col-primary-800">твое расписание</p>
 			{% if regs_future %}
 			{% for event, dates in regs_future.items %}
 			<span class="text-header-semibold col-primary-600">{{ event.event_name }}</span>
 			<table>
 				{% for date, entries in dates.items %}
-				<table>
-					<tr>
-						<td class="date-header text-label col-primary-400">{{ date }}</td>
-					</tr>
-					{% for entry, status in entries.items %}
-					<tr>
-						<td class="text-regular col-base-600">{{ entry.category }}</td>
-						<td class="text-regular col-base-800">{{ entry.timetable_name }}</td>
+				<tr>
+					<th class="date-header text-label col-primary-400">{{ date }}</th>
+				</tr>
+				{% for entry, status in entries.items %}
+				<tr>
+					<th class="text-regular col-base-600">{{ entry.category }}</th>
+					<th class="text-regular col-base-800">{{ entry.timetable_name }}</tn>
 						<form action="{% url 'qr_generate' %}" method="get">
 							<input type="text" id="guest" name="guest" value="{{ guest.id }}" hidden>
 							<input type="text" id="timetable" name="timetable" value="{{ entry.id }}" hidden>
-							<td><button type="submit" class="secondary-button text-regular" id="submit" name="submit"
-									value="qr_generate">QR</button>
-							</td>
-						</form>
-					</tr>
-					<tr>
-						<td class="text-regular col-base-500">{{ event.place }}, {{ entry.place }}</td>
-						<td class="text-regular col-base-500">{{ entry.host }}</td>
-						<td class="{{ status }} text-caption col-base-500">{{ status.label }}</td>
-					</tr>
-					{% endfor %}
-				</table>
+					<th><button type="submit" class="secondary-button text-regular" id="submit" name="submit"
+							value="qr_generate">QR</button>
+					</th>
+					</form>
+				</tr>
+				<tr>
+					<td class="text-regular col-base-500">{{ event.place }}, {{ entry.place }}</td>
+					<td class="text-regular col-base-500">{{ entry.host }}</td>
+					<td class="{{ status }} text-caption col-base-500">{{ status.label }}</td>
+				</tr>
+				{% endfor %}
 				{% endfor %}
 			</table>
-			<br>
 			<table>
 				<tr>
 					<form action="{% url 'download' %}" method="get">
@@ -90,45 +97,53 @@
 
 			{% endfor %}
 			{% else %}
-			<p class="text-regular col-base-600">Здесь пока пусто. Переходи на страницу регистрации и выбирай
-				мероприятие для себя!</p>
+			<p class="text-regular col-base-600">Здесь пока пусто. Наверно, ты только что зарегистрировался? На странице
+				"мероприятия" в панели наверху ты найдешь список предстоящих мероприятий, на которые можно записаться.
+				Не забывай заполнять информацию о себе на странице профиля, тогда мы сможем делать для тебя сертификаты
+				о посещении мероприятий. </p>
 			{% endif %}
-			
+
 			<br><br>
 
-			<p class="text-header-black col-primary-800">Прошедшие события</p>
+
 			{% if regs_past %}
 			{% for event, dates in regs_past.items %}
+			<p class="text-header-black col-primary-800">Прошедшие события</p>
 			<span class="text-header-semibold col-primary-600">{{ event.event_name }}</span>
 			<table>
 				{% for date, entries in dates.items %}
-					<tr>
-						<td class="date-header text-label col-primary-400">{{ date }}</td>
-					</tr>
-					{% for entry, status in entries.items %}
-					<tr>
-						<td class="text-regular col-base-600">{{ entry.category }}</td>
-						<td class="text-regular col-base-800">{{ entry.timetable_name }}</td>
-					</tr>
-					<tr>
-						<td class="text-regular col-base-500">{{ event.place }}, {{ entry.place }}</td>
-						<td class="text-regular col-base-500">{{ entry.host }}</td>
-						<td class="{{ status }} text-caption col-base-500">{{ status.label }}</td>
-					</tr>
-					{% endfor %}
+				<tr>
+					<th class="date-header text-label col-primary-400">{{ date }}</th>
+				</tr>
+				{% for entry, status in entries.items %}
+				<tr>
+					<th class="text-regular col-base-600">{{ entry.category }}</th>
+					<th class="text-regular col-base-800">{{ entry.timetable_name }}</th>
+				</tr>
+				<tr>
+					<td class="text-regular col-base-500">{{ event.place }}, {{ entry.place }}</td>
+					<td class="text-regular col-base-500">{{ entry.host }}</td>
+					<td class="{{ status }} text-caption col-base-500">{{ status.label }}</td>
+				</tr>
+				{% endfor %}
 				{% endfor %}
 			</table>
+			<table>
+				<tr>
 					<form action="{% url 'certificate' %}" method="get">
 						<input type="text" id="event_key" name="event_key" value="{{ event.id }}" hidden>
-						<button type="submit" class="primary-button text-label" id="submit" name="submit"
-								value="certificate">Сертификат</button>
+						<td><button type="submit" class="primary-button text-label" id="submit" name="submit"
+								value="certificate">Сертификат</button></td>
 					</form>
+				</tr>
+			</table>
 			{% endfor %}
 			{% else %}
-			<p class="text-regular col-base-600">Кажется, ты пока не был ни на одном мероприятии.</p>
+			<p class="text-regular col-base-600">Нужен сертификат о посещении? Он появится здесь, когда событие
+				завершится! Чтобы мы вписали в сертификат твое имя, заполни информацию о себе в профиле.</p>
 			{% endif %}
+			<br><br>
 		</div>
 	</div>
 </body>
-
 </html>

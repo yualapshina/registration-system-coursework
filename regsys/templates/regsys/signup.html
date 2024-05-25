@@ -23,29 +23,47 @@
 		<div class="parent">
 
 			<div class="navbar text-label">
-				{% for name, link in navbar.items %}
-				{% if name == "Создание профиля" %}
-				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
-				{% else %}
-				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
-				{% endif %}
+				{% for side, links in navbar.items %}
+				<div>
+					{% if side == "left" %}
+					{% for name, link in links.items %}
+					<a class="navbar_left" href="{% url link %}">{{ name }}</a>
+					{% endfor %}
+					{% else %}
+					{% for name, link in links.items %}
+					<a class="navbar_right" href="{% url link %}">{{ name }}</a>
+					{% endfor %}
+					{% endif %}
+				</div>
 				{% endfor %}
 			</div>
 
 			<div class="block">
 				<p class="text-header-black col-primary-800">Регистрация</p>
 				<div class="text-field">
-					<label class="text-field__label text-caption" for="email">Электронная почта</label>
+					<label class="text-field__label text-caption" for="email">электронная почта</label>
 					<input class="text-field__input text-regular" type="text" id="email" name="email" required
-						placeholder="Введите ваш адрес электронной почты">
+						placeholder="Введи твой адрес электронной почты">
 				</div>
-				<p class="text-caption col-base-500">На введённый вами адрес будет направлен пароль, который вы сможете изменить после входа в профиль.</p>
-		<button id=" submit" name="submit" type="submit" value="signup" class="primary-button text-label">Создать
-					профиль</button>
+				<p class="text-caption col-base-500">На введённый тобой адрес будет направлен пароль, который ты сможешь
+					изменить после входа в профиль</p>
+				<div class="text-field">
+					<input type="checkbox" class="checkbox" id="data_agree" name="data_agree" required>
+					<label class="text-field__label text-caption" for="data_agree">Я даю согласие на <a
+							href="{% static 'regsys/data-agreement.pdf' %}" download="data-agreement.pdf">обработку
+							персональных данных</a></label>
+				</div>
+				<div class="text-field">
+					<input type="checkbox" class="checkbox" id="photo_agree" name="photo_agree" required>
+					<label class="text-field__label text-caption" for="photo_agree">Я даю согласие на <a
+							href="{% static 'regsys/photo-agreement.pdf' %}"
+							download="photo-agreement.pdf">фотографирование</a></label>
+				</div>
+				<button id=" submit" name="submit" type="submit" value="signup"
+					class="primary-button text-label">Создать аккаунт</button><br><br>
 			</div>
 		</div>
 	</form>
 
 </body>
-
 </html>

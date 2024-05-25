@@ -8,6 +8,8 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.platypus import Paragraph
+from reportlab.lib.styles import ParagraphStyle
 from functools import cmp_to_key
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMessage, send_mail
@@ -15,7 +17,7 @@ from django.conf import settings
 from django.utils.crypto import get_random_string
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.db.utils import IntegrityError
+from django.db.utils import IntegrityError, DataError
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -24,20 +26,84 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import path, reverse_lazy
 from django.views.generic.base import RedirectView
-from .models import Event, Timetable, Guest, Registration, Label, Labelmap
+from .models import Event, Timetable, Guest, Registration, Tag, Tagmap
 
 navbar_sign = {
-    "Войти": "signin",
-    "Зарегистрироваться": "signup",
-    "Обратная связь": "feedback_anon",
+    "left": {
+        "Войти": "signin",
+        "Зарегистрироваться": "signup",
+    },
+    "right": {
+        "Обратная связь": "feedback_anon",
+        "Справка": "help_anon",
+    }
 }
 navbar_profile = {
-    "Профиль": "profile",
-    "Моё расписание": "mylist",
-    "Регистрация": "register",
-    "Обратная связь": "feedback",
-    "Выйти из профиля": "signout",
+    "left": {
+        "Профиль": "profile",
+        "Моё расписание": "mylist",
+        "Мероприятия": "register",
+    },
+    "right": {
+        "Обратная связь": "feedback",
+        "Справка": "help",
+        "Выйти": "signout",
+    }
 }
+
+def get_paragraph_style(style):
+    if style == 'header':
+        pdfmetrics.registerFont(
+            TTFont('HSESans-SemiBold', 
+            str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-SemiBold.ttf')
+        )
+        return ParagraphStyle('header',
+            fontName="HSESans-SemiBold",
+            fontSize=22,
+            textColor='#273883',
+            alignment=1,
+            leading=30,
+        )
+    if style == 'subheader':
+        pdfmetrics.registerFont(
+            TTFont('HSESans-SemiBold', 
+            str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-SemiBold.ttf')
+        )
+        return ParagraphStyle('subheader',
+            fontName="HSESans-SemiBold",
+            fontSize=16,
+            textColor='#374b9b',
+            alignment=0,
+            leading=20,
+        )
+    if style == 'regular':
+        pdfmetrics.registerFont(
+            TTFont('HSESans-Regular', 
+            str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-Regular.ttf')
+        )
+        return ParagraphStyle('regular',
+            fontName="HSESans-Regular",
+            fontSize=16,
+            textColor='#848588',
+            alignment=0,
+            leading=20,
+            leftIndent=30,
+            firstLineIndent=-30,
+        )
+    if style == 'regular_centered':
+        pdfmetrics.registerFont(
+            TTFont('HSESans-Regular', 
+            str(settings.STATIC_ROOT) + '/regsys/fonts/HSESans-Regular.ttf')
+        )
+        return ParagraphStyle('regular',
+            fontName="HSESans-Regular",
+            fontSize=16,
+            textColor='#848588',
+            alignment=1,
+            leading=20,
+            leftIndent=30,
+            firstLineIndent=-30,
+        )
 
 @cmp_to_key
 def letter_first_cmp(a, b):
@@ -72,7 +138,11 @@ def dispatcher(request):
             guest.phone = request.POST.get("phone", "")
         if request.POST.get("telegram", ""):
             guest.telegram = request.POST.get("telegram", "")
-        guest.save()
+        try:
+            guest.save()
+        except DataError:
+            messages.error(request, "Ошибка сохранения - возможно, введена слишком длинная строка. Попробуй сократить!")
+            return redirect(profile)
         messages.success(request, "Изменения успешно сохранены")
         return redirect(profile)
     
@@ -83,6 +153,9 @@ def dispatcher(request):
                 validate_password(request.POST["new"])
             except ValidationError:
                 messages.error(request, "Пароль слишком слабый. Обратите внимание на условия")
+                return redirect(profile)
+            if request.POST["new"] != request.POST["repeat"]:
+                messages.error(request, "Повторённый пароль не совпадает с новым")
                 return redirect(profile)
             user.set_password(request.POST["new"])
             user.save()
@@ -137,6 +210,13 @@ def dispatcher(request):
         if filter:
             user = filter[0]
             password = get_random_string(10)
+            needs_validation = True
+            while needs_validation:
+                try:
+                    validate_password(password)
+                    needs_validation = False
+                except ValidationError:
+                    password = get_random_string(10)
             user.set_password(password)
             user.save()
             try:
@@ -151,8 +231,8 @@ def dispatcher(request):
             messages.success(request, "Инструкции по восстановлению аккаунта отправлены на почту")
             return redirect(signin)
         else:
-            messages.error(request, "Аккаунт с такой почтой не найден")
-            return redirect(signup)
+            messages.error(request, "Аккаунт с такой почтой не найден. Возможно, вы ввели почту неправильно или еще не регистрировались?")
+            return redirect(forgot)
             
     if sender == "feedback":
         guest_id = request.POST["guest_id"]
@@ -194,45 +274,6 @@ def signup(request):
         'navbar': navbar_sign,
     }
     return render(request, 'regsys/signup.html', context)
-    if request.POST.get("submit", "") != "to_personal":
-        return redirect(mylist)
-
-    email = request.POST["email"]
-    password = request.POST["password"]
-    if request.POST["repeat"] != password:
-        messages.error(request, "Пароли не совпадают")
-        return redirect(signup)
-    try:
-        validate_password(password)
-    except ValidationError:
-        messages.error(request, "Пароль слишком слабый. Обратите внимание на условия")
-        return redirect(signup)
-    try:
-        user = User.objects.create_user(username=email, password=password)
-    except IntegrityError:
-        messages.error(request, "К этой почте уже привязан другой аккаунт")
-        return redirect(signup)
-    guest = Guest(user=user)
-    guest.save()
-    user = authenticate(request, username=email, password=password)
-    if user is not None:
-        login(request, user)
-        messages.success(request, "Аккаунт успешно создан")
-        try:
-            send_mail(
-                subject='Аккаунт в системе регистрации ВШЭ',
-                message='Вы успешно создали аккаунт в системе регистрации на мероприятия НИУ ВШЭ - Нижний Новгород. Выбирайте интересующие вас события - и увидимся там!',
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[email])
-        except:
-            messages.error(request, "При отправке приветственного письма произошла ошибка")
-    else:
-        messages.error(request, "Ошибка при создании аккаунта")
-        return redirect(signup)
-    context = {
-        'navbar': navbar_sign,
-    }
-    return render(request, 'regsys/personal.html', context)
 
 def feedback_anon(request):
     if request.user.is_authenticated:
@@ -249,7 +290,7 @@ def forgot(request):
         'navbar': navbar_sign,
     }
     return render(request, 'regsys/forgot.html', context)
-    
+
 def landing(request):
     if request.user.is_authenticated:
         return redirect(mylist)
@@ -257,6 +298,26 @@ def landing(request):
         'navbar': navbar_sign,
     }
     return render(request, 'regsys/landing.html', context)
+
+def help_anon(request):
+    if request.user.is_authenticated:
+        return redirect(help)
+    context = {
+        'navbar': navbar_sign,
+    }
+    return render(request, 'regsys/help_anon.html', context)
+
+def errors(request):
+    if request.user.is_authenticated:
+        return redirect(mylist)
+    context = {
+        'navbar': navbar_sign,
+    }
+    try:
+        error = request.GET["submit"]
+        return render(request, 'regsys/' + error + '.html', context)
+    except:
+        return render(request, 'regsys/errors.html', context)
 
 @login_required
 def signout(request):
@@ -322,29 +383,23 @@ def register(request):
     all_events = Event.objects.filter().order_by("start_date")
     
     filterbar = {}
-    for type in Label.Type.choices:
+    for type in Tag.Type.choices:
         t = {}
-        for label in Label.objects.filter(type=type[0]):
-            is_checked = "label_" + str(label.id) in request.GET.dict().keys()
-            t.update({label: is_checked})
+        for tag in Tag.objects.filter(type=type[0]):
+            is_checked = "tag_" + str(tag.id) in request.GET.dict().keys()
+            t.update({tag: is_checked})
             if is_checked:
-                all_events = all_events.filter(labelmap__label=label)
+                all_events = all_events.filter(tagmap__tag=tag)
         filterbar.update({type: t})
     
-    events_past = {}
-    all_past = all_events.filter(end_date__lt=datetime.date.today())
-    for event in all_past:
-        labels = Label.objects.filter(labelmap__event=event)
-        events_past.update({event: labels}) 
     events_future = {}
     all_future = all_events.filter(end_date__gte=datetime.date.today())
     for event in all_future:
-        labels = Label.objects.filter(labelmap__event=event)
-        events_future.update({event: labels})
+        tags = Tag.objects.filter(tagmap__event=event)
+        events_future.update({event: tags})
     context = {
         'navbar': navbar_profile,
         'filterbar': filterbar,
-        'events_past': events_past,
         'events_future': events_future,
     }
     return render(request, 'regsys/register.html', context)
@@ -411,20 +466,62 @@ def completed(request):
 @login_required    
 def download(request):
     response = HttpResponse(
-        content_type="text/csv",
-        headers={"Content-Disposition": 'attachment; filename="reg-list.csv"'},
+        content_type="application/pdf",
+        headers={"Content-Disposition": 'attachment; filename="timetable.pdf"'},
     )
-    response.write(u'\ufeff'.encode('utf8'))
-    #att = 
-    writer = csv.writer(response, delimiter =';')
+    
+    packet = io.BytesIO()
+    can = canvas.Canvas(packet, pagesize=A4)
+    x, y = A4
+    margin = 30
+    h_cur = margin
     
     event = Event.objects.get(id=request.GET["event_key"])
+    header = Paragraph(str(event), get_paragraph_style('header'))
+    w, h = header.wrapOn(can, x - 2*margin, y - 2*margin)
+    header.drawOn(can, margin, y - h - h_cur)
+    h_cur += h
+    
+    dates = []
+    i = 0
+    while True:
+        cur_date = event.start_date + datetime.timedelta(days=i)
+        dates.append(cur_date)
+        i += 1
+        if cur_date == event.end_date:
+            break
     guest = request.user.guest
-    tts = Timetable.objects.filter(event=event, registration__guest=guest.id, date__gte=datetime.date.today()).order_by("date", "category")
-    for tt in tts:
-        reg = Registration.objects.get(timetable=tt, guest=guest)
-        writer.writerow([tt.event.event_name + ": " + str(tt.date), tt.category, tt.timetable_name, tt.event.place + " - " + tt.place, tt.host, Registration.Status[reg.status].label])
-
+    all_tts = Timetable.objects.filter(event=event, registration__guest=guest.id, date__gte=datetime.date.today()).order_by("date", "category")
+    for date in dates:   
+        h_cur += 20
+        subheader = Paragraph(date.strftime('%d.%m.%Y'), get_paragraph_style('subheader'))
+        w, h = subheader.wrapOn(can, x - 2*margin, y - 2*margin)
+        subheader.drawOn(can, margin, y - h - h_cur)
+        h_cur += h
+        
+        dated_tts = all_tts.filter(date=date)
+        cats = list(dated_tts.order_by("category").values_list("category", flat=True).distinct())
+        cats.sort(key=letter_first_cmp)
+        for cat in cats:
+            tt = dated_tts.filter(category=cat)[0]
+            line = Paragraph(
+                str(tt.category) + ':  ' + str(tt.timetable_name) + ',  ' + str(tt.place),
+                get_paragraph_style('regular')
+            )
+            w, h = line.wrapOn(can, x - 2*margin, y - 2*margin)
+            line.drawOn(can, margin, y - h - h_cur)
+            h_cur += h
+    
+    can.showPage()
+    can.save()
+    packet.seek(0)
+    new_pdf = PdfReader(packet)
+    output = PdfWriter(response)
+    for i in range(len(new_pdf.pages)):
+        page = new_pdf.pages[i]
+        output.add_page(page)
+    output.write(response)
+    
     return response
     
 @login_required    
@@ -433,8 +530,17 @@ def feedback(request):
     context = {
         'guest' : guest,
         'navbar': navbar_profile,
-    }   
+    }
     return render(request, 'regsys/feedback.html', context)
+
+@login_required   
+def help(request):
+    guest = request.user.guest
+    context = {
+        'guest' : guest,
+        'navbar': navbar_profile,
+    }
+    return render(request, 'regsys/help.html', context)
     
 @login_required    
 def certificate(request):
@@ -447,38 +553,43 @@ def certificate(request):
     guest = request.user.guest
     regs = Registration.objects.filter(guest=guest, status=Registration.Status.VIS, timetable__event=event)
     
-    pdfmetrics.registerFont(TTFont('HSESans-Regular', 'regsys/static/regsys/fonts/HSESans-Regular.ttf'))
-    pdfmetrics.registerFont(TTFont('HSESans-SemiBold', 'regsys/static/regsys/fonts/HSESans-SemiBold.ttf'))
     packet = io.BytesIO()
     can = canvas.Canvas(packet, pagesize=A4)
     x, y = A4
+    margin = 30
     
-    #TODO line wrapping
-    can.setFont("HSESans-SemiBold", 24)
-    can.setFillColorRGB(0.22, 0.29, 0.61)
-    can.drawCentredString(x/2, y-310, str(guest))
-    can.setFillColorRGB(0.15, 0.22, 0.51)
-    can.drawCentredString(x/2, y-428, str(event))
+    name_str = ' '.join([guest.surname, guest.firstname, guest.patronymic])
+    name_par = Paragraph(name_str, get_paragraph_style('header'))
+    w, h = name_par.wrapOn(can, x - 2*margin, 80)
+    name_par.drawOn(can, margin, y - h - 280 - (80-h)/2)
+    
+    event_par = Paragraph(str(event), get_paragraph_style('header'))
+    w, h = event_par.wrapOn(can, x - 2*margin, 200)
+    event_par.drawOn(can, margin, y - h - 400)
+    h_cur = h + 420
+    
     date_str = event.start_date.strftime('%d.%m.%Y')
     if event.start_date != event.end_date:
         date_str = 'с ' + event.start_date.strftime('%d.%m.%Y') + ' по ' + event.end_date.strftime('%d.%m.%Y')
-    can.setFont("HSESans-Regular", 16)
-    can.setFillColorRGB(0.52, 0.52, 0.53)
-    can.drawCentredString(x/2, y-468, date_str)
+    date_par = Paragraph(date_str, get_paragraph_style('regular_centered'))
+    w, h = date_par.wrapOn(can, x - 2*margin, y - 2*margin)
+    date_par.drawOn(can, margin, y - h - h_cur)
+    
     can.showPage()
     
-    textobject = can.beginText()
-    textobject.setFont("HSESans-Regular", 16)
-    textobject.setFillColorRGB(0.52, 0.52, 0.53)
-    textobject.setTextOrigin(64, y-160)
+    margin = 50
+    h_cur = 140
     for reg in regs:
-        textobject.textLine(str(reg.timetable))
-    can.drawText(textobject)
+        line = Paragraph(str(reg.timetable), get_paragraph_style('regular'))
+        w, h = line.wrapOn(can, x - 2*margin, y - 2*margin)
+        line.drawOn(can, margin, y - h - h_cur)
+        h_cur += h
+    
     can.save()
     packet.seek(0)
     
     new_pdf = PdfReader(packet)
-    template_pdf = PdfReader(open('regsys/static/regsys/template-certificate.pdf', 'rb'))
+    template_pdf = PdfReader(open(str(settings.STATIC_ROOT) + '/regsys/template-certificate.pdf', 'rb'))
     output = PdfWriter(response)
     for i in range(len(template_pdf.pages)):
         page = template_pdf.pages[i]
@@ -495,7 +606,7 @@ def qr_generate(request):
         headers={"Content-Disposition": 'attachment; filename="qr.png"'},
     )
     
-    link = 'http://127.0.0.1:8000/qr/read/'
+    link = 'https://hse-reg-sys.dns-dynamic.net/qr/read/'
     link += '?timetable=' + str(request.GET["timetable"])
     link += '&guest=' + str(request.GET["guest"])
     qr = qrcode.QRCode()
@@ -521,3 +632,12 @@ def qr_read(request):
     except:
         pass
     return redirect('admin:index')
+    
+@staff_member_required   
+def help_admin(request):
+    response = HttpResponse(
+        open(str(settings.STATIC_ROOT) + '/regsys/help-admin.pdf', 'rb'),
+        content_type="application/pdf",
+        headers={"Content-Disposition": 'attachment; filename="help-admin.pdf"'},
+    )
+    return response

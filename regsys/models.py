@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import F, Q
 from django.core.exceptions import ValidationError
-from django.db.models.signals import pre_save, pre_delete
+from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 
@@ -32,14 +32,15 @@ class Event(models.Model):
 class Timetable(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="Номер")
     timetable_name = models.CharField(max_length=200, verbose_name="Название")
-    category = models.CharField(max_length=100, verbose_name="Категория")
+    category = models.CharField(max_length=100, verbose_name="Категория", help_text="*в категорию входит время проведения мероприятия (11.00-12.00) или его время и тип (14.00-15.00, обед); для корректности отображения расписания важно вводить время в одном формате")
     date = models.DateField(verbose_name="Дата")
     place = models.CharField(max_length=100, verbose_name="Место")
     host = models.CharField(max_length=100, verbose_name="Ведущий")
     annotation = models.CharField(max_length=1000, verbose_name="Аннотация")
-    repeating = models.BooleanField(verbose_name="Повтор?")
+    repeating = models.BooleanField(default=False, editable=False, verbose_name="Повтор?")
     event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name="Событие")
-    seats = models.IntegerField(default=-1, verbose_name="Свободных мест")
+    seats_all = models.IntegerField(default=-1, verbose_name="Всего мест")
+    seats_taken = models.IntegerField(default=0, editable=False, verbose_name="Занято мест")
     
     def __str__(self):
         return self.timetable_name
@@ -49,8 +50,8 @@ class Timetable(models.Model):
             raise ValidationError("Дата не должна выходить за рамки события")
     
     class Meta:
-        verbose_name = "Расписание"
-        verbose_name_plural = "Расписание"
+        verbose_name = "Элемент расписания"
+        verbose_name_plural = "Элементы расписания"
         
         
 class Guest(models.Model):
@@ -73,7 +74,7 @@ class Guest(models.Model):
         
 class Registration(models.Model):
     class Status(models.TextChoices):
-        AFF = "AFF", "Подтверждено"
+        AFF = "AFF", "Еще не посещено"
         INT = "INT", "Пересекается"
         WAI = "WAI", "Очередь"
         VIS = "VIS", "Посещено"
@@ -97,60 +98,78 @@ class Registration(models.Model):
         verbose_name_plural = "Записи"
    
      
-class Label(models.Model):
+class Tag(models.Model):
     class Type(models.TextChoices):
         TAR = "TAR", "Аудитория"
         FIE = "FIE", "Направление"
-        CON = "CON", "Подтверждение"
         
     id = models.AutoField(primary_key=True, verbose_name="Номер")
-    label_name = models.CharField(max_length=50, verbose_name="Название")
+    tag_name = models.CharField(max_length=50, verbose_name="Название", unique=True)
     type = models.CharField(choices=Type.choices, verbose_name="Тип")
     
     def __str__(self):
-        return self.label_name
+        return self.tag_name
     
     class Meta:
-        verbose_name = "Лейбл"
-        verbose_name_plural = "Лейблы"
+        verbose_name = "Тег"
+        verbose_name_plural = "Теги"
 
 
-class Labelmap(models.Model):  
+class Tagmap(models.Model):  
     event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name="Событие")
-    label = models.ForeignKey(Label, on_delete=models.CASCADE, verbose_name="Лейбл")
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name="Тег")
     
     def __str__(self):
-        return str(self.event) + " / " + str(self.label)
+        return str(self.event) + " / " + str(self.tag)
     
     class Meta:
-        verbose_name = "Лейблмап"
-        verbose_name_plural = "Лейблмап"
+        verbose_name = "Тег для события"
+        verbose_name_plural = "Теги событий"
+
+@receiver(post_save, sender=Timetable)
+def add_repeat(sender, instance, created, **kwargs):
+    similar = Timetable.objects.filter(~Q(id=instance.id), timetable_name=instance.timetable_name, event=instance.event)
+    if similar:
+        Timetable.objects.filter(id=instance.id).update(repeating=True)
+        similar.update(repeating=True)
+    else:
+        Timetable.objects.filter(id=instance.id).update(repeating=False)
+
+@receiver(pre_save, sender=Timetable)
+def clean_repeat(sender, instance, **kwargs):
+    if instance.id:
+        previous = Timetable.objects.get(id=instance.id)
+        similar = Timetable.objects.filter(~Q(id=instance.id), timetable_name=previous.timetable_name, event=previous.event)
+        if len(similar) == 1:
+            similar.update(repeating=False)
+            
+@receiver(pre_delete, sender=Timetable)
+def clean_repeat(sender, instance, **kwargs):
+    similar = Timetable.objects.filter(~Q(id=instance.id), timetable_name=instance.timetable_name, event=instance.event)
+    if len(similar) == 1:
+        similar.update(repeating=False)
 
 @receiver(pre_save, sender=Registration)
-def minus_seat(sender, instance, **kwargs):
+def alloc_seat(sender, instance, **kwargs):
     if instance.id is None:
         if instance.is_seated:
             t = instance.timetable
-            if t.seats > 0:
-                t.seats -= 1
-                t.save()
+            t.seats_taken += 1
+            t.save()
     else:
         previous = Registration.objects.get(id=instance.id)
         t = instance.timetable
         if not previous.is_seated and instance.is_seated:
-            if t.seats > 0:
-                t.seats -= 1
-                t.save()
+            t.seats_taken += 1
+            t.save()
         if previous.is_seated and not instance.is_seated:
-            if t.seats > -1:
-                t.seats += 1
-                t.save()
+            t.seats_taken -= 1
+            t.save()
                 
 @receiver(pre_delete, sender=Registration)
-def plus_seat(sender, instance, **kwargs):
+def free_seat(sender, instance, **kwargs):
     if instance.is_seated:
         t = instance.timetable
-        if t.seats > -1:
-            t.seats += 1
-            t.save()
+        t.seats_taken -= 1
+        t.save()
         

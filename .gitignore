@@ -1,5 +1,5 @@
 .env
-django_env
+*_env
 regsys/__pycache__
 reg_sys_cw/__pycache__
 *.pyc
@@ -11,4 +11,3 @@ crash
 formats
 *.db
 stdin-captures
-

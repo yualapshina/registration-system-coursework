@@ -18,26 +18,69 @@
 	</div>
 	{% endif %}
 
-		<div class="parent">
+	<div class="parent">
 
-			<div class="navbar text-label">
-				{% for name, link in navbar.items %}
-				{% if name == "Добро пожаловать" %}
-				<a class="navbar_current" href="{% url link %}">{{ name }}</a>
-				{% else %}
-				<a class="navbar_link" href="{% url link %}">{{ name }}</a>
-				{% endif %}
+		<div class="navbar text-label">
+			{% for side, links in navbar.items %}
+			<div>
+				{% if side == "left" %}
+				{% for name, link in links.items %}
+				<a class="navbar_left" href="{% url link %}">{{ name }}</a>
 				{% endfor %}
+				{% else %}
+				{% for name, link in links.items %}
+				<a class="navbar_right" href="{% url link %}">{{ name }}</a>
+				{% endfor %}
+				{% endif %}
 			</div>
-
-			<div class="block">
-				<p class="text-header-black col-primary-800">ух ты лендинг</p>
-				<form action="{% url 'signup' %}" method="get">
-					<button id="submit" name="submit" type="submit" value="signup"
-						class="primary-button text-label">Попробовать!</button>
-				</form>
-			</div>
+			{% endfor %}
 		</div>
-</body>
 
+		<div class="block">
+			<div style="display: flex; justify-content:space-between; margin-top: 36px;">
+				<p class="text-header-black col-primary-800">система регистрации<br>нижегородской вышки</p>
+				<img src="{% static 'regsys/images/landing.svg' %}" />
+			</div>
+			<br>
+			<p class=" text-regular col-base-800">Привет! Это система, в которой можно регистрироваться на мероприятия
+				Нижегородского кампуса ВШЭ.
+				Все просто - мы сейчас расскажем.</p>
+			<br><br>
+			<table>
+				<tr>
+					<th class="text-header-semibold col-primary-600">1. Создай аккаунт</th>
+					<th class="text-header-semibold col-primary-600">2. Расскажи о себе</th>
+					<th class="text-header-semibold col-primary-600">3. Выбери событие</tn>
+				</tr>
+				<tr>
+					<td class="text-regular col-base-700">Нажимай “зарегистрироваться” и заходи в систему через
+						электронную почту</td>
+					<td class="text-regular col-base-700">Нужно будет заполнить небольшую форму - сказать, как тебя
+						зовут, где ты учишься, как с тобой связаться. Мы используем эту информацию для связи с
+						участниками мероприятий и для создания сертификатов</td>
+					<td class="text-regular col-base-700">На странице регистрации есть список событий, в которых можно
+						поучаствовать. Пользуйся фильтрами и выбирай те из них, которые тебе
+						действительно интересны! </td>
+				</tr>
+				<tr>
+					<th class="text-header-semibold col-primary-600">4. Настрой свое расписание</th>
+					<th class="text-header-semibold col-primary-600">5. Загрузи QR</th>
+					<th class="text-header-semibold col-primary-600">6. Скачай сертификат</th>
+				</tr>
+				<tr>
+					<td class="text-regular col-base-700">Уточняй свое собственное расписание - скорее выбирай самые
+						интересные тебе мероприятия, пока все места не разобрали!</td>
+					<td class="text-regular col-base-700">Скачивай QR-коды мероприятий и пользуйся ими для входа</td>
+					<td class="text-regular col-base-700">После каждого мероприятия в разделе “мое расписание” можно
+						скачать сертификат о посещении - не забывай сканировать QR при входе, чтобы посещение зачлось
+					</td>
+				</tr>
+			</table>
+			<form action="{% url 'signup' %}" method="get">
+				<button id="submit" name="submit" type="submit" value="signup"
+					class="primary-button text-label">Попробовать!</button><br><br>
+			</form>
+		</div>
+	</div>
+</body>
 </html>

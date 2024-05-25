@@ -1,5 +1,4 @@
 from django.core.exceptions import ValidationError
-from django.utils.translation import gettext as _
 
 class RegularValidator:
     def __init__(self, min_length=8, capital=True, digit=True):
@@ -10,24 +9,22 @@ class RegularValidator:
     def validate(self, password, user=None):
         if len(password) < self.min_length:
             raise ValidationError(
-                _("This password must contain at least %(min_length)d characters."),
+                "Пароль должен содержать хотя бы %(min_length)d символов",
                 code="password_too_short",
                 params={"min_length": self.min_length},
             )
         if self.capital and password.lower() == password:
             raise ValidationError(
-                _("This password must contain at least one capital letter."),
+                "Пароль должен содержать хотя бы одну заглавную букву",
                 code="no_capitals",
                 params={},
             )
         if self.digit and not any(c.isdigit() for c in password):
             raise ValidationError(
-                _("This password must contain at least one digit."),
+                "Пароль должен содержать хотя бы одну цифру",
                 code="no_digits",
                 params={},
             )
 
     def get_help_text(self):
-        return _(
-            "Your password must contain at least " + str(self.min_length) + " characters" + (", one capital letter" if self.capital else "") + (", one digit" if self.digit else "")
-        )
+        return "Пароль должен содержать хотя бы " + str(self.min_length) + " символов" + (", одну заглавную букву" if self.capital else "") + (", одну цифру" if self.digit else "")
