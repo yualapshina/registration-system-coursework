@@ -1,14 +1,7 @@
 # registration-system-coursework
-Данный проект - прототип системы для регистрации на мероприятия, разрабатываемый в рамках курсовой/практики/диплома для ИМиКН НИУ ВШЭ. 
+Добро пожаловать! Данный проект - прототип системы для регистрации на мероприятия, разрабатываемый в рамках диплома для ИМиКН НИУ ВШЭ-НН. 
 ### Содержание репозитория
-- Весь исходный код проекта, сосредоточенный в основном в папке *regsys*
-- Пояснительные записки, отчёты и презентации для защиты в папке *documents*
-### Ссылки на дополнительные ресурсы
-- [Дизайн интерфейса](https://www.figma.com/file/5eO3mF7nryTVAC1sMNwzQV/main?type=design&node-id=1%3A5&mode=design&t=SmHhpDY70HDIfIxv-1)
-- [Архитектура базы данных](https://www.figma.com/file/cpJIurC4qGIu2jrA6UtA9I/Registration-System%3A-ER-Diagram?type=whiteboard&t=XQAnZ1MlXFPwVaEB-6)
-### release notes
-- в мастере сделана заготовка лендинга и тестирование экранов ошибок (пока над всем фронтом можно работать там, по-человечески я смёржу потом)
-- и ещё надо посмотреть согласие на ПнД в профиле
-- в проде творится зона боевых действий, запускать не надо.
-  
-- юля если захочешь редакторские фукнции в новой фигме ходи по этой [ссылке](https://www.figma.com/team_invite/redeem/05MenJwyqrP0HAPufxjDVY)
+- Весь исходный код проекта - тегами отмечены две стабильные версии, [локальная](https://github.com/yualapshina/registration-system-coursework/releases/tag/stable-development) и [серверная](https://github.com/yualapshina/registration-system-coursework/releases/tag/stable-prod) 
+- Пояснительные записки, отчёты и презентации для защиты - в папке [documents](https://github.com/yualapshina/registration-system-coursework/tree/master/documents)
+- Техническая документация и подробные советы по использованию - в разделе [Wiki](https://github.com/yualapshina/registration-system-coursework/wiki)
+- UI-кит, диаграммы архитектуры и другая визуальная информация - в [Фигме](?) проекта

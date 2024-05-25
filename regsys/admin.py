@@ -35,10 +35,10 @@ def mass_mail(modeladmin, request, queryset):
                     emails.append(reg.guest.user.username)
     if isinstance(queryset[0], Timetable):
         for tt in queryset:
-            elected.append(str(tt))
+            selected.append(str(tt))
             regs = Registration.objects.filter(timetable=tt)
             for reg in regs:
-                mails.append(reg.guest.user.username)
+                emails.append(reg.guest.user.username)
     if isinstance(queryset[0], Registration):
         for reg in queryset:
             selected.append(str(reg))

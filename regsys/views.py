@@ -591,8 +591,11 @@ def certificate(request):
     new_pdf = PdfReader(packet)
     template_pdf = PdfReader(open(str(settings.STATIC_ROOT) + '/regsys/template-certificate.pdf', 'rb'))
     output = PdfWriter(response)
-    for i in range(len(template_pdf.pages)):
-        page = template_pdf.pages[i]
+    for i in range(len(new_pdf.pages)):
+        if i > len(template_pdf.pages):
+            page = template_pdf.pages[1]
+        else:
+            page = template_pdf.pages[i]
         page.merge_page(new_pdf.pages[i])
         output.add_page(page)
     output.write(response)
