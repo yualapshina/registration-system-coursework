@@ -32,7 +32,7 @@ class Event(models.Model):
 class Timetable(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="Номер")
     timetable_name = models.CharField(max_length=200, verbose_name="Название")
-    category = models.CharField(max_length=100, verbose_name="Категория", help_text="*в категорию входит время проведения мероприятия (11.00-12.00) или его время и тип (14.00-15.00, обед); для корректности отображения расписания важно вводить время в одном формате")
+    category = models.CharField(max_length=100, verbose_name="Категория", help_text="* в категорию входит время проведения мероприятия (11.00-12.00) или его время и тип (14.00-15.00, обед); для корректности отображения расписания важно вводить время в одном формате")
     date = models.DateField(verbose_name="Дата")
     place = models.CharField(max_length=100, verbose_name="Место")
     host = models.CharField(max_length=100, verbose_name="Ведущий")
@@ -93,6 +93,10 @@ class Registration(models.Model):
     def is_seated(self):
         return self.status in {self.Status.AFF, self.Status.VIS, self.Status.MIS}
     
+    def clean(self):
+        if Registration.objects.filter(timetable=self.timetable, guest=self.guest):
+            raise ValidationError("Такая Запись уже существует")
+    
     class Meta:
         verbose_name = "Запись"
         verbose_name_plural = "Записи"
@@ -121,6 +125,10 @@ class Tagmap(models.Model):
     
     def __str__(self):
         return str(self.event) + " / " + str(self.tag)
+    
+    def clean(self):
+        if Tagmap.objects.filter(event=self.event, tag=self.tag):
+            raise ValidationError("Такой Тег для события уже существует")
     
     class Meta:
         verbose_name = "Тег для события"

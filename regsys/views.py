@@ -385,11 +385,16 @@ def register(request):
     filterbar = {}
     for type in Tag.Type.choices:
         t = {}
+        checked = []
         for tag in Tag.objects.filter(type=type[0]):
             is_checked = "tag_" + str(tag.id) in request.GET.dict().keys()
+            if request.GET.get("submit", "") == "reset":
+                is_checked = False
             t.update({tag: is_checked})
             if is_checked:
-                all_events = all_events.filter(tagmap__tag=tag)
+                checked.append(tag)
+        if checked:
+            all_events = all_events.filter(tagmap__tag__in=checked)
         filterbar.update({type: t})
     
     events_future = {}
@@ -465,9 +470,11 @@ def completed(request):
 
 @login_required    
 def download(request):
+    timestamp = str(datetime.datetime.now())
+    filename = "timetable_" + timestamp + ".pdf"
     response = HttpResponse(
         content_type="application/pdf",
-        headers={"Content-Disposition": 'attachment; filename="timetable.pdf"'},
+        headers={"Content-Disposition": 'attachment; filename="%s"' % filename},
     )
     
     packet = io.BytesIO()
@@ -544,9 +551,11 @@ def help(request):
     
 @login_required    
 def certificate(request):
+    timestamp = str(datetime.datetime.now())
+    filename = "certificate_" + timestamp + ".pdf"
     response = HttpResponse(
         content_type="application/pdf",
-        headers={"Content-Disposition": 'attachment; filename="certificate.pdf"'},
+        headers={"Content-Disposition": 'attachment; filename="%s"' % filename},
     )
     
     event = Event.objects.get(id=request.GET["event_key"])
@@ -604,9 +613,11 @@ def certificate(request):
     
 @login_required    
 def qr_generate(request):
+    timestamp = str(datetime.datetime.now())
+    filename = "qr_" + timestamp + ".png"
     response = HttpResponse(
         content_type="image/png",
-        headers={"Content-Disposition": 'attachment; filename="qr.png"'},
+        headers={"Content-Disposition": 'attachment; filename="%s"' % filename},
     )
     
     link = 'https://hse-reg-sys.dns-dynamic.net/qr/read/'
