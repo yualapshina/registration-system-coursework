@@ -26,7 +26,7 @@ class Event(models.Model):
         verbose_name_plural = "События"
         constraints = [
             models.UniqueConstraint(fields=['event_name'], name='unique name')
-    ]
+        ]
 
 
 class Timetable(models.Model):
@@ -93,13 +93,12 @@ class Registration(models.Model):
     def is_seated(self):
         return self.status in {self.Status.AFF, self.Status.VIS, self.Status.MIS}
     
-    def clean(self):
-        if Registration.objects.filter(timetable=self.timetable, guest=self.guest):
-            raise ValidationError("Такая Запись уже существует")
-    
     class Meta:
         verbose_name = "Запись"
         verbose_name_plural = "Записи"
+        constraints = [
+            models.UniqueConstraint(fields=['timetable', 'guest'], name='unique Registration')
+        ]
    
      
 class Tag(models.Model):
@@ -126,13 +125,12 @@ class Tagmap(models.Model):
     def __str__(self):
         return str(self.event) + " / " + str(self.tag)
     
-    def clean(self):
-        if Tagmap.objects.filter(event=self.event, tag=self.tag):
-            raise ValidationError("Такой Тег для события уже существует")
-    
     class Meta:
         verbose_name = "Тег для события"
         verbose_name_plural = "Теги событий"
+        constraints = [
+            models.UniqueConstraint(fields=['event', 'tag'], name='unique Tagmap')
+        ]
 
 @receiver(post_save, sender=Timetable)
 def add_repeat(sender, instance, created, **kwargs):
